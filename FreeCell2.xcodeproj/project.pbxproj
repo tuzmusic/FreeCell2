@@ -72,8 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				7652733A1E33608A00D595AA /* FreeCell2 */,
-				7652734F1E33608B00D595AA /* FreeCell2Tests */,
-				765273391E33608A00D595AA /* Products */,
+				7652736C1E337B5700D595AA /* OLD FreeCell2 */,
 				7652735B1E3360A300D595AA /* Supporting Files */,
 			);
 			sourceTree = "<group>";
@@ -85,6 +84,7 @@
 				7652734C1E33608B00D595AA /* FreeCell2Tests.xctest */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		7652733A1E33608A00D595AA /* FreeCell2 */ = {
@@ -105,11 +105,13 @@
 				765273521E33608B00D595AA /* Info.plist */,
 			);
 			path = FreeCell2Tests;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		7652735B1E3360A300D595AA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7652734F1E33608B00D595AA /* FreeCell2Tests */,
+				765273391E33608A00D595AA /* Products */,
 				7652733B1E33608A00D595AA /* AppDelegate.swift */,
 				765273421E33608A00D595AA /* Assets.xcassets */,
 				765273441E33608B00D595AA /* LaunchScreen.storyboard */,
@@ -133,10 +135,18 @@
 			children = (
 				7652735E1E3360CC00D595AA /* PlayingCardView.swift */,
 				765273651E3361AB00D595AA /* CardView.swift */,
-				765273671E3362F600D595AA /* FreeCellBoardDrawer.swift */,
 				7652736A1E33748500D595AA /* FreeCellBoardView.swift */,
 			);
 			name = VIEW;
+			sourceTree = "<group>";
+		};
+		7652736C1E337B5700D595AA /* OLD FreeCell2 */ = {
+			isa = PBXGroup;
+			children = (
+				765273671E3362F600D595AA /* FreeCellBoardDrawer.swift */,
+			);
+			name = "OLD FreeCell2";
+			path = FreeCell2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -461,6 +471,7 @@
 				765273571E33608B00D595AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		765273581E33608B00D595AA /* Build configuration list for PBXNativeTarget "FreeCell2Tests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +480,7 @@
 				7652735A1E33608B00D595AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
