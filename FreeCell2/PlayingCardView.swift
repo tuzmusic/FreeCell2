@@ -51,6 +51,15 @@ class PlayingCardView: CardView {
 	}
 	
 	override func draw(_ rect: CGRect) {
+		let cardRect = CGRect(origin: bounds.origin, size: cardSize)
+		let cardPath = UIBezierPath(roundedRect: cardRect, cornerRadius: 10.0)
+		
+		UIColor.black.setStroke()
+		UIColor.white.setFill()
+
+		cardPath.lineWidth = 1.5
+		cardPath.stroke()
+
 		addLabels()
 	}
 }

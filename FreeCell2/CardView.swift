@@ -14,12 +14,6 @@ class CardView: UIView {
 	var cardHeight: CGFloat { return cardWidth * (3.5/2.5) }
 	var cardSize: CGSize { return CGSize(width: cardWidth, height: cardHeight) }
 
-	var freeCellType: FreeCellColumnType?
-	
-	enum FreeCellColumnType {
-		case FreeCell, SuitStack, CardColumn
-	}
-
 	override func draw(_ rect: CGRect) {
 
 		let cardRect = CGRect(origin: bounds.origin, size: cardSize)
@@ -29,6 +23,5 @@ class CardView: UIView {
 		cardPath.lineWidth = 2
 		cardPath.stroke()
 	}
-	
 }
 
