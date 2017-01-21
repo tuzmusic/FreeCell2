@@ -17,13 +17,13 @@
                         <viewControllerLayoutGuide type="top" id="2X7-so-2ZM"/>
                         <viewControllerLayoutGuide type="bottom" id="Y3G-P3-5uK"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="83f-JX-iRZ" customClass="FreeCellBoardView" customModule="FreeCell2" customModuleProvider="target">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="83f-JX-iRZ" customClass="FreeCellBoardView" customModule="FreeCell2" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
-                        <outlet property="wholeTableView" destination="83f-JX-iRZ" id="Iz2-hd-wuR"/>
+                        <outlet property="boardView" destination="83f-JX-iRZ" id="Iz2-hd-wuR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

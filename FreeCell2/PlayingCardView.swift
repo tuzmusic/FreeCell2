@@ -56,7 +56,7 @@ class PlayingCardView: CardView {
 		
 		UIColor.black.setStroke()
 		UIColor.white.setFill()
-
+		clipsToBounds = false
 		cardPath.lineWidth = 1.5
 		cardPath.stroke()
 

@@ -20,7 +20,7 @@ class FreeCellViewController: UIViewController {
 		var length: Int?
 	}
 	
-	@IBOutlet var wholeTableView: FreeCellBoardView!
+	@IBOutlet var boardView: FreeCellBoardView!
 	
 	
 	// Setup functions
@@ -28,9 +28,9 @@ class FreeCellViewController: UIViewController {
 		let newCardView = PlayingCardView()
 		let (column, row) = position
 		
-		newCardView.frame.origin.x = wholeTableView.xValueFor(wholeTableView.cardColumn, number: column)
-		newCardView.frame.origin.y = wholeTableView.yCoordinateForCardIn(row: row)
-		newCardView.frame.size = wholeTableView.cardSize
+		newCardView.frame.origin.x = boardView.xValueFor(boardView.cardColumn, number: column)
+		newCardView.frame.origin.y = boardView.yCoordinateForCardIn(row: row)
+		newCardView.frame.size = boardView.cardSize
 		newCardView.backgroundColor = UIColor.white
 		newCardView.position = position
 		newCardView.cardColor = card.color == DeckBuilder.Color.Red ? UIColor.red : UIColor.black
@@ -44,7 +44,7 @@ class FreeCellViewController: UIViewController {
 		for column in 0 ..< freeCellGame.board.count {
 			for row in 0...(column <= 3 ? 6 : 5) {
 				let newCard = create(card: freeCellGame.board[column][row], at: (column, row))
-				wholeTableView.addSubview(newCard)
+				boardView.addSubview(newCard)
 
 				//newCard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cardClicked(_:))))
 			}
