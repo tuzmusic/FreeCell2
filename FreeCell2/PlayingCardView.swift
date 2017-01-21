@@ -7,7 +7,7 @@
 //
 
 import UIKit
-@IBDesignable
+
 class PlayingCardView: CardView {
 	
 	var isSelected = false {
