@@ -8,8 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class FreeCellViewController: UIViewController {
 
+	@IBOutlet var wholeTableView: FreeCellBoardView!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
