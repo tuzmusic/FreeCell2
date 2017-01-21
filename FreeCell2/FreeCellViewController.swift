@@ -61,7 +61,7 @@ class FreeCellViewController: UIViewController {
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
-		dealCards()
+		//dealCards()
 	}
 	
 }

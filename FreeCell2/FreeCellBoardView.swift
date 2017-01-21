@@ -37,66 +37,60 @@ class FreeCellBoardView: UIView {
 	var startingPointForSuits: CGPoint {
 		return CGPoint(x: suitsHorizMargin, y: cellsAndSuitsVerticalMargin)
 	}
-		
+	
 	struct CardType {
 		var count: Int
 		var xMargin: CGFloat
+		var yMargin: CGFloat
 	}
 	
 	var freeCell: CardType {
 		return CardType(count: numberOfCells,
-		                xMargin: cardWidth / 4) }
+		                xMargin: cardWidth / 4,
+		                yMargin: cardHeight / 3) }
 	
 	var suitStack: CardType {
 		let totalCardsSpace = cardWidth * CGFloat(numberOfCells)
 		let totalColumnSpace = spaceBetweenColumns * CGFloat(numberOfCells - 1)
 		return CardType(count: numberOfSuits,
-		                xMargin: bounds.maxX - cellsHorizMargins - (totalCardsSpace + totalColumnSpace)) }
+		                xMargin: bounds.maxX - cellsHorizMargins - (totalCardsSpace + totalColumnSpace),
+		                yMargin: cardHeight / 3) }
 	
 	var cardColumn: CardType {
 		return CardType(count: numberOfColumns,
-		                xMargin: (bounds.width - (columnWidth * CGFloat(numberOfColumns) - spaceBetweenColumns)) / 2) }
+		                xMargin: (bounds.width - (columnWidth * CGFloat(numberOfColumns) - spaceBetweenColumns)) / 2,
+		                yMargin: cellsAndSuitsVerticalMargin + cardHeight * 1.3) }
 	
-	func xValueFor(cellNumber: Int) -> CGFloat {
-		return cellsHorizMargins + spaceBetweenColumns * CGFloat(cellNumber)
-	}
-	
-	func xValueFor(suitNumber: Int) -> CGFloat {
-		return suitsHorizMargin + spaceBetweenColumns * CGFloat(suitNumber)
+	func xValueFor(_ cardType: CardType, number: Int) -> CGFloat {
+		return cardType.xMargin + (cardWidth + spaceBetweenColumns) * CGFloat(number)
 	}
 	
 	var startingPointForColumns: CGPoint {
 		return CGPoint(x: columnsHorizMargins, y: columnsVerticalMargin)
 	}
 	
-	func xCoordinateForCardIn(column: Int) -> CGFloat {
-		return columnsHorizMargins + (cardWidth + spaceBetweenColumns) * CGFloat(column)
-	}
-	
 	func yCoordinateForCardIn(row: Int) -> CGFloat {
-		return columnsVerticalMargin + spaceBetweenCards * CGFloat(row)
+		return cardColumn.yMargin + spaceBetweenCards * CGFloat(row)
 	}
 	
-	func createCellsOf(type: CardView.FreeCellColumnType, number: Int, at startingPoint: CGPoint) {
-		for cell in 0 ..< number {
+	func createCellsOf(type: CardType) {
+		for cell in 0 ..< type.count {
+			
 			let newCell = CardView()
 			
-			newCell.frame.origin.x = startingPoint.x + (cardWidth + spaceBetweenColumns) * CGFloat(cell)
-			newCell.frame.origin.y = startingPoint.y
+			newCell.frame.origin = CGPoint(x: xValueFor(type, number: cell), y: type.yMargin)
 			newCell.frame.size = CGSize(width: cardWidth, height: cardHeight)
-			
 			newCell.backgroundColor = UIColor.clear
-			newCell.tag = number
-			newCell.freeCellType = type
+			newCell.tag = cell
 			
 			addSubview(newCell)
 		}
 	}
 	
 	override func draw(_ rect: CGRect) {
-		createCellsOf(type: .FreeCell, number: numberOfCells, at: startingPointForCells)
-		createCellsOf(type: .SuitStack, number: numberOfSuits, at: startingPointForSuits)
-		createCellsOf(type: .CardColumn, number: numberOfColumns, at: startingPointForColumns)
+		createCellsOf(type: freeCell)
+		createCellsOf(type: suitStack)
+		createCellsOf(type: cardColumn)
 	}
 	
 }
