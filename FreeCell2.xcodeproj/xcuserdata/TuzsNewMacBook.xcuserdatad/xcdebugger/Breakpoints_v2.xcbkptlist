@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "506793096.882213"
+            timestampString = "506847448.357785"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "viewDidAppear(_:)"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "cardClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

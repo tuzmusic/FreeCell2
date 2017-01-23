@@ -14,24 +14,64 @@ class FreeCellViewController: UIViewController {
 	// MARK: Model
 	let freeCellGame = FreeCellBrain()
 	
-	var selection: FreeCellSelection?
+	var selection: (column: Int, row: Int)?
 	
 	struct FreeCellSelection {
 		var column: Int
-		var row: Int?
-		var length: Int?
+		var row: Int
 	}
 	
 	@IBOutlet var boardView: FreeCellBoardView!
 	
 	//MARK: Gameplay Functions/Click handlers
 	
+	func clearSelection() {
+		selection = nil
+		for view in boardView.subviews {
+			(view as? PlayingCardView)?.isSelected = false
+		}
+	}
+	
+	func selectCards(startingWith clickedCardView: PlayingCardView) {
+		if let position = clickedCardView.position {
+			
+			selection = position
+			
+			// Look for the card in the entire view.
+			// This should include freeCells AND suitStacks! Well, in the view anyway (maybe not in the model)
+			if let startingIndex = boardView.subviews.index(of: clickedCardView) {
+				let stackLength = freeCellGame.board[selection!.column].count - selection!.row
+				for cardViewIndex in startingIndex ..< startingIndex + stackLength {
+					if let currentCardView = boardView.subviews[cardViewIndex] as? PlayingCardView {
+						currentCardView.isSelected = true
+					}
+				}
+			}
+		}
+	}
+	
 	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
-		print("Card clicked")
-		if selection == nil {
-			// Select the appropriate cards, including handling for "same column" selection
-		} else {
-			// Try to move the selected cards
+		//print("Card clicked")
+		
+		if let clickedCardView = clickedCard.view as? PlayingCardView {
+			// If there is a selection...
+			if let previousSelection = selection {
+				
+				// If the selection is in the same column that was just clicked, deselect, and reselect if needed.
+				// TODO: It looks like the model needs to be rewritten so that the freeCells and suitStacks are part of the board, so they can be addressed via an index.
+				if clickedCardView.position.column == previousSelection.column {
+					let oldRow = previousSelection.row
+					clearSelection()
+					if clickedCardView.position.row != oldRow {
+						selectCards(startingWith: clickedCardView)
+					}
+				} else {
+					// Try to move the selected cards (to a cardColumn or suitStack).
+				}
+			}
+			else {
+				selectCards(startingWith: clickedCardView)
+			}
 		}
 	}
 	
@@ -39,7 +79,7 @@ class FreeCellViewController: UIViewController {
 		print("Cell \(cell.view!.tag) clicked!")
 		if selection == nil {
 			// Select the card in the cell, if any
-		} else if selection!.length == 1 {
+			//		} else if selection!.length == 1 {
 			// If cell is empty, move the card to the cell
 		}
 	}
@@ -48,7 +88,7 @@ class FreeCellViewController: UIViewController {
 		print("Suit \(suit.view!.tag) clicked!")
 		if selection == nil {
 			// Select the top card of the suit
-		} else if selection!.length == 1 {
+			//		} else if selection!.length == 1 {
 			// Move the selected card if possible
 		}
 	}

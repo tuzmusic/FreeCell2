@@ -39,6 +39,7 @@ class FreeCellBrain {
 	var cells = [Column](repeatElement(Column(), count: 4))
 	var suitStacks = [Column](repeatElement(Column(), count: 4))
 	
+	// MARK: Game Rules
 	
 	var numberOfCardsThatCanBeMoved: Int {
 		// TODO: IMPORTANT: This doesn't take into account if the destination column is an empty column.
@@ -90,7 +91,7 @@ class FreeCellBrain {
 	}
 	
 	func noMovesLeft (board: [Column]) -> Bool {
-		//Are there any cells free?
+		// Are there any cells free?
 		for cell in cells  {
 			if cell.isEmpty { return false }
 		}
