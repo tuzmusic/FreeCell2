@@ -18,7 +18,24 @@ class PlayingCardView: CardView {
 	
 	var cardColor: UIColor?
 	var cardDescription: String?
-	var position: (column: Int, row: Int, subViewsIndex: Int)!
+//	var position: FreeCellPosition!
+//	
+//	struct FreeCellPosition {
+//		var column, row, subViewsIndex: Int
+//		var location: FreeCellCardType
+//	}
+//	
+//	enum FreeCellCardType {
+//		case freeCell, suitStack, cardColumn
+//	}
+	
+	struct TypeNames {
+		static let freeCell = "freeCell"
+		static let suitStack = "suitStack"
+		static let cardColumn = "cardColumn"
+	}
+
+
 
 	func addLabels() {
 		

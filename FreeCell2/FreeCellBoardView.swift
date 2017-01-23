@@ -25,7 +25,7 @@ class FreeCellBoardView: UIView {
 		var count: Int
 		var xMargin: CGFloat
 		var yMargin: CGFloat
-		var typeName: String
+		var type: CardView.FreeCellCardType
 	}
 	
 	struct TypeNames {
@@ -38,7 +38,7 @@ class FreeCellBoardView: UIView {
 		return CardType(count: numberOfCells,
 		                xMargin: cardWidth / 3,
 		                yMargin: cardHeight / 3,
-		                typeName: TypeNames.freeCell)
+		                type: .freeCell)
 	}
 	
 	var suitStack: CardType {
@@ -47,14 +47,14 @@ class FreeCellBoardView: UIView {
 		return CardType(count: numberOfSuits,
 		                xMargin: bounds.maxX - freeCell.xMargin - (totalCardsSpace + totalColumnSpace),
 		                yMargin: freeCell.yMargin,
-		                typeName: TypeNames.suitStack)
+		                type: .suitStack)
 	}
 	
 	var cardColumn: CardType {
 		return CardType(count: numberOfColumns,
 		                xMargin: (bounds.maxX - (columnWidth * CGFloat(numberOfColumns) - spaceBetweenColumns)) / 2,
 		                yMargin: freeCell.yMargin + cardHeight * 1.3,
-		                typeName: TypeNames.cardColumn)
+		                type: .cardColumn)
 	}
 	
 	func xValueFor(_ cardType: CardType, number: Int) -> CGFloat {
@@ -74,8 +74,9 @@ class FreeCellBoardView: UIView {
 			newCell.frame.size = CGSize(width: cardWidth, height: cardHeight)
 			newCell.backgroundColor = UIColor.clear
 			newCell.tag = cell
-			newCell.cardViewType = type.typeName
 			addSubview(newCell)
+			newCell.position = CardView.FreeCellPosition(column: cell, row: 0,
+			                                             subViewsIndex: self.subviews.index(of: newCell)!, location: type.type)
 		}
 	}
 	
