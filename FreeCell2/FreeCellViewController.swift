@@ -14,7 +14,15 @@ class FreeCellViewController: UIViewController {
 	// MARK: Model
 	let freeCellGame = FreeCellBrain()
 	
-	var selection: (column: Int, row: Int)?
+	var selection: (column: Int, row: Int, subViewsIndex: Int)?
+	var stackLength: Int? {
+		if let selection = selection {
+			return freeCellGame.board[selection.column].count - selection.row
+		}
+		return nil
+	}
+	
+
 	
 	struct FreeCellSelection {
 		var column: Int
@@ -23,8 +31,8 @@ class FreeCellViewController: UIViewController {
 	
 	@IBOutlet var boardView: FreeCellBoardView!
 	
-	//MARK: Gameplay Functions/Click handlers
-	
+	//MARK: Gameplay Utility Functions
+
 	func clearSelection() {
 		selection = nil
 		for view in boardView.subviews {
@@ -32,26 +40,47 @@ class FreeCellViewController: UIViewController {
 		}
 	}
 	
+	func freeCellIndexOf(cardView: PlayingCardView) -> Int? {
+		let col = cardView.position.column
+		if col > 7 && col < 12 {
+			return col - 8
+		}
+		return nil
+	}
+	
+	func suitStackIndexOf(cardView: PlayingCardView) -> Int? {
+		let col = cardView.position.column
+		if col > 12 {
+			return col - 12
+		}
+		return nil
+	}
+	
 	func selectCards(startingWith clickedCardView: PlayingCardView) {
 		if let position = clickedCardView.position {
 			
 			selection = position
-			
-			// Look for the card in the entire view.
-			// This should include freeCells AND suitStacks! Well, in the view anyway (maybe not in the model)
-			if let startingIndex = boardView.subviews.index(of: clickedCardView) {
-				let stackLength = freeCellGame.board[selection!.column].count - selection!.row
-				for cardViewIndex in startingIndex ..< startingIndex + stackLength {
-					if let currentCardView = boardView.subviews[cardViewIndex] as? PlayingCardView {
-						currentCardView.isSelected = true
-					}
+
+			for cardViewIndex in selection!.subViewsIndex ..< selection!.subViewsIndex + stackLength! {
+				if let currentCardView = boardView.subviews[cardViewIndex] as? PlayingCardView {
+					currentCardView.isSelected = true
 				}
 			}
 		}
 	}
 	
+	func move(_ card: PlayingCardView, to cell: CardView) {
+		card.frame = cell.frame
+		card.isSelected = false
+		selection = nil
+		card.position = (cell.tag + 8, 0, boardView.subviews.index(of: cell)!)
+		print("Card moved to cell \(freeCellIndexOf(cardView: card)!)")
+	}
+	
+	// MARK: Gameplay action functions
+	
 	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
-		//print("Card clicked")
+		print("Card clicked")
 		
 		if let clickedCardView = clickedCard.view as? PlayingCardView {
 			// If there is a selection...
@@ -77,10 +106,16 @@ class FreeCellViewController: UIViewController {
 	
 	func cellClicked (_ cell: UITapGestureRecognizer) {
 		print("Cell \(cell.view!.tag) clicked!")
-		if selection == nil {
-			// Select the card in the cell, if any
-			//		} else if selection!.length == 1 {
-			// If cell is empty, move the card to the cell
+		if let cellView = cell.view as? CardView {
+			if freeCellGame.cells[cellView.tag].isEmpty && stackLength == 1 {
+				let cardToMove = boardView.subviews[selection!.subViewsIndex] as! PlayingCardView
+				move(cardToMove, to: cellView)
+			}
+			if selection == nil {
+				// Select the card in the cell, if any
+				//		} else if selection!.length == 1 {
+				// If cell is empty, move the card to the cell
+			}
 		}
 	}
 	
@@ -95,15 +130,14 @@ class FreeCellViewController: UIViewController {
 	
 	// MARK: Setup functions
 	
-	func create (card: FreeCellBrain.Card, at position: (Int, Int)) -> PlayingCardView {
+	func create (card: FreeCellBrain.Card, at boardPosition: (Int, Int)) -> PlayingCardView {
 		let newCardView = PlayingCardView()
-		let (column, row) = position
+		let (column, row) = boardPosition
 		
 		newCardView.frame.origin.x = boardView.xValueFor(boardView.cardColumn, number: column)
 		newCardView.frame.origin.y = boardView.yCoordinateForCardIn(row: row)
 		newCardView.frame.size = boardView.cardSize
 		newCardView.backgroundColor = UIColor.white
-		newCardView.position = position
 		newCardView.cardColor = card.color == DeckBuilder.Color.Red ? UIColor.red : UIColor.black
 		newCardView.cardDescription = card.description
 		newCardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cardClicked(_:))))
@@ -117,8 +151,9 @@ class FreeCellViewController: UIViewController {
 			for row in 0...(column <= 3 ? 6 : 5) {
 				let newCard = create(card: freeCellGame.board[column][row], at: (column, row))
 				boardView.addSubview(newCard)
+ 
+				newCard.position = (column, row, boardView.subviews.index(of: newCard)!)
 				
-				//newCard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cardClicked(_:))))
 			}
 		}
 	}

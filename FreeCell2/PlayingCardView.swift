@@ -18,7 +18,7 @@ class PlayingCardView: CardView {
 	
 	var cardColor: UIColor?
 	var cardDescription: String?
-	var position: (column: Int, row: Int)!
+	var position: (column: Int, row: Int, subViewsIndex: Int)!
 
 	func addLabels() {
 		
