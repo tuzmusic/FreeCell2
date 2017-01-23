@@ -18,24 +18,6 @@ class PlayingCardView: CardView {
 	
 	var cardColor: UIColor?
 	var cardDescription: String?
-//	var position: FreeCellPosition!
-//	
-//	struct FreeCellPosition {
-//		var column, row, subViewsIndex: Int
-//		var location: FreeCellCardType
-//	}
-//	
-//	enum FreeCellCardType {
-//		case freeCell, suitStack, cardColumn
-//	}
-	
-	struct TypeNames {
-		static let freeCell = "freeCell"
-		static let suitStack = "suitStack"
-		static let cardColumn = "cardColumn"
-	}
-
-
 
 	func addLabels() {
 		
@@ -70,10 +52,9 @@ class PlayingCardView: CardView {
 	override func draw(_ rect: CGRect) {
 		let cardRect = CGRect(origin: bounds.origin, size: cardSize)
 		let cardPath = UIBezierPath(roundedRect: cardRect, cornerRadius: 10.0)
-		
 		UIColor.black.setStroke()
 		UIColor.white.setFill()
-		clipsToBounds = false
+		clipsToBounds = true
 		cardPath.lineWidth = 1.5
 		cardPath.stroke()
 

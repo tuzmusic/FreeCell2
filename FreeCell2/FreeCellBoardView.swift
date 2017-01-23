@@ -27,13 +27,7 @@ class FreeCellBoardView: UIView {
 		var yMargin: CGFloat
 		var type: CardView.FreeCellCardType
 	}
-	
-	struct TypeNames {
-		static let freeCell = "freeCell"
-		static let suitStack = "suitStack"
-		static let cardColumn = "cardColumn"
-	}
-	
+		
 	var freeCell: CardType {
 		return CardType(count: numberOfCells,
 		                xMargin: cardWidth / 3,
@@ -76,7 +70,8 @@ class FreeCellBoardView: UIView {
 			newCell.tag = cell
 			addSubview(newCell)
 			newCell.position = CardView.FreeCellPosition(column: cell, row: 0,
-			                                             subViewsIndex: self.subviews.index(of: newCell)!, location: type.type)
+			                                             subViewsIndex: self.subviews.index(of: newCell)!,
+			                                             location: type.type)
 		}
 	}
 	

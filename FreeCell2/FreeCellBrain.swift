@@ -17,8 +17,11 @@ class FreeCellBrain {
 	typealias Card = DeckBuilder.Card
 	typealias Column = [Card]
 	typealias CardStack = [Card]
-	var board = [Column](repeating: [], count: 8)
-	
+
+	var cardColumns = [Column](repeating: [], count: 8)
+	var cells = [Column](repeatElement(Column(), count: 4))
+	var suitStacks = [Column](repeatElement(Column(), count: 4))
+
 	// Deal cards - remove them from the top of deck and add them to the board
 	func dealCards () {
 		var deck = deckBuilder.buildDeck().shuffled()
@@ -29,15 +32,13 @@ class FreeCellBrain {
 		for _ in 0...6 {
 			for column in 0...7 {
 				if cardCount < totalCards {
-					board[column].append(deck.removeFirst())
+					cardColumns[column].append(deck.removeFirst())
 					cardCount += 1
 				}
 			}
 		}
 	}
 	
-	var cells = [Column](repeatElement(Column(), count: 4))
-	var suitStacks = [Column](repeatElement(Column(), count: 4))
 	
 	// MARK: Game Rules
 	
@@ -51,7 +52,7 @@ class FreeCellBrain {
 			}
 		}
 		var freeColumns = 0
-		for column in board {
+		for column in cardColumns {
 			if column.isEmpty {
 				freeColumns += 1
 			}
