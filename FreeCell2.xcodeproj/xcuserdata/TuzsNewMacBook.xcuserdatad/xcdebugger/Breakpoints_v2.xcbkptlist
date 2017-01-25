@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "506874683.226043"
+            timestampString = "507005231.272786"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "cellClicked(_:)"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "create(card:at:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FreeCell2/FreeCellViewController.swift"
+            timestampString = "507005231.272786"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "cardClickedNEW(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
