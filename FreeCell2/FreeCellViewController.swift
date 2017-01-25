@@ -96,35 +96,13 @@ class FreeCellViewController: UIViewController {
 	
 	// MARK: Gameplay action functions
 	
-	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
-		//print("Card clicked")
-		
-		//TODO: There MUST be a way to simplify this check.
-		if let clickedCardView = clickedCard.view as? PlayingCardView {
-			if let previousSelection = startOfSelection {
-				if clickedCardView.position.column == previousSelection.column {
-					let oldRow = previousSelection.row
-					startOfSelection = nil
-					if clickedCardView.position.row != oldRow {
-						startOfSelection = clickedCardView.position
-					}
-				} else {
-					// Try to move the selected cards (to a cardColumn or suitStack).
-				}
-			}
-			else if startOfSelection == nil {
-				startOfSelection = clickedCardView.position
-			}
-		}
-	}
 	
-	func cardClickedNEW (_ clickedCard: UITapGestureRecognizer) {
-		//print("Card clicked")
-		
+	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
 		if let clickedCardView = clickedCard.view as? PlayingCardView {
 			if startOfSelection == nil || clickedCardView.position.column == startOfSelection?.column {
+				let oldSelection = startOfSelection
 				startOfSelection = nil
-				if clickedCardView.position.row != startOfSelection?.row {
+				if clickedCardView.position.row != oldSelection?.row {
 					startOfSelection = clickedCardView.position
 				}
 			} else {

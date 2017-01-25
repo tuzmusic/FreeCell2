@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "507005231.272786"
+            timestampString = "507005676.817519"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "create(card:at:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "507005231.272786"
+            timestampString = "507005460.698745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "125"
             endingLineNumber = "125"
-            landmarkName = "cardClickedNEW(_:)"
+            landmarkName = "cardClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
