@@ -17,23 +17,33 @@ class FreeCellBrain {
 	typealias Card = DeckBuilder.Card
 	typealias Column = [Card]
 	typealias CardStack = [Card]
-
-	var cardColumns = [Column](repeating: [], count: 8)
-	var cells = [Column](repeatElement(Column(), count: 4))
-	var suitStacks = [Column](repeatElement(Column(), count: 4))
-
+	
+	struct BoardLocations {
+		static let freeCells = 0
+		static let suitStacks = 1
+		static let cardColumns = 2
+	}
+	
+	var board = [[Column]](repeatElement([Column](), count: 3))
+	
+	init () {
+		createBoard()
+		dealCards()
+	}
+	
+	func createBoard () {
+		board[BoardLocations.freeCells] = [Column](repeating: Column(), count: 4)
+		board[BoardLocations.suitStacks] = [Column](repeating: Column(), count: 4)
+		board[BoardLocations.cardColumns] = [Column](repeating: Column(), count: 8)
+	}
+	
 	// Deal cards - remove them from the top of deck and add them to the board
 	func dealCards () {
 		var deck = deckBuilder.buildDeck().shuffled()
-		
-		let totalCards = deck.count
-		var cardCount = 0
-		
-		for _ in 0...6 {
-			for column in 0...7 {
-				if cardCount < totalCards {
-					cardColumns[column].append(deck.removeFirst())
-					cardCount += 1
+		while deck.count > 0 {
+			for column in 0 ..< board[BoardLocations.cardColumns].count {
+				if deck.count > 0 {
+					board[BoardLocations.cardColumns][column].append(deck.removeFirst())
 				}
 			}
 		}
@@ -45,21 +55,24 @@ class FreeCellBrain {
 	var numberOfCardsThatCanBeMoved: Int {
 		// TODO: IMPORTANT: This doesn't take into account if the destination column is an empty column.
 		// If the destination is an empty column, it needs to not be counted as empty!
-		var freeCells = 0
-		for column in cells {
+		var emptyCells = 0
+		for column in board[BoardLocations.freeCells] {
 			if column.isEmpty {
-				freeCells += 1
+				emptyCells += 1
 			}
 		}
 		var freeColumns = 0
-		for column in cardColumns {
+		for column in board[BoardLocations.cardColumns] {
 			if column.isEmpty {
 				freeColumns += 1
 			}
 		}
-		return (freeCells + 1) * (freeColumns + 1)
+		return (emptyCells + 1) * (freeColumns + 1)
 	}
 	
+	// the __Move functions probably need to be rewritten to use Positions rather than stacks. 
+	// although Position is a cardView thing so it's probably the implementation of these in the controller that need to "create" stacks from Position data to pass as arguments.
+	// Maybe. Or something.
 	func canMove (_ stack: Column, to column: Column) -> Bool {
 		if let topCard = stack.first, let bottomCard = column.last {
 			if stack.count <= numberOfCardsThatCanBeMoved
@@ -91,21 +104,22 @@ class FreeCellBrain {
 		return false
 	}
 	
-	func noMovesLeft (board: [Column]) -> Bool {
+	func noMovesLeft () -> Bool {
 		// Are there any cells free?
-		for cell in cells  {
+		//for cell in freeCells  {
+		for cell in board[BoardLocations.freeCells] {
 			if cell.isEmpty { return false }
 		}
-		for sourceColumn in board {
+		for sourceColumn in board[BoardLocations.cardColumns] {
 			if let bottomCard = sourceColumn.last {
 				//Can any cards be moved to another column?
-				for destColumn in board {
+				for destColumn in board[BoardLocations.cardColumns] {
 					if canMove([bottomCard], to: destColumn) {
 						return false
 					}
 				}
 				//Can any cards be moved to a suit stack?
-				for suitStack in suitStacks {
+				for suitStack in board[BoardLocations.suitStacks] {
 					if canMove(bottomCard, to: suitStack) {
 						return false
 					}
@@ -117,7 +131,7 @@ class FreeCellBrain {
 	}
 	
 	func gameIsWon () -> Bool {
-		for suit in suitStacks {
+		for suit in board[BoardLocations.suitStacks] {
 			if suit.count < 13 {
 				return false
 			}
@@ -125,6 +139,8 @@ class FreeCellBrain {
 		return true
 	}
 }
+
+// Deck shuffling extensions
 extension MutableCollection where Indices.Iterator.Element == Index {
 	/// Shuffles the contents of this collection.
 	mutating func shuffle() {

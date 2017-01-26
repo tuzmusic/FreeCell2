@@ -17,10 +17,10 @@ class CardView: UIView {
 	
 	struct FreeCellPosition {
 		var column, row, subViewsIndex: Int
-		var location: FreeCellCardType
+		var location: FreeCellBoardLocation
 	}
 	
-	enum FreeCellCardType {
+	enum FreeCellBoardLocation: Int {
 		case freeCell, suitStack, cardColumn
 	}
 	

@@ -25,7 +25,7 @@ class FreeCellBoardView: UIView {
 		var count: Int
 		var xMargin: CGFloat
 		var yMargin: CGFloat
-		var type: CardView.FreeCellCardType
+		var type: CardView.FreeCellBoardLocation
 	}
 		
 	var freeCell: CardType {
