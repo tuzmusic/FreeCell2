@@ -23,7 +23,6 @@ class FreeCellBrain {
 	init () {
 		createBoard()
 		dealCards()
-		print("FreeCellBrain.init()")
 	}
 	
 	func createBoard () {
