@@ -16,12 +16,8 @@ class CardView: UIView {
 	var position: FreeCellPosition!
 	
 	struct FreeCellPosition {
-		var column, row, subViewsIndex: Int
-		var location: FreeCellBoardLocation
-	}
-	
-	enum FreeCellBoardLocation: Int {
-		case freeCell, suitStack, cardColumn
+		var location, column, row: Int
+		var subViewsIndex: Int?
 	}
 	
 	override func draw(_ rect: CGRect) {

@@ -18,32 +18,27 @@ class FreeCellBrain {
 	typealias Column = [Card]
 	typealias CardStack = [Card]
 	
-	struct BoardLocations {
-		static let freeCells = 0
-		static let suitStacks = 1
-		static let cardColumns = 2
-	}
-	
 	var board = [[Column]](repeatElement([Column](), count: 3))
 	
 	init () {
 		createBoard()
 		dealCards()
+		print("FreeCellBrain.init()")
 	}
 	
 	func createBoard () {
-		board[BoardLocations.freeCells] = [Column](repeating: Column(), count: 4)
-		board[BoardLocations.suitStacks] = [Column](repeating: Column(), count: 4)
-		board[BoardLocations.cardColumns] = [Column](repeating: Column(), count: 8)
+		board[Location.freeCells] = [Column](repeating: Column(), count: 4)
+		board[Location.suitStacks] = [Column](repeating: Column(), count: 4)
+		board[Location.cardColumns] = [Column](repeating: Column(), count: 8)
 	}
 	
 	// Deal cards - remove them from the top of deck and add them to the board
 	func dealCards () {
 		var deck = deckBuilder.buildDeck().shuffled()
 		while deck.count > 0 {
-			for column in 0 ..< board[BoardLocations.cardColumns].count {
+			for column in 0 ..< board[Location.cardColumns].count {
 				if deck.count > 0 {
-					board[BoardLocations.cardColumns][column].append(deck.removeFirst())
+					board[Location.cardColumns][column].append(deck.removeFirst())
 				}
 			}
 		}
@@ -56,13 +51,13 @@ class FreeCellBrain {
 		// TODO: IMPORTANT: This doesn't take into account if the destination column is an empty column.
 		// If the destination is an empty column, it needs to not be counted as empty!
 		var emptyCells = 0
-		for column in board[BoardLocations.freeCells] {
+		for column in board[Location.freeCells] {
 			if column.isEmpty {
 				emptyCells += 1
 			}
 		}
 		var freeColumns = 0
-		for column in board[BoardLocations.cardColumns] {
+		for column in board[Location.cardColumns] {
 			if column.isEmpty {
 				freeColumns += 1
 			}
@@ -107,19 +102,19 @@ class FreeCellBrain {
 	func noMovesLeft () -> Bool {
 		// Are there any cells free?
 		//for cell in freeCells  {
-		for cell in board[BoardLocations.freeCells] {
+		for cell in board[Location.freeCells] {
 			if cell.isEmpty { return false }
 		}
-		for sourceColumn in board[BoardLocations.cardColumns] {
+		for sourceColumn in board[Location.cardColumns] {
 			if let bottomCard = sourceColumn.last {
 				//Can any cards be moved to another column?
-				for destColumn in board[BoardLocations.cardColumns] {
+				for destColumn in board[Location.cardColumns] {
 					if canMove([bottomCard], to: destColumn) {
 						return false
 					}
 				}
 				//Can any cards be moved to a suit stack?
-				for suitStack in board[BoardLocations.suitStacks] {
+				for suitStack in board[Location.suitStacks] {
 					if canMove(bottomCard, to: suitStack) {
 						return false
 					}
@@ -131,7 +126,7 @@ class FreeCellBrain {
 	}
 	
 	func gameIsWon () -> Bool {
-		for suit in board[BoardLocations.suitStacks] {
+		for suit in board[Location.suitStacks] {
 			if suit.count < 13 {
 				return false
 			}

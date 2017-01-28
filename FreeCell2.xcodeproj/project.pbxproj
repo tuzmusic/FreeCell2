@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		761F19461E39AF1400A92DA9 /* BoardLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761F19451E39AF1400A92DA9 /* BoardLocations.swift */; };
 		7652733C1E33608A00D595AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7652733B1E33608A00D595AA /* AppDelegate.swift */; };
 		7652733E1E33608A00D595AA /* FreeCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7652733D1E33608A00D595AA /* FreeCellViewController.swift */; };
 		765273411E33608A00D595AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7652733F1E33608A00D595AA /* Main.storyboard */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		761F19451E39AF1400A92DA9 /* BoardLocations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardLocations.swift; sourceTree = "<group>"; };
 		765273381E33608A00D595AA /* FreeCell2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FreeCell2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7652733B1E33608A00D595AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7652733D1E33608A00D595AA /* FreeCellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeCellViewController.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				765273641E33613100D595AA /* MODEL */,
 				765273691E33630200D595AA /* VIEW */,
 				7652733D1E33608A00D595AA /* FreeCellViewController.swift */,
+				761F19451E39AF1400A92DA9 /* BoardLocations.swift */,
 				7652733F1E33608A00D595AA /* Main.storyboard */,
 			);
 			path = FreeCell2;
@@ -257,6 +260,7 @@
 				765273601E3360CC00D595AA /* FreeCellBrain.swift in Sources */,
 				7652735F1E3360CC00D595AA /* DeckBuilder.swift in Sources */,
 				7652733E1E33608A00D595AA /* FreeCellViewController.swift in Sources */,
+				761F19461E39AF1400A92DA9 /* BoardLocations.swift in Sources */,
 				765273611E3360CC00D595AA /* PlayingCardView.swift in Sources */,
 				765273681E3362F600D595AA /* FreeCellBoardDrawer.swift in Sources */,
 				765273661E3361AB00D595AA /* CardView.swift in Sources */,
