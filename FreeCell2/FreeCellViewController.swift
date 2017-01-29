@@ -19,6 +19,19 @@ class FreeCellViewController: UIViewController {
 	
 	typealias Position = CardView.FreeCellPosition
 	
+//	func selectCardsStartingAt(cardView: CardView) {
+//		// set the starting position
+//		// get the stack length
+//		// check all cards to find the other cards in the column that need to be selected, using for...where
+//		
+//		let start = cardView.position!
+//		for view in boardView.subviews
+//			where (view as! PlayingCardView).position.location == start.location
+//				&& (view as! PlayingCardView).position.column == start.column
+//				&& (view as! PlayingCardView).position.row >= start.row {
+//					(boardView.subviews[index] as? PlayingCardView)?.isSelected = (newSelection == nil ? false : true)
+//		}
+//	}
 	
 	var startOfSelection: Position? {
 		didSet { // this simply deals with selecting or de-selecting the views
@@ -28,21 +41,35 @@ class FreeCellViewController: UIViewController {
 			// If there was no prior selection, we'll select the new one. If we're clearing the selection, we'll deselect the old ones.
 			let selection = newSelection == nil ? oldValue : newSelection
 			if let selection = selection {
-			
-				// Use the subViewsIndex to set the isSelected property on the views. I believe this is the only way to find the view we're looking for.
-				print("\rSelected:", terminator: " ")
-				for index in selection.subViewsIndex! ..< selection.subViewsIndex! + (stackLength(for: selection) ?? 0) {
-					if let cardView = boardView.subviews[index] as? PlayingCardView {
-						if newSelection == nil {
-							cardView.isSelected = false
-						} else {
-							cardView.isSelected = true
-							print(cardView.cardDescription! + " @ \(cardView.position.subViewsIndex!),", terminator: " ")
+				func oldWay () {
+					// Use the subViewsIndex to set the isSelected property on the views. I believe this is the only way to find the view we're looking for.
+					print("\rSelected:", terminator: " ")
+					for index in selection.subViewsIndex! ..< selection.subViewsIndex! + (stackLength(for: selection) ?? 0) {
+						if let cardView = boardView.subviews[index] as? PlayingCardView {
+							if newSelection == nil {
+								cardView.isSelected = false
+							} else {
+								cardView.isSelected = true
+								print(cardView.cardDescription! + " @ \(cardView.position.subViewsIndex!),", terminator: " ")
+							}
 						}
+						
+						(boardView.subviews[index] as? PlayingCardView)?.isSelected = (newSelection == nil ? false : true)
 					}
-					
-					(boardView.subviews[index] as? PlayingCardView)?.isSelected = (newSelection == nil ? false : true)
 				}
+				func selectCardViews () {
+					// set the starting position
+					// get the stack length
+					// check all cards to find the other cards in the column that need to be selected, using for...where
+					
+					let start = selection
+					for view in boardView.subviews
+						where view is PlayingCardView && (view as! PlayingCardView).position.location == start.location
+							&& (view as! PlayingCardView).position.column == start.column
+							&& (view as! PlayingCardView).position.row >= start.row {
+								(view as? PlayingCardView)?.isSelected = (newSelection == nil ? false : true)
+					}
+				}; selectCardViews()
 			}
 			//print ("Selection set to: " + (newSelection == nil ? "nil" : selectedCard!.description))
 		}
@@ -147,24 +174,12 @@ class FreeCellViewController: UIViewController {
 					}
 				}
 			}; redrawColumnsChangedInModel()
+			startOfSelection = nil
 		}
 	}
 	
 	// MARK: Gameplay action functions
 	
-	func selectCardsStartingAt(cardView: CardView) {
-		// set the starting position
-		// get the stack length
-		// check all cards to find the other cards in the column that need to be selected, using for...where
-		
-		let start = cardView.position!
-		for view in boardView.subviews
-			where (view as! PlayingCardView).position.location == start.location
-				&& (view as! PlayingCardView).position.column == start.column
-				&& (view as! PlayingCardView).position.row >= start.row {
-					
-		}
-	}
 	
 	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
 		if let clickedCardView = clickedCard.view as? PlayingCardView {
