@@ -10,13 +10,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "507385785.846196"
+            timestampString = "507400255.836539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "moveSelectionOLD(to:)"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
+            landmarkName = "suitClicked(_:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FreeCell2.FreeCellViewController.suitClicked (__ObjC.UITapGestureRecognizer) -&gt; ()"
+                  moduleName = "FreeCell2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
+                  timestampString = "507400365.443667"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "169"
+                  endingLineNumber = "169"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FreeCell2.FreeCellViewController.suitClicked (__ObjC.UITapGestureRecognizer) -&gt; ()"
+                  moduleName = "FreeCell2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
+                  timestampString = "507400365.446522"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "169"
+                  endingLineNumber = "169"
+                  offsetFromSymbolStart = "290">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -26,43 +58,91 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "507385900.361069"
+            timestampString = "507400284.828509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
-            landmarkName = "cardClicked(_:)"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "cellClicked(_:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "FreeCell2.FreeCellViewController.cardClicked (__ObjC.UITapGestureRecognizer) -&gt; ()"
+                  symbolName = "FreeCell2.FreeCellViewController.cellClicked (__ObjC.UITapGestureRecognizer) -&gt; ()"
                   moduleName = "FreeCell2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
-                  timestampString = "507385848.733815"
+                  timestampString = "507400365.462038"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "184"
-                  endingLineNumber = "184"
-                  offsetFromSymbolStart = "24">
+                  startingLineNumber = "154"
+                  endingLineNumber = "154"
+                  offsetFromSymbolStart = "19">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "FreeCell2.FreeCellViewController.cardClicked (__ObjC.UITapGestureRecognizer) -&gt; ()"
+                  symbolName = "FreeCell2.FreeCellViewController.cellClicked (__ObjC.UITapGestureRecognizer) -&gt; ()"
                   moduleName = "FreeCell2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
-                  timestampString = "507385848.736988"
+                  timestampString = "507400365.465609"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "184"
-                  endingLineNumber = "184"
-                  offsetFromSymbolStart = "295">
+                  startingLineNumber = "154"
+                  endingLineNumber = "154"
+                  offsetFromSymbolStart = "290">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FreeCell2/FreeCellViewController.swift"
+            timestampString = "507400364.545725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "emptyCardColumnClicked(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FreeCell2.FreeCellViewController.emptyCardColumnClicked (__ObjC.UITapGestureRecognizer) -&gt; ()"
+                  moduleName = "FreeCell2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
+                  timestampString = "507400364.780122"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "135"
+                  endingLineNumber = "135"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FreeCell2.FreeCellViewController.emptyCardColumnClicked (__ObjC.UITapGestureRecognizer) -&gt; ()"
+                  moduleName = "FreeCell2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
+                  timestampString = "507400364.782846"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "135"
+                  endingLineNumber = "135"
+                  offsetFromSymbolStart = "290">
                </Location>
             </Locations>
          </BreakpointContent>

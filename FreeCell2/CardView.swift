@@ -17,7 +17,6 @@ class CardView: UIView {
 	
 	struct FreeCellPosition {
 		var location, column, row: Int
-		var subViewsIndex: Int?
 	}
 	
 	override func draw(_ rect: CGRect) {

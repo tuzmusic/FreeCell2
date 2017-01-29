@@ -71,9 +71,7 @@ class FreeCellBoardView: UIView {
 			newCell.frame.size = CGSize(width: cardWidth, height: cardHeight)
 			newCell.backgroundColor = UIColor.clear
 			addSubview(newCell)
-			newCell.position = CardView.FreeCellPosition(location: location, column: cell, row: 0,
-			                                             subViewsIndex: self.subviews.index(of: newCell)!)
-		}
+			newCell.position = CardView.FreeCellPosition(location: location, column: cell, row: 0)		}
 	}
 	
 	// NOTE: The difference between FreeCellVC-OLD and the newer ones with square corners is:
