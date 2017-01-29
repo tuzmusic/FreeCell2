@@ -30,11 +30,21 @@ class FreeCellViewController: UIViewController {
 			if let selection = selection {
 			
 				// Use the subViewsIndex to set the isSelected property on the views. I believe this is the only way to find the view we're looking for.
+				print("\rSelected:", separator: ",", terminator: " ")
 				for index in selection.subViewsIndex! ..< selection.subViewsIndex! + (stackLength(for: selection) ?? 0) {
+					if let cardView = boardView.subviews[index] as? PlayingCardView {
+						if newSelection == nil {
+							cardView.isSelected = false
+						} else {
+							cardView.isSelected = true
+							print(cardView.cardDescription! + " @ \(cardView.position.subViewsIndex!),", separator: "", terminator: " ")
+						}
+					}
+					
 					(boardView.subviews[index] as? PlayingCardView)?.isSelected = (newSelection == nil ? false : true)
 				}
 			}
-			print ("Selection set to: " + (newSelection == nil ? "nil" : selectedCard!.description))
+			//print ("Selection set to: " + (newSelection == nil ? "nil" : selectedCard!.description))
 		}
 	}
 	
@@ -62,29 +72,42 @@ class FreeCellViewController: UIViewController {
 	//MARK: Gameplay Utility Functions
 	
 	func moveSelection(to destPosition: Position) {
-		// Move card in the model
+		
+		// This is called individually for EACH card in the stack! Therefore this shouldn't require any loops.
+		// But it still operates off the "global" selection, NOT a passed stack. This is the first problem.
+		
 		if let selection = startOfSelection {
-			for destRow in selection.row ..< selection.row + stackLength(for: selection)! {
-				
-				// Remove card in model
-				// Always use selection.row rather than the interator instance, because removing the first card in the selection slides cards below it into its place.
-				let card = gameBoard[selection.location][selection.column].remove(at: selection.row)
+			
+			// Remove card in model
+			let card = gameBoard[selection.location][selection.column].remove(at: selection.row)
+			
+			// Remove card from view: let cardViewToRemove = boardView.subviews[selection.subViewsIndex!]
+			boardView.subviews[selection.subViewsIndex!].removeFromSuperview()
+			
+			// Move card to its new position in the model
+			gameBoard[destPosition.location][destPosition.column].append(card)
+			
+			// Redraw the card in its new position (when moving to a cardColumn, position.row has already been increased by 1
+			let destCardView = draw(card: card, at: destPosition)
+			boardView.insertSubview(destCardView, at: destPosition.subViewsIndex!)
 
-				// Remove card in view
-				// let cardViewToRemove = boardView.subviews[selection.subViewsIndex!]
-				boardView.subviews[selection.subViewsIndex!].removeFromSuperview()
-				
-				// Move card to its new position in the model
-				gameBoard[destPosition.location][destPosition.column].append(card)
-				
-				// Redraw the card in its new position
-				let destCardView = draw(card: card, at: destPosition)
-				
-				let newSubViewIndex = destPosition.subViewsIndex!
-				destCardView.position.subViewsIndex = newSubViewIndex
-				boardView.insertSubview(destCardView, belowSubview: boardView.subviews[newSubViewIndex])
-				
-			}
+			
+//			for _ in selection.row ..< selection.row + stackLength(for: selection)! {
+//				
+//				// Remove card in model
+//				let card = gameBoard[selection.location][selection.column].remove(at: selection.row)
+//
+//				// Remove card from view: let cardViewToRemove = boardView.subviews[selection.subViewsIndex!]
+//				boardView.subviews[selection.subViewsIndex!].removeFromSuperview()
+//				
+//				// Move card to its new position in the model
+//				gameBoard[destPosition.location][destPosition.column].append(card)
+//				
+//				// Redraw the card in its new position (when moving to a cardColumn, position.row has already been increased by 1
+//				let destCardView = draw(card: card, at: destPosition)
+//				boardView.insertSubview(destCardView, at: destPosition.subViewsIndex!)
+//			}
+			
 			refreshGestureRecognizersAndSubViewsIndices()
 			startOfSelection = nil
 		}
@@ -96,10 +119,13 @@ class FreeCellViewController: UIViewController {
 	
 	// MARK: Gameplay action functions
 	
-	func cardClicked (_ clickedCard: UITapGestureRecognizer) { print("Card clicked")
+	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
 		if let clickedCardView = clickedCard.view as? PlayingCardView {
+			//print("Card clicked: \(clickedCardView.cardDescription!) at index \(clickedCardView.position.subViewsIndex!)")
 			currentlyClickedView = clickedCardView
-			if startOfSelection == nil || clickedCardView.position.column == startOfSelection?.column {
+			if startOfSelection == nil ||
+				(clickedCardView.position.column == startOfSelection?.column
+					&& clickedCardView.position.location == startOfSelection?.location) {
 				let oldSelection = startOfSelection
 				startOfSelection = nil
 				if clickedCardView.position.row != oldSelection?.row {
@@ -107,14 +133,18 @@ class FreeCellViewController: UIViewController {
 				}
 			} else {
 				if let selection = startOfSelection {
+					// Create the stack to move
 					var movingStack = Array<DeckBuilder.Card>()
 					let startingRow = selection.row
 					for row in startingRow ..< startingRow + stackLength(for: selection)! {
 						movingStack.append(gameBoard[selection.location][selection.column][row])
 					}
+					
 					if freeCellGame.canMove(movingStack, toColumn: selectedSpot!) {
+						// Set the destination position, which is the row and subViewIndex after clicked position
 						var nextPosition = clickedCardView.position!
 						nextPosition.row += 1
+						nextPosition.subViewsIndex! += 1
 						moveSelection(to: nextPosition)
 					}
 				}
@@ -134,11 +164,15 @@ class FreeCellViewController: UIViewController {
 		return nil
 	}
 	
-	func cellClicked (_ cell: UITapGestureRecognizer) { print("Cell clicked")
+	func cellClicked (_ cell: UITapGestureRecognizer) {
 		if let cellView = cell.view as? CardView {
+			print("Cell clicked at index \(cellView.position.subViewsIndex!)")
 			currentlyClickedView = cellView
 			if selectedSpot?.isEmpty == false {
-				if (cellView as!PlayingCardView).isSelected {
+				// Find the cardView in the cell
+				
+				
+				if (cellView as! PlayingCardView).isSelected {
 					startOfSelection = nil
 				} else if startOfSelection == nil {
 					startOfSelection = cellView.position
@@ -149,7 +183,7 @@ class FreeCellViewController: UIViewController {
 		}
 	}
 	
-	func suitClicked (_ suit: UITapGestureRecognizer) { print("Suit clicked!")
+	func suitClicked (_ suit: UITapGestureRecognizer) { //print("Suit clicked!")
 		if let suitView = suit.view as? CardView {
 			// This didn't work when using selectedSpot. For some reason it would get set twice, the second time to nil.
 			currentlyClickedView = suitView
