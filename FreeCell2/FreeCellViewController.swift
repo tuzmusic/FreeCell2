@@ -144,7 +144,7 @@ class FreeCellViewController: UIViewController {
 				let firstRow = source.row
 				for (row, card) in gameBoard[source.location][source.column].enumerated() {
 					if row >= firstRow {
-						gameBoard[source.location][source.column].remove(at: row)
+						gameBoard[source.location][source.column].remove(at: source.row)
 						gameBoard[dest.location][dest.column].append(card)
 					}
 					
@@ -202,19 +202,9 @@ class FreeCellViewController: UIViewController {
 					for row in startingRow ..< startingRow + stackLength(for: selection)! {
 						movingStack.append(gameBoard[selection.location][selection.column][row])
 					}
-					
-					// Currently this stack is only used in asking the model if it can be moved. Seems like a waste.
-					// Note that the stack contains Cards not cardViews
+					// See if the stack can be moved, and move it.
 					if freeCellGame.canMove(movingStack, toColumn: selectedSpot!) {
-						
-						// Set the destination position, which is the row and subViewIndex after clicked position
-						var destPosition = clickedCardView.position!
-						destPosition.row += 1
-						if destPosition.subViewsIndex! < selection.subViewsIndex! {
-							destPosition.subViewsIndex! += 1 }
-						
-						// Currently the controller moves based on the selection. This should work for a selection of any length
-						moveSelection(to: destPosition)
+						moveSelection(to: clickedCardView.position!)
 					}
 				}
 			}
