@@ -73,48 +73,41 @@ class FreeCellViewController: UIViewController {
 	
 	func moveSelection(to destPosition: Position) {
 		
-		// This is called individually for EACH card in the stack! Therefore this shouldn't require any loops.
-		// But it still operates off the "global" selection, NOT a passed stack. This is the first problem.
+		// This is called ONCE, using a selection of ANY length
 		
 		if let selection = startOfSelection {
-			
-			// Remove card in model
-			let card = gameBoard[selection.location][selection.column].remove(at: selection.row)
-			
-			// Remove card from view: let cardViewToRemove = boardView.subviews[selection.subViewsIndex!]
-			boardView.subviews[selection.subViewsIndex!].removeFromSuperview()
-			
-			// Move card to its new position in the model
-			gameBoard[destPosition.location][destPosition.column].append(card)
-			
-			// Redraw the card in its new position (when moving to a cardColumn, position.row has already been increased by 1
-			let destCardView = draw(card: card, at: destPosition)
-			boardView.insertSubview(destCardView, at: destPosition.subViewsIndex!)
+			var incrementing = 0
+			// iterate through the cards/cardViews in the selection
+			for index in selection.row ..< selection.row + stackLength(for: selection)! {
+				// In the model, remove the current card from its spot.
+				// Cards below it in the column move up to fill in the space, the new top card taking its index.
+				let card = gameBoard[selection.location][selection.column].remove(at: selection.row)
 
+				// Remove the current card from boardView. 
+				// Again, the next time we iterate, we're removing the card with the same index.
+				let cardViewtoRemove = boardView.subviews[selection.subViewsIndex!]
+				cardViewtoRemove.removeFromSuperview()
+				refreshGestureRecognizersAndSubViewsIndices()
+
+				// Append card to its new column in the model
+				gameBoard[destPosition.location][destPosition.column].append(card)
+				
+				// (Re)Draw the card. destPosition determines where its frame is.
+				// When moving to a cardColumn, destPosition.row and destPosition.subViewsIndex have already been increased by 1
+				var incrementedPosition = destPosition
+				incrementedPosition.row += incrementing
+				incrementedPosition.subViewsIndex! += incrementing
+				let destCardView = draw(card: card, at: incrementedPosition)
+				incrementing += 1
+				
+				// Place the new card. destPosition.subViewsIndex tells boardView where to put it.
+				// Other views' indices (after it) are moved around accordingly.
+				boardView.insertSubview(destCardView, at: incrementedPosition.subViewsIndex!)
+				refreshGestureRecognizersAndSubViewsIndices()
+			}
 			
-//			for _ in selection.row ..< selection.row + stackLength(for: selection)! {
-//				
-//				// Remove card in model
-//				let card = gameBoard[selection.location][selection.column].remove(at: selection.row)
-//
-//				// Remove card from view: let cardViewToRemove = boardView.subviews[selection.subViewsIndex!]
-//				boardView.subviews[selection.subViewsIndex!].removeFromSuperview()
-//				
-//				// Move card to its new position in the model
-//				gameBoard[destPosition.location][destPosition.column].append(card)
-//				
-//				// Redraw the card in its new position (when moving to a cardColumn, position.row has already been increased by 1
-//				let destCardView = draw(card: card, at: destPosition)
-//				boardView.insertSubview(destCardView, at: destPosition.subViewsIndex!)
-//			}
-			
-			refreshGestureRecognizersAndSubViewsIndices()
 			startOfSelection = nil
 		}
-	}
-	
-	func updateBoardSection () {
-		
 	}
 	
 	// MARK: Gameplay action functions
@@ -133,19 +126,26 @@ class FreeCellViewController: UIViewController {
 				}
 			} else {
 				if let selection = startOfSelection {
-					// Create the stack to move
+					
+					// Create the stack to check if it can be moved
 					var movingStack = Array<DeckBuilder.Card>()
 					let startingRow = selection.row
 					for row in startingRow ..< startingRow + stackLength(for: selection)! {
 						movingStack.append(gameBoard[selection.location][selection.column][row])
 					}
 					
+					// Currently this stack is only used in asking the model if it can be moved. Seems like a waste.
+					// Note that the stack contains Cards not cardViews
 					if freeCellGame.canMove(movingStack, toColumn: selectedSpot!) {
+						
 						// Set the destination position, which is the row and subViewIndex after clicked position
-						var nextPosition = clickedCardView.position!
-						nextPosition.row += 1
-						nextPosition.subViewsIndex! += 1
-						moveSelection(to: nextPosition)
+						var destPosition = clickedCardView.position!
+						destPosition.row += 1
+						if destPosition.subViewsIndex! < selection.subViewsIndex! {
+							destPosition.subViewsIndex! += 1 }
+						
+						// Currently the controller moves based on the selection. This should work for a selection of any length
+						moveSelection(to: destPosition)
 					}
 				}
 			}
@@ -179,6 +179,7 @@ class FreeCellViewController: UIViewController {
 				}
 			} else if stackLength(for: startOfSelection) == 1 {
 				moveSelection(to: cellView.position)
+				refreshGestureRecognizersAndSubViewsIndices()
 			}
 		}
 	}
@@ -201,6 +202,7 @@ class FreeCellViewController: UIViewController {
 			if stackLength(for: startOfSelection) == 1	// suitStack being empty is handled by the canMove function
 				&& freeCellGame.canMove(selectedCard!, toSuitStack: gameBoard[suitView.position.location][suitView.position.column]) {
 				moveSelection(to: suitView.position)
+				refreshGestureRecognizersAndSubViewsIndices()
 			}
 		}
 	}
@@ -218,7 +220,7 @@ class FreeCellViewController: UIViewController {
 		newCardView.cardColor = card.color == DeckBuilder.Color.Red ? UIColor.red : UIColor.black
 		newCardView.cardDescription = card.description
 		newCardView.position = boardPosition
-		
+		newCardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cardClicked(_:))))
 		return newCardView
 	}
 	
@@ -234,6 +236,7 @@ class FreeCellViewController: UIViewController {
 					let newCardView = draw(card: card, at: newCardPosition)
 					boardView.addSubview(newCardView)
 					newCardView.position.subViewsIndex = boardView.subviews.index(of: newCardView)
+					
 				}
 			}
 			refreshGestureRecognizersAndSubViewsIndices()
@@ -250,10 +253,8 @@ class FreeCellViewController: UIViewController {
 				case Location.suitStacks:
 					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.suitClicked(_:))))
 				case Location.cardColumns:
-					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action:
-						gameBoard[2][cardView.position.column].isEmpty
-							? #selector(FreeCellViewController.emptyCardColumnClicked(_:))
-							: #selector(FreeCellViewController.cardClicked(_:))))
+					if gameBoard[2][cardView.position.column].isEmpty {
+						cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.emptyCardColumnClicked(_:)))) }
 				default: break
 				}
 			}
