@@ -30,14 +30,14 @@ class FreeCellViewController: UIViewController {
 			if let selection = selection {
 			
 				// Use the subViewsIndex to set the isSelected property on the views. I believe this is the only way to find the view we're looking for.
-				print("\rSelected:", separator: ",", terminator: " ")
+				print("\rSelected:", terminator: " ")
 				for index in selection.subViewsIndex! ..< selection.subViewsIndex! + (stackLength(for: selection) ?? 0) {
 					if let cardView = boardView.subviews[index] as? PlayingCardView {
 						if newSelection == nil {
 							cardView.isSelected = false
 						} else {
 							cardView.isSelected = true
-							print(cardView.cardDescription! + " @ \(cardView.position.subViewsIndex!),", separator: "", terminator: " ")
+							print(cardView.cardDescription! + " @ \(cardView.position.subViewsIndex!),", terminator: " ")
 						}
 					}
 					
@@ -71,7 +71,7 @@ class FreeCellViewController: UIViewController {
 	
 	//MARK: Gameplay Utility Functions
 	
-	func moveSelection(to destPosition: Position) {
+	func moveSelectionOLD(to destPosition: Position) {
 		
 		// This is called ONCE, using a selection of ANY length
 		
@@ -107,6 +107,52 @@ class FreeCellViewController: UIViewController {
 			}
 			
 			startOfSelection = nil
+		}
+	}
+	
+	func moveSelection(to dest: Position) {
+		if let source = startOfSelection {
+			func moveCardsInModel() {
+				// Move cards in the model.
+				let firstRow = source.row
+				for (row, card) in gameBoard[source.location][source.column].enumerated() {
+					if row >= firstRow {
+						gameBoard[source.location][source.column].remove(at: row)
+						gameBoard[dest.location][dest.column].append(card)
+					}
+					
+				}
+				print("\r\rAfter Move:")
+				print("Source row: ", terminator: " ")
+				gameBoard[source.location][source.column].forEach { print($0.description, terminator: " ") }
+				print("\r")
+				print("Destination row: ", terminator: " ")
+				gameBoard[dest.location][dest.column].forEach { print($0.description, terminator: " ") }
+				print("\r")
+			}; moveCardsInModel()
+			func redrawColumnsChangedInModel () {
+				// Redraw the source column
+				//	Remove all PlayingCardViews from source column
+				//	ATTEMPTED METHOD: Check every subview for its position, and if it's in the desired column, remove it from the superview
+				for position in [source, dest] {
+					for view in boardView.subviews
+						where (view as? PlayingCardView)?.position.location == position.location
+							&& (view as? PlayingCardView)?.position.column == position.column {
+								view.removeFromSuperview()
+					}
+					//	Draw the column
+					for (row, card) in gameBoard[position.location][position.column].enumerated() {
+						let newPosition = Position(location: position.location, column: position
+							.column, row: row, subViewsIndex: nil)
+						let newCard = draw(card: card, at: newPosition)
+						boardView.addSubview(newCard)
+					}
+				}
+				
+				
+				
+				// Redraw the destination column
+			}; redrawColumnsChangedInModel()
 		}
 	}
 	
