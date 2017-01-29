@@ -131,16 +131,14 @@ class FreeCellViewController: UIViewController {
 				print("\r")
 			}; moveCardsInModel()
 			func redrawColumnsChangedInModel () {
-				// Redraw the source column
-				//	Remove all PlayingCardViews from source column
-				//	ATTEMPTED METHOD: Check every subview for its position, and if it's in the desired column, remove it from the superview
+				// Remove all PlayingCardViews from source column
 				for position in [source, dest] {
 					for view in boardView.subviews
 						where (view as? PlayingCardView)?.position.location == position.location
 							&& (view as? PlayingCardView)?.position.column == position.column {
 								view.removeFromSuperview()
 					}
-					//	Draw the column
+					// Redraw the column
 					for (row, card) in gameBoard[position.location][position.column].enumerated() {
 						let newPosition = Position(location: position.location, column: position
 							.column, row: row, subViewsIndex: nil)
@@ -148,22 +146,32 @@ class FreeCellViewController: UIViewController {
 						boardView.addSubview(newCard)
 					}
 				}
-				
-				
-				
-				// Redraw the destination column
 			}; redrawColumnsChangedInModel()
 		}
 	}
 	
 	// MARK: Gameplay action functions
 	
+	func selectCardsStartingAt(cardView: CardView) {
+		// set the starting position
+		// get the stack length
+		// check all cards to find the other cards in the column that need to be selected, using for...where
+		
+		let start = cardView.position!
+		for view in boardView.subviews
+			where (view as! PlayingCardView).position.location == start.location
+				&& (view as! PlayingCardView).position.column == start.column
+				&& (view as! PlayingCardView).position.row >= start.row {
+					
+		}
+	}
+	
 	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
 		if let clickedCardView = clickedCard.view as? PlayingCardView {
 			//print("Card clicked: \(clickedCardView.cardDescription!) at index \(clickedCardView.position.subViewsIndex!)")
 			currentlyClickedView = clickedCardView
-			if startOfSelection == nil ||
-				(clickedCardView.position.column == startOfSelection?.column
+			if startOfSelection == nil
+				|| (clickedCardView.position.column == startOfSelection?.column
 					&& clickedCardView.position.location == startOfSelection?.location) {
 				let oldSelection = startOfSelection
 				startOfSelection = nil
