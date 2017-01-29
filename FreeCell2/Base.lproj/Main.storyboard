@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,14 +21,48 @@
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="83f-JX-iRZ" customClass="FreeCellBoardView" customModule="FreeCell2" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mkC-KN-Ryy">
+                                <rect key="frame" x="20" y="678" width="172" height="82"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJu-Vy-ZCP">
+                                        <rect key="frame" x="0.0" y="0.0" width="172" height="41"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <state key="normal" title="Clear selection">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clearSelection:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rzW-JS-9La"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4r-u2-ipV">
+                                        <rect key="frame" x="0.0" y="41" width="172" height="41"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <state key="normal" title="Redraw Board">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="redrawBoard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jhr-df-Kw1"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="mkC-KN-Ryy" firstAttribute="leading" secondItem="83f-JX-iRZ" secondAttribute="leadingMargin" id="E3f-At-F5J"/>
+                            <constraint firstItem="Y3G-P3-5uK" firstAttribute="top" secondItem="mkC-KN-Ryy" secondAttribute="bottom" constant="8" symbolic="YES" id="tJs-nh-ZaV"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="boardView" destination="83f-JX-iRZ" id="Iz2-hd-wuR"/>
+                        <outlet property="clear" destination="DJu-Vy-ZCP" id="8tB-6d-EMO"/>
+                        <outlet property="redraw" destination="K4r-u2-ipV" id="j9t-Zg-C7s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="116.60156249999999" y="123.4375"/>
         </scene>
     </scenes>
 </document>

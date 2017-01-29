@@ -67,7 +67,7 @@ class FreeCellBrain {
 	// the __Move functions probably need to be rewritten to use Positions rather than stacks. 
 	// although Position is a cardView thing so it's probably the implementation of these in the controller that need to "create" stacks from Position data to pass as arguments.
 	// Maybe. Or something.
-	func canMove (_ stack: Column, to column: Column) -> Bool {
+	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
 		if let topCard = stack.first, let bottomCard = column.last {
 			if stack.count <= numberOfCardsThatCanBeMoved
 				&& topCard.color != bottomCard.color
@@ -80,7 +80,7 @@ class FreeCellBrain {
 		return false
 	}
 	
-	func canMove (_ card: Card, to suitStack: Column) -> Bool {
+	func canMove (_ card: Card, toSuitStack suitStack: Column) -> Bool {
 		if let topSuitCard = suitStack.last {
 			if card.suit == topSuitCard.suit
 				&& card.rank.rawValue == topSuitCard.rank.rawValue + 1 {
@@ -108,13 +108,13 @@ class FreeCellBrain {
 			if let bottomCard = sourceColumn.last {
 				//Can any cards be moved to another column?
 				for destColumn in board[Location.cardColumns] {
-					if canMove([bottomCard], to: destColumn) {
+					if canMove([bottomCard], toColumn: destColumn) {
 						return false
 					}
 				}
 				//Can any cards be moved to a suit stack?
 				for suitStack in board[Location.suitStacks] {
-					if canMove(bottomCard, to: suitStack) {
+					if canMove(bottomCard, toSuitStack: suitStack) {
 						return false
 					}
 				}

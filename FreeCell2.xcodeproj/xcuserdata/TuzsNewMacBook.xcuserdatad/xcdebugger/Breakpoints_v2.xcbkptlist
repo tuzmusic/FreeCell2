@@ -9,13 +9,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "507293393.964004"
+            filePath = "FreeCell2/FreeCellBrain.swift"
+            timestampString = "507314880.142321"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "cardClicked(_:)"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "canMove(_:toSuitStack:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FreeCell2/FreeCellBrain.swift"
+            timestampString = "507314882.553133"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "canMove(_:toColumn:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,45 +42,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "507293393.964004"
+            timestampString = "507357811.006857"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
+            landmarkName = "refreshGestureRecognizersAndSubViewsIndices()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FreeCell2/FreeCellViewController.swift"
+            timestampString = "507356053.89923"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
             landmarkName = "FreeCellViewController"
             landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FreeCell2.FreeCellViewController.startOfSelection.didset : Swift.Optional&lt;FreeCell2.CardView.FreeCellPosition&gt;"
-                  moduleName = "FreeCell2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
-                  timestampString = "507292750.750484"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26"
-                  offsetFromSymbolStart = "154">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FreeCell2.FreeCellViewController.startOfSelection.didset : Swift.Optional&lt;FreeCell2.CardView.FreeCellPosition&gt;"
-                  moduleName = "FreeCell2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
-                  timestampString = "507292750.752204"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26"
-                  offsetFromSymbolStart = "671">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FreeCell2/FreeCellViewController.swift"
+            timestampString = "507357811.006857"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "moveSelection(to:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,13 +90,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "507293565.33126"
+            timestampString = "507357151.757444"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "cellClicked(_:)"
-            landmarkType = "7">
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "FreeCellViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
