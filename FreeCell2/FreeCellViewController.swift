@@ -10,18 +10,10 @@ import UIKit
 
 class FreeCellViewController: UIViewController {
 	
+	typealias Position = CardView.FreeCellPosition
 	
 	// MARK: Model
 	var freeCellGame = FreeCellBrain() // old model (still used for rules, no?)
-	
-	// new model!
-//	var freeCellGame.board: [[FreeCellBrain.Column]] {
-//		get { return freeCellGame.board }
-//		set { }
-//	}
-//	
-	
-	typealias Position = CardView.FreeCellPosition
 	
 	var startOfSelection: Position? {
 		didSet { // this simply deals with selecting or de-selecting the views
@@ -102,7 +94,7 @@ class FreeCellViewController: UIViewController {
 	
 	// MARK: Gameplay action functions
 	
-	func cardClicked (_ clickedCard: UITapGestureRecognizer) { print("Card clicked!")
+	func cardClicked (_ clickedCard: UITapGestureRecognizer) { //print("Card clicked!")
 		if let clickedCardView = clickedCard.view as? PlayingCardView { lastClickedView = clickedCardView
 			if startOfSelection == nil
 				|| (clickedCardView.position.column == startOfSelection?.column
@@ -126,7 +118,7 @@ class FreeCellViewController: UIViewController {
 		}
 	}
 	
-	func emptyCardColumnClicked (_ cell: UITapGestureRecognizer) { print("Empty column clicked!")
+	func emptyCardColumnClicked (_ cell: UITapGestureRecognizer) { //print("Empty column clicked!")
 		if let clickedCell = cell.view as? CardView {
 			lastClickedView = clickedCell
 			
@@ -142,7 +134,7 @@ class FreeCellViewController: UIViewController {
 		}
 	}
 	
-	func cellClicked (_ cell: UITapGestureRecognizer) { print("Cell clicked!")
+	func cellClicked (_ cell: UITapGestureRecognizer) { //print("Cell clicked!")
 		if let cellView = cell.view as? CardView { lastClickedView = cellView
 			if stackLength(for: startOfSelection) == 1 {
 				moveSelection(to: cellView.position)
@@ -150,7 +142,7 @@ class FreeCellViewController: UIViewController {
 		}
 	}
 	
-	func suitClicked (_ suit: UITapGestureRecognizer) { print("Suit clicked!")
+	func suitClicked (_ suit: UITapGestureRecognizer) { //print("Suit clicked!")
 		if let suitView = suit.view as? CardView { lastClickedView = suitView
 			if stackLength(for: startOfSelection) == 1 && freeCellGame.canMove(selectedCard!, toSuitStack: clickedColumn!) {
 				moveSelection(to: suitView.position)

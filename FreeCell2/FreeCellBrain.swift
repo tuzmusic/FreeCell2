@@ -62,12 +62,14 @@ class FreeCellBrain {
 	
 	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
 		if let topCard = stack.first, let bottomCard = column.last {
-			print("\(numberOfCardsThatCanBeMoved) can be moved")
+			print("\(numberOfCardsThatCanBeMoved) cards can be moved")
 			if stack.count <= numberOfCardsThatCanBeMoved
 				&& topCard.color != bottomCard.color
 				&& topCard.rank.rawValue == bottomCard.rank.rawValue - 1 {
 				return true
 			}
+		} else if column.isEmpty {
+			return true
 		}
 		return false
 	}
