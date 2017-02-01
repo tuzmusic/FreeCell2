@@ -43,7 +43,6 @@ class FreeCellBrain {
 		}
 	}
 	
-	
 	// MARK: Game Rules
 
 	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
@@ -91,17 +90,22 @@ class FreeCellBrain {
 		return false
 	}
 	
+	var lastSourceTried, lastDestTried : Card!
+	
 	func noMovesLeft () -> Bool {
 		// Are there any cells free?
-		//for cell in freeCells  {
 		for cell in board[Location.freeCells] {
 			if cell.isEmpty { return false }
 		}
-		for sourceColumn in Array(board[Location.cardColumns] + board[Location.freeCells]) {
+		// Can any cards, in any location, be moved somewhere?
+		for sourceColumn in Array(board[Location.freeCells] + board[Location.cardColumns]) {
 			if let bottomCard = sourceColumn.last {
 				//Can any cards be moved to another column?
 				for destColumn in board[Location.cardColumns] {
 					if canMove([bottomCard], toColumn: destColumn) {
+						if let destCard = destColumn.last {
+//							if destCard == lastSourceTried && bottomCard == lastDestTried { return true }
+						}
 						return false
 					}
 				}
