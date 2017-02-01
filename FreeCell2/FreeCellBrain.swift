@@ -100,7 +100,7 @@ class FreeCellBrain {
 		// Can any cards, in any location, be moved somewhere?
 		for sourceColumn in Array(board[Location.freeCells] + board[Location.cardColumns]) {
 			if let bottomCard = sourceColumn.last {
-				//Can any cards be moved to another column?
+				// Can any cards be moved to another column?
 				for destColumn in board[Location.cardColumns] {
 					if canMove([bottomCard], toColumn: destColumn) {
 						if let destCard = destColumn.last {

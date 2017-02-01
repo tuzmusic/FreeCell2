@@ -23,12 +23,12 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mkC-KN-Ryy">
-                                <rect key="frame" x="20" y="678" width="172" height="82"/>
+                                <rect key="frame" x="20" y="678" width="161" height="82"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJu-Vy-ZCP">
-                                        <rect key="frame" x="0.0" y="0.0" width="172" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="161" height="41"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                        <state key="normal" title="Clear selection">
+                                        <state key="normal" title="Redeal Cards">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -36,7 +36,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4r-u2-ipV">
-                                        <rect key="frame" x="0.0" y="41" width="172" height="41"/>
+                                        <rect key="frame" x="0.0" y="41" width="161" height="41"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                         <state key="normal" title="Redraw Board">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>

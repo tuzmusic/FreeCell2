@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellBrain.swift"
-            timestampString = "507618911.025655"
+            timestampString = "507625864.026031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
             landmarkName = "canMove(_:toColumn:)"
             landmarkType = "7">
          </BreakpointContent>
