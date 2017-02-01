@@ -50,32 +50,24 @@ class FreeCellBrain {
 		// TODO: IMPORTANT: This doesn't take into account if the destination column is an empty column.
 		// If the destination is an empty column, it needs to not be counted as empty!
 		var emptyCells = 0
-		for column in board[Location.freeCells] {
-			if column.isEmpty {
-				emptyCells += 1
-			}
+		for column in board[Location.freeCells] where column.isEmpty {
+			emptyCells += 1
 		}
 		var freeColumns = 0
-		for column in board[Location.cardColumns] {
-			if column.isEmpty {
-				freeColumns += 1
-			}
+		for column in board[Location.cardColumns] where column.isEmpty {
+			freeColumns += 1
 		}
-		return (emptyCells + 1) * (freeColumns + 1)
+		return (emptyCells + 1) * (1 + freeColumns)
 	}
 	
-	// the __Move functions probably need to be rewritten to use Positions rather than stacks. 
-	// although Position is a cardView thing so it's probably the implementation of these in the controller that need to "create" stacks from Position data to pass as arguments.
-	// Maybe. Or something.
 	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
 		if let topCard = stack.first, let bottomCard = column.last {
+			print("\(numberOfCardsThatCanBeMoved) can be moved")
 			if stack.count <= numberOfCardsThatCanBeMoved
 				&& topCard.color != bottomCard.color
 				&& topCard.rank.rawValue == bottomCard.rank.rawValue - 1 {
 				return true
 			}
-		} else if column.isEmpty {
-			return true
 		}
 		return false
 	}

@@ -15,7 +15,11 @@ class FreeCellViewController: UIViewController {
 	var freeCellGame = FreeCellBrain() // old model (still used for rules, no?)
 	
 	// new model!
-	var gameBoard = FreeCellBrain().board
+//	var freeCellGame.board: [[FreeCellBrain.Column]] {
+//		get { return freeCellGame.board }
+//		set { }
+//	}
+//	
 	
 	typealias Position = CardView.FreeCellPosition
 	
@@ -38,22 +42,22 @@ class FreeCellViewController: UIViewController {
 	
 	var selectedCard: FreeCellBrain.Card? {
 		if let selection = startOfSelection {
-			return gameBoard[selection.location][selection.column][selection.row]
+			return freeCellGame.board[selection.location][selection.column][selection.row]
 		}
 		return nil
 	}
 	
 	func stackLength (for selection: Position?) -> Int? {
 		if let selection = selection {
-			return selection.location == Location.cardColumns ? gameBoard[Location.cardColumns][selection.column].count - selection.row : 1
+			return selection.location == Location.cardColumns ? freeCellGame.board[Location.cardColumns][selection.column].count - selection.row : 1
 		}
 		return nil
 	}
 	
-	var currentlyClickedView: UIView?
+	var lastClickedView: UIView?
 	var clickedColumn: FreeCellBrain.Column? {
-		if let view = currentlyClickedView {
-			return gameBoard[(view as? CardView)!.position.location][(view as? CardView)!.position.column]
+		if let view = lastClickedView {
+			return freeCellGame.board[(view as? CardView)!.position.location][(view as? CardView)!.position.column]
 		}
 		return nil
 	}
@@ -71,10 +75,10 @@ class FreeCellViewController: UIViewController {
 			// Current implementation erases and redraws the entire columns.
 			// Move cards in the model.
 			let firstRow = source.row
-			for (row, card) in gameBoard[source.location][source.column].enumerated() {
+			for (row, card) in freeCellGame.board[source.location][source.column].enumerated() {
 				if row >= firstRow {
-					gameBoard[source.location][source.column].remove(at: source.row)
-					gameBoard[dest.location][dest.column].append(card)
+					freeCellGame.board[source.location][source.column].remove(at: source.row)
+					freeCellGame.board[dest.location][dest.column].append(card)
 				}
 			}
 			for position in [source, dest] {
@@ -85,7 +89,7 @@ class FreeCellViewController: UIViewController {
 							view.removeFromSuperview()
 				}
 				// Redraw the column
-				for (row, card) in gameBoard[position.location][position.column].enumerated() {
+				for (row, card) in freeCellGame.board[position.location][position.column].enumerated() {
 					let newPosition = Position(location: position.location, column: position
 						.column, row: row)
 					let newCard = draw(card: card, at: newPosition)
@@ -99,7 +103,7 @@ class FreeCellViewController: UIViewController {
 	// MARK: Gameplay action functions
 	
 	func cardClicked (_ clickedCard: UITapGestureRecognizer) { print("Card clicked!")
-		if let clickedCardView = clickedCard.view as? PlayingCardView { currentlyClickedView = clickedCardView
+		if let clickedCardView = clickedCard.view as? PlayingCardView { lastClickedView = clickedCardView
 			if startOfSelection == nil
 				|| (clickedCardView.position.column == startOfSelection?.column
 					&& clickedCardView.position.location == startOfSelection?.location) {
@@ -109,7 +113,7 @@ class FreeCellViewController: UIViewController {
 					startOfSelection = clickedCardView.position
 				}
 			} else if let selection = startOfSelection {
-				let movingStack = Array(gameBoard[selection.location][selection.column].suffix(from: selection.row))
+				let movingStack = Array(freeCellGame.board[selection.location][selection.column].suffix(from: selection.row))
 				// See if the stack can be moved, and move it.
 				if (clickedCardView.position.location == Location.cardColumns
 					&& freeCellGame.canMove(movingStack, toColumn: clickedColumn!))
@@ -123,16 +127,13 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	func emptyCardColumnClicked (_ cell: UITapGestureRecognizer) { print("Empty column clicked!")
-		if let clickedCell = cell.view as? PlayingCardView {
-			currentlyClickedView = clickedCell
+		if let clickedCell = cell.view as? CardView {
+			lastClickedView = clickedCell
 			
 			if let selection = startOfSelection {
 				// Create the stack to check if it can be moved
-				var movingStack = Array<DeckBuilder.Card>()
-				let startingRow = selection.row
-				for row in startingRow ..< startingRow + stackLength(for: selection)! {
-					movingStack.append(gameBoard[selection.location][selection.column][row])
-				}
+				let movingStack = Array(freeCellGame.board[selection.location][selection.column].suffix(from: selection.row))
+
 				// See if the stack can be moved, and move it.
 				if freeCellGame.canMove(movingStack, toColumn: clickedColumn!) {
 					moveSelection(to: clickedCell.position!)
@@ -142,7 +143,7 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	func cellClicked (_ cell: UITapGestureRecognizer) { print("Cell clicked!")
-		if let cellView = cell.view as? CardView { currentlyClickedView = cellView
+		if let cellView = cell.view as? CardView { lastClickedView = cellView
 			if stackLength(for: startOfSelection) == 1 {
 				moveSelection(to: cellView.position)
 			}
@@ -150,7 +151,7 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	func suitClicked (_ suit: UITapGestureRecognizer) { print("Suit clicked!")
-		if let suitView = suit.view as? CardView { currentlyClickedView = suitView
+		if let suitView = suit.view as? CardView { lastClickedView = suitView
 			if stackLength(for: startOfSelection) == 1 && freeCellGame.canMove(selectedCard!, toSuitStack: clickedColumn!) {
 				moveSelection(to: suitView.position)
 			}
@@ -179,7 +180,7 @@ class FreeCellViewController: UIViewController {
 		
 		boardView.subviews.forEach { if $0 is PlayingCardView { $0.removeFromSuperview() } }
 		
-		for (locIndex, location) in gameBoard.enumerated() {
+		for (locIndex, location) in freeCellGame.board.enumerated() {
 			for (colIndex, column) in location.enumerated() {
 				for (rowIndex, card) in column.enumerated() {
 					let newCardPosition = Position(location: locIndex, column: colIndex, row: rowIndex)
@@ -210,8 +211,8 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		//				gameBoard[0][0].append(FreeCellBrain.Card(rank: .Two, suit: .Spades))
-		//				gameBoard[1][0].append(FreeCellBrain.Card(rank: .Ace, suit: .Spades))
+		//				freeCellGame.board[0][0].append(FreeCellBrain.Card(rank: .Two, suit: .Spades))
+		//				freeCellGame.board[1][0].append(FreeCellBrain.Card(rank: .Ace, suit: .Spades))
 		updateBoardUI ()
 	}
 }
