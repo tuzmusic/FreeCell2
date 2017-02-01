@@ -45,31 +45,30 @@ class FreeCellBrain {
 	
 	
 	// MARK: Game Rules
-	
-	var numberOfCardsThatCanBeMoved: Int {
-		// TODO: IMPORTANT: This doesn't take into account if the destination column is an empty column.
-		// If the destination is an empty column, it needs to not be counted as empty!
+
+	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
+		
 		var emptyCells = 0
-		for column in board[Location.freeCells] where column.isEmpty {
+		for col in board[Location.freeCells] where col.isEmpty {
 			emptyCells += 1
 		}
 		var freeColumns = 0
-		for column in board[Location.cardColumns] where column.isEmpty {
+		for col in board[Location.cardColumns] where col.isEmpty {
 			freeColumns += 1
 		}
-		return (emptyCells + 1) * (1 + freeColumns)
-	}
+		if column.isEmpty { freeColumns -= 1 }
+		let numberOfCardsThatCanBeMoved = (emptyCells + 1) * (1 + freeColumns)
+		//print("\(numberOfCardsThatCanBeMoved) cards can be moved")
 	
-	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
-		if let topCard = stack.first, let bottomCard = column.last {
-			print("\(numberOfCardsThatCanBeMoved) cards can be moved")
-			if stack.count <= numberOfCardsThatCanBeMoved
-				&& topCard.color != bottomCard.color
-				&& topCard.rank.rawValue == bottomCard.rank.rawValue - 1 {
+		if stack.count <= numberOfCardsThatCanBeMoved {
+			if column.isEmpty {
 				return true
+			} else if let topCard = stack.first, let bottomCard = column.last {
+				if topCard.color != bottomCard.color
+					&& topCard.rank.rawValue == bottomCard.rank.rawValue - 1 {
+					return true
+				}
 			}
-		} else if column.isEmpty {
-			return true
 		}
 		return false
 	}
@@ -98,7 +97,7 @@ class FreeCellBrain {
 		for cell in board[Location.freeCells] {
 			if cell.isEmpty { return false }
 		}
-		for sourceColumn in board[Location.cardColumns] {
+		for sourceColumn in Array(board[Location.cardColumns] + board[Location.freeCells]) {
 			if let bottomCard = sourceColumn.last {
 				//Can any cards be moved to another column?
 				for destColumn in board[Location.cardColumns] {

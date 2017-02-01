@@ -89,7 +89,20 @@ class FreeCellViewController: UIViewController {
 				}
 			}
 			startOfSelection = nil
+			if freeCellGame.gameIsWon() {
+				gameWon()
+			} else if freeCellGame.noMovesLeft() {
+				gameLost()
+			}
 		}
+	}
+	
+	func gameWon () {
+		print("You won!")
+	}
+	
+	func gameLost () {
+		print("No moves left!")
 	}
 	
 	// MARK: Gameplay action functions
@@ -203,8 +216,9 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		//				freeCellGame.board[0][0].append(FreeCellBrain.Card(rank: .Two, suit: .Spades))
-		//				freeCellGame.board[1][0].append(FreeCellBrain.Card(rank: .Ace, suit: .Spades))
+		//		freeCellGame.board[0][0].append(FreeCellBrain.Card(rank: .Two, suit: .Spades))
+		//		freeCellGame.board[1][0].append(FreeCellBrain.Card(rank: .Ace, suit: .Spades))
+//				freeCellGame.board[2][2].removeAll()
 		updateBoardUI ()
 	}
 }
