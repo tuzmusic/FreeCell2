@@ -14,7 +14,7 @@ import UIKit
 
 class FreeCellViewController: UIViewController {
 	
-	typealias Position = CardView.FreeCellPosition
+//	typealias Position = CardView.Position
 	
 	// MARK: Model
 	var game = FreeCellBrain() // old model (still used for rules, no?)
@@ -68,11 +68,11 @@ class FreeCellViewController: UIViewController {
 	
 	func moveSelection(to dest: Position) {
 		if let source = startOfSelection {
-			// Current implementation erases and redraws the entire columns.
-			// Move cards in the model.
-			game.moveCards(from: (location: source.location, column: source.column, row: source.row),
-			                       to: (location: dest.location, column: dest.column))
 
+			// Move cards in the model.
+			game.moveCards(from: source, to: dest)
+			
+			// Move card in the view (Current implementation erases and redraws the entire columns.)
 			for position in [source, dest] {
 				// Remove all PlayingCardViews from column
 				for view in boardView.subviews
@@ -89,60 +89,61 @@ class FreeCellViewController: UIViewController {
 			}
 			startOfSelection = nil
 			postMoveCleanUp()
-			if game.gameIsWon() {
-				gameWon()
-			} else if game.noMovesLeft() {
-				gameLost()
-			}
 		}
 	}
 	
-	func postMoveCleanUp() { print("cleanup")
+	func postMoveCleanUp() { // print("cleanup")
 		
-		// Auto-move any cards to suitStack
-		var sourceLocIndex = 0
-		for sourceLocation in [game.board[Location.freeCells], game.board[Location.cardColumns]] {
-			for (sourceColIndex, sourceColumn) in sourceLocation.enumerated() {
-				if let autoMovingCard = sourceColumn.last {
-					let sourcePosition = Position(location: sourceLocIndex, column: sourceColIndex, row: sourceColumn.count-1)
-					
-					for (suitIndex, suitStack) in game.board[Location.suitStacks].enumerated() {
-						if game.canMove(autoMovingCard, toSuitStack: suitStack) {
-							
-							// Get suitStack info (only run this check if we can move the card to the a stack. No need to do it for every card.
-							var redSuits = [0, 0]; var blackSuits = [0, 0]
-							for suitStack in game.board[Location.suitStacks] {
-								if let topOfStack = suitStack.last {
-									if topOfStack.color == .Red {
-										if redSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
-										else { redSuits[1] = topOfStack.rank.rawValue }
-									}
-									if topOfStack.color == .Black {
-										if blackSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
-										else { blackSuits[1] = topOfStack.rank.rawValue }
-									}
-								}
-							}
-							
-							if (autoMovingCard.color == .Red && autoMovingCard.rank.rawValue <= blackSuits.min()! + 2) ||
-								(autoMovingCard.color == .Black && autoMovingCard.rank.rawValue <= redSuits.min()! + 2) {
-								print("Auto-moving \(autoMovingCard.description) to suit stack #\(suitIndex + 1)")
-								startOfSelection = sourcePosition
-								let destSuit = Position(location: Location.suitStacks, column: suitIndex, row: 0)
-								moveSelection(to: destSuit)
-								// Even when it moves the card, it still checks the rest of the suitStacks.
-								// I'm not actually clear on how to exit this loop, since moveSelection() calls postMoveCleanup.
-								// Also, something about this implementation slows down the app, one of the loops, probably, that didn't slow it down before this implementation.
-								// Hopefully, moving all these actions to different functions (mostly in the model) will solve all these issues.
-								// Hopefully...
-							}
-						}
-					}
-				}
-			}
-			sourceLocIndex = 2
+		if let autoMove = game.cardToMoveToSuitStack() {
+			startOfSelection = autoMove.cardPosition
+			let suitStack = Position(location: Location.suitStacks, column: autoMove.stackIndex, row: game.board[1][autoMove.stackIndex].count-1)
+			moveSelection(to: suitStack)
 		}
 		
+		// Auto-move any cards to suitStack (to be replaced by a function in the model, although the card will still need to be moved in the view)
+//		var sourceLocIndex = 0
+//		for sourceLocation in [game.board[Location.freeCells], game.board[Location.cardColumns]] {
+//			for (sourceColIndex, sourceColumn) in sourceLocation.enumerated() {
+//				if let autoMovingCard = sourceColumn.last {
+//					let sourcePosition = Position(location: sourceLocIndex, column: sourceColIndex, row: sourceColumn.count-1)
+//					
+//					for (suitIndex, suitStack) in game.board[Location.suitStacks].enumerated() {
+//						if game.canMove(autoMovingCard, toSuitStack: suitStack) {
+//							
+//							// Get suitStack info (only run this check if we can move the card to the a stack. No need to do it for every card.
+//							var redSuits = [0, 0]; var blackSuits = [0, 0]
+//							for suitStack in game.board[Location.suitStacks] {
+//								if let topOfStack = suitStack.last {
+//									if topOfStack.color == .Red {
+//										if redSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
+//										else { redSuits[1] = topOfStack.rank.rawValue }
+//									}
+//									if topOfStack.color == .Black {
+//										if blackSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
+//										else { blackSuits[1] = topOfStack.rank.rawValue }
+//									}
+//								}
+//							}
+//							
+//							if (autoMovingCard.color == .Red && autoMovingCard.rank.rawValue <= blackSuits.min()! + 2) ||
+//								(autoMovingCard.color == .Black && autoMovingCard.rank.rawValue <= redSuits.min()! + 2) {
+//								print("Auto-moving \(autoMovingCard.description) to suit stack #\(suitIndex + 1)")
+//								startOfSelection = sourcePosition
+//								let destSuit = Position(location: Location.suitStacks, column: suitIndex, row: 0)
+//								moveSelection(to: destSuit)
+//								// Even when it moves the card, it still checks the rest of the suitStacks.
+//								// I'm not actually clear on how to exit this loop, since moveSelection() calls postMoveCleanup.
+//								// Also, something about this implementation slows down the app, one of the loops, probably, that didn't slow it down before this implementation.
+//								// Hopefully, moving all these actions to different functions (mostly in the model) will solve all these issues.
+//								// Hopefully...
+//							}
+//						}
+//					}
+//				}
+//			}
+//			sourceLocIndex = 2
+//		}
+//		
 		if game.gameIsWon() { gameWon() }
 		if game.noMovesLeft() { gameLost() }
 	}

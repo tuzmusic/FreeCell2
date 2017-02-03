@@ -13,11 +13,7 @@ class CardView: UIView {
 	var cardWidth: CGFloat { return window!.frame.width / 11.5 }
 	var cardHeight: CGFloat { return cardWidth * (3.5/2.5) }
 	var cardSize: CGSize { return CGSize(width: cardWidth, height: cardHeight) }
-	var position: FreeCellPosition!
-	
-	struct FreeCellPosition {
-		var location, column, row: Int
-	}
+	var position: Position!
 	
 	override func draw(_ rect: CGRect) {
 

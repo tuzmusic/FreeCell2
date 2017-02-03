@@ -44,9 +44,9 @@ class FreeCellBrain {
 		}
 	}
 	
-	// MARK: Game Rules
+	// MARK: Game Functions
 	
-	func moveCards(from source: (location: Int, column: Int, row: Int), to dest: (location: Int, column: Int)) {
+	func moveCards(from source: Position, to dest: Position) {
 		for (row, card) in board[source.location][source.column].enumerated() {
 			if row >= source.row {
 				board[source.location][source.column].remove(at: source.row)
@@ -68,48 +68,23 @@ class FreeCellBrain {
 		}
 	}
 	
-	func cardToMoveToSuitStack() -> (loc: Int, col: Int)? {
-		var sourceLocIndex = 0
-		for sourceLocation in [board[Location.freeCells], board[Location.cardColumns]] {
+	func cardToMoveToSuitStack() -> (cardPosition: Position, stackIndex: Int)? {
+		for (sourceLocIndex, sourceLocation) in board.enumerated() where sourceLocIndex != 1 {
 			for (sourceColIndex, sourceColumn) in sourceLocation.enumerated() {
-				if let autoMovingCard = sourceColumn.last {
-					let sourcePosition = Position(location: sourceLocIndex, column: sourceColIndex, row: sourceColumn.count-1)
-					
+				if let cardToMove = sourceColumn.last {
 					for (suitIndex, suitStack) in board[Location.suitStacks].enumerated() {
-						if canMove(autoMovingCard, toSuitStack: suitStack) {
-							
-							// Get suitStack info (only run this check if we can move the card to the a stack. No need to do it for every card.
-							var redSuits = [0, 0]; var blackSuits = [0, 0]
-							for suitStack in board[Location.suitStacks] {
-								if let topOfStack = suitStack.last {
-									if topOfStack.color == .Red {
-										if redSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
-										else { redSuits[1] = topOfStack.rank.rawValue }
-									}
-									if topOfStack.color == .Black {
-										if blackSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
-										else { blackSuits[1] = topOfStack.rank.rawValue }
-									}
-								}
-							}
-							
-							if (autoMovingCard.color == .Red && autoMovingCard.rank.rawValue <= blackSuits.min()! + 2) ||
-								(autoMovingCard.color == .Black && autoMovingCard.rank.rawValue <= redSuits.min()! + 2) {
-								print("Auto-moving \(autoMovingCard.description) to suit stack #\(suitIndex + 1)")
-								// THIS IS THE PART THAT PREPARES AND DOES THE ACTUAL MOVING
-								//								startOfSelection = sourcePosition
-								//								let destSuit = Position(location: Location.suitStacks, column: suitIndex, row: 0)
-								//								moveSelection(to: destSuit)
-							}
+						if shouldMove(cardToMove, to: suitStack) {
+							return (Position(location: sourceLocIndex, column: sourceColIndex, row: sourceColumn.count-1), suitIndex)
 						}
 					}
 				}
 			}
-			sourceLocIndex = 2
 		}
 		
 		return nil
 	}
+
+	// MARK: Game Rules
 
 	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
 		
@@ -152,7 +127,10 @@ class FreeCellBrain {
 	
 	func shouldMove (_ card: Card, to suitStack: Column) -> Bool {
 		if canMove(card, toSuitStack: suitStack) {
-			
+			if (card.color == .Red && card.rank.rawValue <= blackSuits.min()! + 2) ||
+				(card.color == .Black && card.rank.rawValue <= redSuits.min()! + 2) {
+				return true
+			}
 		}
 		return false
 	}
