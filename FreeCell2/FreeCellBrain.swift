@@ -21,11 +21,6 @@ class FreeCellBrain {
 	var blackSuits = [0, 0]
 	var redSuits = [0, 0]
 	
-	init () {
-		createBoard()
-		dealCards()
-	}
-	
 	func createBoard () {
 		board[Location.freeCells] = [Column](repeating: Column(), count: 4)
 		board[Location.suitStacks] = [Column](repeating: Column(), count: 4)
@@ -80,7 +75,6 @@ class FreeCellBrain {
 				}
 			}
 		}
-		
 		return nil
 	}
 

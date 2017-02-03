@@ -9,12 +9,11 @@
 import UIKit
 
 // TODO:
-// shouldMoveTo(suitStack), at least for just the one next one
 // Animation
 
 class FreeCellViewController: UIViewController {
 	
-//	typealias Position = CardView.Position
+	//	typealias Position = CardView.Position
 	
 	// MARK: Model
 	var game = FreeCellBrain() // old model (still used for rules, no?)
@@ -66,84 +65,37 @@ class FreeCellViewController: UIViewController {
 	
 	//MARK: Gameplay Utility Functions
 	
-	func moveSelection(to dest: Position) {
-		if let source = startOfSelection {
-
-			// Move cards in the model.
-			game.moveCards(from: source, to: dest)
-			
-			// Move card in the view (Current implementation erases and redraws the entire columns.)
-			for position in [source, dest] {
-				// Remove all PlayingCardViews from column
-				for view in boardView.subviews
-					where (view as? PlayingCardView)?.position.location == position.location
-						&& (view as? PlayingCardView)?.position.column == position.column {
-							view.removeFromSuperview()
-				}
-				// Redraw the column
-				for (row, card) in game.board[position.location][position.column].enumerated() {
-					let newPosition = Position(location: position.location, column: position.column, row: row)
-					let newCard = draw(card: card, at: newPosition)
-					boardView.addSubview(newCard)
-				}
+	func move(from source: Position, to dest: Position) {
+		
+		// Move cards in the model.
+		game.moveCards(from: source, to: dest)
+		
+		// Move card in the view (Current implementation erases and redraws the entire columns.)
+		for position in [source, dest] {
+			// Remove all PlayingCardViews from column
+			for view in boardView.subviews
+				where (view as? PlayingCardView)?.position.location == position.location
+					&& (view as? PlayingCardView)?.position.column == position.column {
+						view.removeFromSuperview()
 			}
-			startOfSelection = nil
-			postMoveCleanUp()
+			// Redraw the column
+			for (row, card) in game.board[position.location][position.column].enumerated() {
+				let newPosition = Position(location: position.location, column: position.column, row: row)
+				let newCard = draw(card: card, at: newPosition)
+				boardView.addSubview(newCard)
+			}
 		}
+		startOfSelection = nil
+		postMoveCleanUp()
 	}
 	
 	func postMoveCleanUp() { // print("cleanup")
 		
 		if let autoMove = game.cardToMoveToSuitStack() {
-			startOfSelection = autoMove.cardPosition
 			let suitStack = Position(location: Location.suitStacks, column: autoMove.stackIndex, row: game.board[1][autoMove.stackIndex].count-1)
-			moveSelection(to: suitStack)
+			move(from: autoMove.cardPosition, to: suitStack)
 		}
 		
-		// Auto-move any cards to suitStack (to be replaced by a function in the model, although the card will still need to be moved in the view)
-//		var sourceLocIndex = 0
-//		for sourceLocation in [game.board[Location.freeCells], game.board[Location.cardColumns]] {
-//			for (sourceColIndex, sourceColumn) in sourceLocation.enumerated() {
-//				if let autoMovingCard = sourceColumn.last {
-//					let sourcePosition = Position(location: sourceLocIndex, column: sourceColIndex, row: sourceColumn.count-1)
-//					
-//					for (suitIndex, suitStack) in game.board[Location.suitStacks].enumerated() {
-//						if game.canMove(autoMovingCard, toSuitStack: suitStack) {
-//							
-//							// Get suitStack info (only run this check if we can move the card to the a stack. No need to do it for every card.
-//							var redSuits = [0, 0]; var blackSuits = [0, 0]
-//							for suitStack in game.board[Location.suitStacks] {
-//								if let topOfStack = suitStack.last {
-//									if topOfStack.color == .Red {
-//										if redSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
-//										else { redSuits[1] = topOfStack.rank.rawValue }
-//									}
-//									if topOfStack.color == .Black {
-//										if blackSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
-//										else { blackSuits[1] = topOfStack.rank.rawValue }
-//									}
-//								}
-//							}
-//							
-//							if (autoMovingCard.color == .Red && autoMovingCard.rank.rawValue <= blackSuits.min()! + 2) ||
-//								(autoMovingCard.color == .Black && autoMovingCard.rank.rawValue <= redSuits.min()! + 2) {
-//								print("Auto-moving \(autoMovingCard.description) to suit stack #\(suitIndex + 1)")
-//								startOfSelection = sourcePosition
-//								let destSuit = Position(location: Location.suitStacks, column: suitIndex, row: 0)
-//								moveSelection(to: destSuit)
-//								// Even when it moves the card, it still checks the rest of the suitStacks.
-//								// I'm not actually clear on how to exit this loop, since moveSelection() calls postMoveCleanup.
-//								// Also, something about this implementation slows down the app, one of the loops, probably, that didn't slow it down before this implementation.
-//								// Hopefully, moving all these actions to different functions (mostly in the model) will solve all these issues.
-//								// Hopefully...
-//							}
-//						}
-//					}
-//				}
-//			}
-//			sourceLocIndex = 2
-//		}
-//		
 		if game.gameIsWon() { gameWon() }
 		if game.noMovesLeft() { gameLost() }
 	}
@@ -176,7 +128,7 @@ class FreeCellViewController: UIViewController {
 					|| (clickedCardView.position.location == Location.suitStacks
 						&& movingStack.count == 1
 						&& game.canMove(selectedCard!, toSuitStack: clickedColumn!)) {
-					moveSelection(to: clickedCardView.position!)
+					move(from: selection, to: clickedCardView.position!)
 				}
 			}
 		}
@@ -192,7 +144,7 @@ class FreeCellViewController: UIViewController {
 				
 				// See if the stack can be moved, and move it.
 				if game.canMove(movingStack, toColumn: clickedColumn!) {
-					moveSelection(to: clickedCell.position!)
+					move(from: selection, to: clickedCell.position!)
 				}
 			}
 		}
@@ -201,7 +153,7 @@ class FreeCellViewController: UIViewController {
 	func cellClicked (_ cell: UITapGestureRecognizer) { //print("Cell clicked!")
 		if let cellView = cell.view as? CardView { lastClickedView = cellView
 			if stackLength(for: startOfSelection) == 1 {
-				moveSelection(to: cellView.position)
+				move(from: startOfSelection!, to: cellView.position)
 			}
 		}
 	}
@@ -209,30 +161,28 @@ class FreeCellViewController: UIViewController {
 	func suitClicked (_ suit: UITapGestureRecognizer) { //print("Suit clicked!")
 		if let suitView = suit.view as? CardView { lastClickedView = suitView
 			if stackLength(for: startOfSelection) == 1 && game.canMove(selectedCard!, toSuitStack: clickedColumn!) {
-				moveSelection(to: suitView.position)
+				move(from: startOfSelection!, to: suitView.position)
 			}
 		}
 	}
 	
 	func doubleClick (_ clickedCard: UITapGestureRecognizer) {
 		if let clickedCardView = clickedCard.view as? PlayingCardView {
-			startOfSelection = clickedCardView.position
 			if stackLength(for: startOfSelection) == 1 {
 				for (index, suit) in game.board[Location.suitStacks].enumerated() {
 					if game.canMove(selectedCard!, toSuitStack: suit) {
 						let destPosition = Position(location: Location.suitStacks, column: index, row: 0)
-						moveSelection(to: destPosition)
+						move(from: clickedCardView.position, to: destPosition)
 						return
 					}
 				}
 				for (index, cell) in game.board[Location.freeCells].enumerated() {
 					if cell.isEmpty {
 						let destPosition = Position(location: Location.freeCells, column: index, row: 0)
-						moveSelection(to: destPosition)
+						move(from: clickedCardView.position, to: destPosition)
 						return
 					}
 				}
-				
 			}
 		}
 	}
@@ -305,9 +255,6 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		//		game.board[0][0].append(FreeCellBrain.Card(rank: .Two, suit: .Spades))
-		//		game.board[1][0].append(FreeCellBrain.Card(rank: .Ace, suit: .Spades))
-		//				game.board[2][2].removeAll()
 		startGame()
 	}
 }
