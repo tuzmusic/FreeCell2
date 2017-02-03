@@ -28,11 +28,11 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJu-Vy-ZCP">
                                         <rect key="frame" x="0.0" y="0.0" width="161" height="41"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                        <state key="normal" title="Redeal Cards">
+                                        <state key="normal" title="Restart Game">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="clearSelection:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rzW-JS-9La"/>
+                                            <action selector="restartGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9rC-hi-es7"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4r-u2-ipV">
@@ -56,8 +56,8 @@
                     </view>
                     <connections>
                         <outlet property="boardView" destination="83f-JX-iRZ" id="Iz2-hd-wuR"/>
-                        <outlet property="clear" destination="DJu-Vy-ZCP" id="8tB-6d-EMO"/>
-                        <outlet property="redraw" destination="K4r-u2-ipV" id="j9t-Zg-C7s"/>
+                        <outlet property="redrawButton" destination="K4r-u2-ipV" id="E45-Q9-8LR"/>
+                        <outlet property="restartButton" destination="DJu-Vy-ZCP" id="wyl-jg-KEv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

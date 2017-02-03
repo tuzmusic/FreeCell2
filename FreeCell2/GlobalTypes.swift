@@ -13,3 +13,7 @@ struct Location {
 	static let suitStacks = 1
 	static let cardColumns = 2
 }
+
+struct Position {
+	var location, column, row: Int
+}

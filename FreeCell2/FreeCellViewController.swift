@@ -8,8 +8,7 @@
 
 import UIKit
 
-// TODO: 
-// Double-click
+// TODO:
 // shouldMoveTo(suitStack), at least for just the one next one
 // Animation
 
@@ -18,7 +17,7 @@ class FreeCellViewController: UIViewController {
 	typealias Position = CardView.FreeCellPosition
 	
 	// MARK: Model
-	var freeCellGame = FreeCellBrain() // old model (still used for rules, no?)
+	var game = FreeCellBrain() // old model (still used for rules, no?)
 	
 	var startOfSelection: Position? {
 		didSet { // this simply deals with selecting or de-selecting the views
@@ -39,14 +38,14 @@ class FreeCellViewController: UIViewController {
 	
 	var selectedCard: FreeCellBrain.Card? {
 		if let selection = startOfSelection {
-			return freeCellGame.board[selection.location][selection.column][selection.row]
+			return game.board[selection.location][selection.column][selection.row]
 		}
 		return nil
 	}
 	
 	func stackLength (for selection: Position?) -> Int? {
 		if let selection = selection {
-			return selection.location == Location.cardColumns ? freeCellGame.board[Location.cardColumns][selection.column].count - selection.row : 1
+			return selection.location == Location.cardColumns ? game.board[Location.cardColumns][selection.column].count - selection.row : 1
 		}
 		return nil
 	}
@@ -54,21 +53,16 @@ class FreeCellViewController: UIViewController {
 	var lastClickedView: UIView?
 	var clickedColumn: FreeCellBrain.Column? {
 		if let view = lastClickedView {
-			return freeCellGame.board[(view as? CardView)!.position.location][(view as? CardView)!.position.column]
+			return game.board[(view as? CardView)!.position.location][(view as? CardView)!.position.column]
 		}
 		return nil
 	}
 	
 	@IBOutlet var boardView: FreeCellBoardView!
 	@IBAction func redrawBoard(_ sender: UIButton) { updateBoardUI() }
-	@IBAction func clearSelection(_ sender: UIButton) {
-		startOfSelection = nil
-		freeCellGame.createBoard()
-		freeCellGame.dealCards()
-		updateBoardUI()
-	}
-	@IBOutlet weak var clear: UIButton!
-	@IBOutlet weak var redraw: UIButton!
+	@IBAction func restartGame(_ sender: UIButton) { startGame() }
+	@IBOutlet weak var restartButton: UIButton!
+	@IBOutlet weak var redrawButton: UIButton!
 	
 	//MARK: Gameplay Utility Functions
 	
@@ -76,13 +70,9 @@ class FreeCellViewController: UIViewController {
 		if let source = startOfSelection {
 			// Current implementation erases and redraws the entire columns.
 			// Move cards in the model.
-			let firstRow = source.row
-			for (row, card) in freeCellGame.board[source.location][source.column].enumerated() {
-				if row >= firstRow {
-					freeCellGame.board[source.location][source.column].remove(at: source.row)
-					freeCellGame.board[dest.location][dest.column].append(card)
-				}
-			}
+			game.moveCards(from: (location: source.location, column: source.column, row: source.row),
+			                       to: (location: dest.location, column: dest.column))
+
 			for position in [source, dest] {
 				// Remove all PlayingCardViews from column
 				for view in boardView.subviews
@@ -91,20 +81,70 @@ class FreeCellViewController: UIViewController {
 							view.removeFromSuperview()
 				}
 				// Redraw the column
-				for (row, card) in freeCellGame.board[position.location][position.column].enumerated() {
-					let newPosition = Position(location: position.location, column: position
-						.column, row: row)
+				for (row, card) in game.board[position.location][position.column].enumerated() {
+					let newPosition = Position(location: position.location, column: position.column, row: row)
 					let newCard = draw(card: card, at: newPosition)
 					boardView.addSubview(newCard)
 				}
 			}
 			startOfSelection = nil
-			if freeCellGame.gameIsWon() {
+			postMoveCleanUp()
+			if game.gameIsWon() {
 				gameWon()
-			} else if freeCellGame.noMovesLeft() {
+			} else if game.noMovesLeft() {
 				gameLost()
 			}
 		}
+	}
+	
+	func postMoveCleanUp() { print("cleanup")
+		
+		// Auto-move any cards to suitStack
+		var sourceLocIndex = 0
+		for sourceLocation in [game.board[Location.freeCells], game.board[Location.cardColumns]] {
+			for (sourceColIndex, sourceColumn) in sourceLocation.enumerated() {
+				if let autoMovingCard = sourceColumn.last {
+					let sourcePosition = Position(location: sourceLocIndex, column: sourceColIndex, row: sourceColumn.count-1)
+					
+					for (suitIndex, suitStack) in game.board[Location.suitStacks].enumerated() {
+						if game.canMove(autoMovingCard, toSuitStack: suitStack) {
+							
+							// Get suitStack info (only run this check if we can move the card to the a stack. No need to do it for every card.
+							var redSuits = [0, 0]; var blackSuits = [0, 0]
+							for suitStack in game.board[Location.suitStacks] {
+								if let topOfStack = suitStack.last {
+									if topOfStack.color == .Red {
+										if redSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
+										else { redSuits[1] = topOfStack.rank.rawValue }
+									}
+									if topOfStack.color == .Black {
+										if blackSuits[0] == 0 { redSuits[0] = topOfStack.rank.rawValue }
+										else { blackSuits[1] = topOfStack.rank.rawValue }
+									}
+								}
+							}
+							
+							if (autoMovingCard.color == .Red && autoMovingCard.rank.rawValue <= blackSuits.min()! + 2) ||
+								(autoMovingCard.color == .Black && autoMovingCard.rank.rawValue <= redSuits.min()! + 2) {
+								print("Auto-moving \(autoMovingCard.description) to suit stack #\(suitIndex + 1)")
+								startOfSelection = sourcePosition
+								let destSuit = Position(location: Location.suitStacks, column: suitIndex, row: 0)
+								moveSelection(to: destSuit)
+								// Even when it moves the card, it still checks the rest of the suitStacks.
+								// I'm not actually clear on how to exit this loop, since moveSelection() calls postMoveCleanup.
+								// Also, something about this implementation slows down the app, one of the loops, probably, that didn't slow it down before this implementation.
+								// Hopefully, moving all these actions to different functions (mostly in the model) will solve all these issues.
+								// Hopefully...
+							}
+						}
+					}
+				}
+			}
+			sourceLocIndex = 2
+		}
+		
+		if game.gameIsWon() { gameWon() }
+		if game.noMovesLeft() { gameLost() }
 	}
 	
 	func gameWon () {
@@ -128,13 +168,13 @@ class FreeCellViewController: UIViewController {
 					startOfSelection = clickedCardView.position
 				}
 			} else if let selection = startOfSelection {
-				let movingStack = Array(freeCellGame.board[selection.location][selection.column].suffix(from: selection.row))
+				let movingStack = Array(game.board[selection.location][selection.column].suffix(from: selection.row))
 				// See if the stack can be moved, and move it.
 				if (clickedCardView.position.location == Location.cardColumns
-					&& freeCellGame.canMove(movingStack, toColumn: clickedColumn!))
+					&& game.canMove(movingStack, toColumn: clickedColumn!))
 					|| (clickedCardView.position.location == Location.suitStacks
 						&& movingStack.count == 1
-						&& freeCellGame.canMove(selectedCard!, toSuitStack: clickedColumn!)) {
+						&& game.canMove(selectedCard!, toSuitStack: clickedColumn!)) {
 					moveSelection(to: clickedCardView.position!)
 				}
 			}
@@ -147,10 +187,10 @@ class FreeCellViewController: UIViewController {
 			
 			if let selection = startOfSelection {
 				// Create the stack to check if it can be moved
-				let movingStack = Array(freeCellGame.board[selection.location][selection.column].suffix(from: selection.row))
-
+				let movingStack = Array(game.board[selection.location][selection.column].suffix(from: selection.row))
+				
 				// See if the stack can be moved, and move it.
-				if freeCellGame.canMove(movingStack, toColumn: clickedColumn!) {
+				if game.canMove(movingStack, toColumn: clickedColumn!) {
 					moveSelection(to: clickedCell.position!)
 				}
 			}
@@ -167,7 +207,7 @@ class FreeCellViewController: UIViewController {
 	
 	func suitClicked (_ suit: UITapGestureRecognizer) { //print("Suit clicked!")
 		if let suitView = suit.view as? CardView { lastClickedView = suitView
-			if stackLength(for: startOfSelection) == 1 && freeCellGame.canMove(selectedCard!, toSuitStack: clickedColumn!) {
+			if stackLength(for: startOfSelection) == 1 && game.canMove(selectedCard!, toSuitStack: clickedColumn!) {
 				moveSelection(to: suitView.position)
 			}
 		}
@@ -177,21 +217,21 @@ class FreeCellViewController: UIViewController {
 		if let clickedCardView = clickedCard.view as? PlayingCardView {
 			startOfSelection = clickedCardView.position
 			if stackLength(for: startOfSelection) == 1 {
-				for (index, suit) in freeCellGame.board[Location.suitStacks].enumerated() {
-					if freeCellGame.canMove(selectedCard!, toSuitStack: suit) {
+				for (index, suit) in game.board[Location.suitStacks].enumerated() {
+					if game.canMove(selectedCard!, toSuitStack: suit) {
 						let destPosition = Position(location: Location.suitStacks, column: index, row: 0)
 						moveSelection(to: destPosition)
 						return
 					}
 				}
-				for (index, cell) in freeCellGame.board[Location.freeCells].enumerated() {
+				for (index, cell) in game.board[Location.freeCells].enumerated() {
 					if cell.isEmpty {
 						let destPosition = Position(location: Location.freeCells, column: index, row: 0)
 						moveSelection(to: destPosition)
 						return
 					}
 				}
-
+				
 			}
 		}
 	}
@@ -225,7 +265,7 @@ class FreeCellViewController: UIViewController {
 		
 		boardView.subviews.forEach { if $0 is PlayingCardView { $0.removeFromSuperview() } }
 		
-		for (locIndex, location) in freeCellGame.board.enumerated() {
+		for (locIndex, location) in game.board.enumerated() {
 			for (colIndex, column) in location.enumerated() {
 				for (rowIndex, card) in column.enumerated() {
 					let newCardPosition = Position(location: locIndex, column: colIndex, row: rowIndex)
@@ -255,11 +295,19 @@ class FreeCellViewController: UIViewController {
 		}
 	}
 	
+	func startGame () {
+		startOfSelection = nil
+		game.createBoard()
+		game.dealCards()
+		updateBoardUI()
+		postMoveCleanUp()
+	}
+	
 	override func viewDidAppear(_ animated: Bool) {
-		//		freeCellGame.board[0][0].append(FreeCellBrain.Card(rank: .Two, suit: .Spades))
-		//		freeCellGame.board[1][0].append(FreeCellBrain.Card(rank: .Ace, suit: .Spades))
-//				freeCellGame.board[2][2].removeAll()
-		updateBoardUI ()
+		//		game.board[0][0].append(FreeCellBrain.Card(rank: .Two, suit: .Spades))
+		//		game.board[1][0].append(FreeCellBrain.Card(rank: .Ace, suit: .Spades))
+		//				game.board[2][2].removeAll()
+		startGame()
 	}
 }
 
