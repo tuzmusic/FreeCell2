@@ -60,10 +60,10 @@ class FreeCellBoardView: UIView {
 	func createEmptyCellsIn(location: Int) {
 		for cell in 0 ..< cardTypes[location].count {
 			
-			let newCell = CardView()
 			
-			newCell.frame.origin = CGPoint(x: xValueForCardIn(location: location, column: cell), y: cardTypes[location].yMargin)
-			newCell.frame.size = CGSize(width: cardWidth, height: cardHeight)
+			let origin = CGPoint(x: xValueForCardIn(location: location, column: cell), y: cardTypes[location].yMargin)
+			let size = CGSize(width: cardWidth, height: cardHeight)
+			let newCell = CardView(frame: CGRect(origin: origin, size: size))
 			newCell.backgroundColor = UIColor.clear
 			addSubview(newCell)
 			newCell.position = Position(location: location, column: cell, row: 0)
