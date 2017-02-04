@@ -70,10 +70,6 @@ class FreeCellBoardView: UIView {
 		}
 	}
 	
-	// NOTE: The difference between FreeCellVC-OLD and the newer ones with square corners is:
-	// The old one drew the paths of the empty cells as part of the boardView.
-	// The new ones add empty CardViews and then add PlayingCardViews on top of them.
-	
 	override func draw(_ rect: CGRect) {
 		createEmptyCellsIn(location: Location.freeCells)
 		createEmptyCellsIn(location: Location.suitStacks)
