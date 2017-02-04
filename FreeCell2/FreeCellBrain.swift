@@ -41,13 +41,9 @@ class FreeCellBrain {
 	
 	// MARK: Game Functions
 	
-	func moveCards(from source: Position, to dest: Position) {
-		for (row, card) in board[source.location][source.column].enumerated() {
-			if row >= source.row {
-				board[source.location][source.column].remove(at: source.row)
-				board[dest.location][dest.column].append(card)
-			}
-		}
+	func moveCard(from source: Position, to dest: Position) {
+		let card = board[source.location][source.column].remove(at: source.row)
+		board[dest.location][dest.column].append(card)
 		if dest.location == Location.suitStacks {
 			updateSuits(for: board[dest.location][dest.column].last!)
 		}

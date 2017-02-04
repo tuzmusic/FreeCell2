@@ -67,29 +67,27 @@ class FreeCellViewController: UIViewController {
 	
 	func move(from source: Position, to dest: Position) {
 		
-		// Move cards in the model.
-		game.moveCards(from: source, to: dest)
-		
-		// Move card in the view (Current implementation erases and redraws the entire columns.)
-		for position in [source, dest] {
-			// Remove all PlayingCardViews from column
-			for view in boardView.subviews
-				where (view as? PlayingCardView)?.position.location == position.location
-					&& (view as? PlayingCardView)?.position.column == position.column {
-						view.removeFromSuperview()
-			}
-			// Redraw the column
-			for (row, card) in game.board[position.location][position.column].enumerated() {
-				let newPosition = Position(location: position.location, column: position.column, row: row)
-				let newCard = draw(card: card, at: newPosition)
-				boardView.addSubview(newCard)
+		// we don't need the iterator number because the row is always the same
+		// since each time a card is removed, the cards after it bump up their index
+		for _ in 1 ... stackLength(for: source)! {
+			game.moveCard(from: source, to: dest)
+			// Find the cardView to move (this "loop" is only run once. there may be a better, non-loop way to do this)
+			for view in boardView.subviews where (view as? PlayingCardView)?.position.location == source.location
+				&& (view as! PlayingCardView).position.column == source.column
+				&& (view as! PlayingCardView).position.row >= source.row {
+					view.removeFromSuperview()
+					let destRow = game.board[dest.location][dest.column].count - 1
+					let destPosition = Position(location: dest.location, column: dest.column, row: destRow)
+					let movingCard = game.board[dest.location][dest.column][destRow]
+					let movingCardView = draw(card: movingCard, at: destPosition)
+					boardView.addSubview(movingCardView)
 			}
 		}
 		startOfSelection = nil
 		postMoveCleanUp()
 	}
 	
-	func postMoveCleanUp() { // print("cleanup")
+	func postMoveCleanUp() { //print("cleanup")
 		
 		if let autoMove = game.cardToMoveToSuitStack() {
 			let suitStack = Position(location: Location.suitStacks, column: autoMove.stackIndex, row: game.board[1][autoMove.stackIndex].count-1)
@@ -110,7 +108,7 @@ class FreeCellViewController: UIViewController {
 	
 	// MARK: Gameplay action functions
 	
-	func cardClicked (_ clickedCard: UITapGestureRecognizer) { print("Card clicked!")
+	func cardClicked (_ clickedCard: UITapGestureRecognizer) { //print("Card clicked!")
 		if let clickedCardView = clickedCard.view as? PlayingCardView { lastClickedView = clickedCardView
 			if startOfSelection == nil
 				|| (clickedCardView.position.column == startOfSelection?.column
