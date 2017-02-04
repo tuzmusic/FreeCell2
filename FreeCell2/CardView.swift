@@ -7,16 +7,14 @@
 //
 
 import UIKit
-var emptyCellCount = 0
 class CardView: UIView {
 
-	var cardWidth: CGFloat { return window!.frame.width / 11.5 }
+	var cardWidth: CGFloat { return superview!.frame.width / 11.5 }
 	var cardHeight: CGFloat { return cardWidth * (3.5/2.5) }
 	var cardSize: CGSize { return CGSize(width: cardWidth, height: cardHeight) }
 	var position: Position!
 	
-	override func draw(_ rect: CGRect) {
-		
+	override func draw(_ rect: CGRect) {		
 		let cardRect = CGRect(origin: bounds.origin, size: cardSize)
 		let cardPath = UIBezierPath(roundedRect: cardRect, cornerRadius: 10.0)
 		
@@ -24,8 +22,8 @@ class CardView: UIView {
 		cardPath.lineWidth = 2
 		cardPath.stroke()
 		
-		emptyCellCount += 1
-		if emptyCellCount == 16 { print("16th empty cell drawn from CardView.drawRect") }
+		layer.cornerRadius = 10.0
+		clipsToBounds = true
 	}
 }
 

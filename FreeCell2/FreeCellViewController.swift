@@ -57,10 +57,8 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	@IBOutlet var boardView: FreeCellBoardView!
-	@IBAction func redrawBoard(_ sender: UIButton) { updateBoardUI() }
 	@IBAction func restartGame(_ sender: UIButton) { startGame() }
 	@IBOutlet weak var restartButton: UIButton!
-	@IBOutlet weak var redrawButton: UIButton!
 	
 	//MARK: Gameplay Utility Functions
 	
@@ -70,17 +68,14 @@ class FreeCellViewController: UIViewController {
 		// since each time a card is removed, the cards after it bump up their index
 		for _ in 1 ... stackLength(for: source)! {
 			game.moveCard(from: source, to: dest)
-			// Find the cardView to move (this "loop" is only run once. there may be a better, non-loop way to do this)
 			for view in boardView.subviews where (view as? PlayingCardView)?.position.location == source.location
 				&& (view as! PlayingCardView).position.column == source.column
-				&& (view as! PlayingCardView).position.row >= source.row
-			{
-				view.removeFromSuperview()
-				let destRow = game.board[dest.location][dest.column].count - 1
-				let destPosition = Position(location: dest.location, column: dest.column, row: destRow)
-				let movingCard = game.board[dest.location][dest.column][destRow]
-				let movingCardView = draw(card: movingCard, at: destPosition)
-				boardView.addSubview(movingCardView)
+				&& (view as! PlayingCardView).position.row >= source.row {
+					view.removeFromSuperview()
+					let destRow = game.board[dest.location][dest.column].count - 1
+					let destPosition = Position(location: dest.location, column: dest.column, row: destRow)
+					let movingCard = game.board[dest.location][dest.column][destRow]
+					draw(card: movingCard, at: destPosition)
 			}
 		}
 		startOfSelection = nil
@@ -187,7 +182,7 @@ class FreeCellViewController: UIViewController {
 	
 	// MARK: Setup functions
 	
-	func draw (card: FreeCellBrain.Card, at boardPosition: Position) -> PlayingCardView {
+	func draw (card: FreeCellBrain.Card, at boardPosition: Position) {
 		let newCardView = PlayingCardView()
 		
 		newCardView.frame.origin.x = boardView.xValueForCardIn(location: boardPosition.location, column: boardPosition.column)
@@ -196,7 +191,6 @@ class FreeCellViewController: UIViewController {
 		
 		newCardView.backgroundColor = UIColor.white
 		newCardView.cardColor = card.color == DeckBuilder.Color.Red ? UIColor.red : UIColor.black
-		newCardView.cardDescription = card.description
 		newCardView.position = boardPosition
 		
 		let cardClicked = UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cardClicked(_:)))
@@ -207,7 +201,8 @@ class FreeCellViewController: UIViewController {
 		doubleClick.numberOfTapsRequired = 2
 		newCardView.addGestureRecognizer(doubleClick)
 		
-		return newCardView
+		boardView.addSubview(newCardView)
+		newCardView.cardDescription = card.description
 	}
 	
 	func updateBoardUI () {
@@ -216,15 +211,11 @@ class FreeCellViewController: UIViewController {
 		// Remove cards from freeCells and suitStacks (and cardColumns, for good measure)
 		boardView.subviews.forEach { if $0 is PlayingCardView { $0.removeFromSuperview() } }
 		
-		var count = 0
 		for (locIndex, location) in game.board.enumerated() {
 			for (colIndex, column) in location.enumerated() {
 				for (rowIndex, card) in column.enumerated() {
 					let newCardPosition = Position(location: locIndex, column: colIndex, row: rowIndex)
-					let newCardView = draw(card: card, at: newCardPosition)
-					boardView.addSubview(newCardView)
-					count += 1
-					if count == 52 { print("52nd cardView added from updateBoardUI") }
+					draw(card: card, at: newCardPosition)
 				}
 			}
 		}
@@ -256,7 +247,7 @@ class FreeCellViewController: UIViewController {
 		updateBoardUI()
 		postMoveCleanUp()
 	}
-		
+	
 	override func viewDidAppear(_ animated: Bool) {
 		startGame()
 	}

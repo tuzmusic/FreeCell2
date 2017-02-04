@@ -23,26 +23,16 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mkC-KN-Ryy">
-                                <rect key="frame" x="20" y="678" width="161" height="82"/>
+                                <rect key="frame" x="20" y="719" width="157" height="41"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJu-Vy-ZCP">
-                                        <rect key="frame" x="0.0" y="0.0" width="161" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="157" height="41"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                         <state key="normal" title="Restart Game">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="restartGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9rC-hi-es7"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4r-u2-ipV">
-                                        <rect key="frame" x="0.0" y="41" width="161" height="41"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                        <state key="normal" title="Redraw Board">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="redrawBoard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jhr-df-Kw1"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -56,7 +46,6 @@
                     </view>
                     <connections>
                         <outlet property="boardView" destination="83f-JX-iRZ" id="Iz2-hd-wuR"/>
-                        <outlet property="redrawButton" destination="K4r-u2-ipV" id="E45-Q9-8LR"/>
                         <outlet property="restartButton" destination="DJu-Vy-ZCP" id="wyl-jg-KEv"/>
                     </connections>
                 </viewController>
