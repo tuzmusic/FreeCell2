@@ -7,6 +7,7 @@
 //
 
 import UIKit
+var count = 0
 
 class PlayingCardView: CardView {
 	
@@ -48,16 +49,17 @@ class PlayingCardView: CardView {
 		addSubview(bottomLabel)
 
 	}
-	
 	override func draw(_ rect: CGRect) {
 		let cardRect = CGRect(origin: bounds.origin, size: cardSize)
 		let cardPath = UIBezierPath(roundedRect: cardRect, cornerRadius: 10.0)
+		// setStroke has an effect. Setting fill or backgroundColor from here does not work.
+		// clipToBounds also doesn't seem to do anything
 		UIColor.black.setStroke()
-		UIColor.white.setFill()
-		clipsToBounds = true
 		cardPath.lineWidth = 1.5
 		cardPath.stroke()
-
+		count += 1;
+		if count == 52 {
+			print("\(count) cards drawn from PlayingCardView.drawRect") }
 		addLabels()
 	}
 }

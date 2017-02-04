@@ -13,13 +13,12 @@ import UIKit
 
 class FreeCellViewController: UIViewController {
 	
-	//	typealias Position = CardView.Position
-	
 	// MARK: Model
-	var game = FreeCellBrain() // old model (still used for rules, no?)
+	var game = FreeCellBrain()
 	
 	var startOfSelection: Position? {
-		didSet { // this simply deals with selecting or de-selecting the views
+		didSet {
+			// this simply deals with selecting or de-selecting the views
 			let newSelection = startOfSelection
 			let selection = newSelection == nil ? oldValue : newSelection
 			
@@ -74,13 +73,14 @@ class FreeCellViewController: UIViewController {
 			// Find the cardView to move (this "loop" is only run once. there may be a better, non-loop way to do this)
 			for view in boardView.subviews where (view as? PlayingCardView)?.position.location == source.location
 				&& (view as! PlayingCardView).position.column == source.column
-				&& (view as! PlayingCardView).position.row >= source.row {
-					view.removeFromSuperview()
-					let destRow = game.board[dest.location][dest.column].count - 1
-					let destPosition = Position(location: dest.location, column: dest.column, row: destRow)
-					let movingCard = game.board[dest.location][dest.column][destRow]
-					let movingCardView = draw(card: movingCard, at: destPosition)
-					boardView.addSubview(movingCardView)
+				&& (view as! PlayingCardView).position.row >= source.row
+			{
+				view.removeFromSuperview()
+				let destRow = game.board[dest.location][dest.column].count - 1
+				let destPosition = Position(location: dest.location, column: dest.column, row: destRow)
+				let movingCard = game.board[dest.location][dest.column][destRow]
+				let movingCardView = draw(card: movingCard, at: destPosition)
+				boardView.addSubview(movingCardView)
 			}
 		}
 		startOfSelection = nil
@@ -198,6 +198,7 @@ class FreeCellViewController: UIViewController {
 		newCardView.cardColor = card.color == DeckBuilder.Color.Red ? UIColor.red : UIColor.black
 		newCardView.cardDescription = card.description
 		newCardView.position = boardPosition
+		
 		let cardClicked = UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cardClicked(_:)))
 		cardClicked.numberOfTapsRequired = 1
 		newCardView.addGestureRecognizer(cardClicked)
@@ -212,21 +213,25 @@ class FreeCellViewController: UIViewController {
 	func updateBoardUI () {
 		startOfSelection = nil
 		
+		// Remove cards from freeCells and suitStacks (and cardColumns, for good measure)
 		boardView.subviews.forEach { if $0 is PlayingCardView { $0.removeFromSuperview() } }
 		
+		var count = 0
 		for (locIndex, location) in game.board.enumerated() {
 			for (colIndex, column) in location.enumerated() {
 				for (rowIndex, card) in column.enumerated() {
 					let newCardPosition = Position(location: locIndex, column: colIndex, row: rowIndex)
 					let newCardView = draw(card: card, at: newCardPosition)
 					boardView.addSubview(newCardView)
+					count += 1
+					if count == 52 { print("52nd cardView added from updateBoardUI") }
 				}
 			}
 		}
-		addGestureRecognizers()
+		addGestureRecognizersForEmptyCells()
 	}
 	
-	func addGestureRecognizers () {
+	func addGestureRecognizersForEmptyCells () {
 		for view in boardView.subviews {
 			if !(view is PlayingCardView) {
 				if let cardView = view as? CardView {
@@ -251,7 +256,7 @@ class FreeCellViewController: UIViewController {
 		updateBoardUI()
 		postMoveCleanUp()
 	}
-	
+		
 	override func viewDidAppear(_ animated: Bool) {
 		startGame()
 	}
