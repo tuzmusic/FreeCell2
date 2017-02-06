@@ -67,15 +67,17 @@ class FreeCellViewController: UIViewController {
 		// we don't need the iterator number because the row is always the same
 		// since each time a card is removed, the cards after it bump up their index
 		for _ in 1 ... stackLength(for: source)! {
+			// Move the card in the model
 			game.moveCard(from: source, to: dest)
-			for view in boardView.subviews where (view as? PlayingCardView)?.position.location == source.location
-				&& (view as! PlayingCardView).position.column == source.column
-				&& (view as! PlayingCardView).position.row >= source.row {
-					view.removeFromSuperview()
-					let destRow = game.board[dest.location][dest.column].count - 1
-					let destPosition = Position(location: dest.location, column: dest.column, row: destRow)
-					let movingCard = game.board[dest.location][dest.column][destRow]
-					draw(card: movingCard, at: destPosition)
+			// Move the card in the view
+			if let movedCard = game.board[dest.location][dest.column].last {
+				for view in boardView.subviews
+					where (view as? PlayingCardView)?.cardDescription == movedCard.description {
+						view.removeFromSuperview()
+				}
+				let destRow = game.board[dest.location][dest.column].count - 1
+				let destPosition = Position(location: dest.location, column: dest.column, row: destRow)
+				draw(card: movedCard, at: destPosition)
 			}
 		}
 		startOfSelection = nil
