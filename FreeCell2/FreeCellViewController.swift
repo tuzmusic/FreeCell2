@@ -69,11 +69,10 @@ class FreeCellViewController: UIViewController {
 		for _ in 1 ... stackLength(for: source)! {
 			// Move the card in the model
 			game.moveCard(from: source, to: dest)
-			// Move the card in the view
+			// Move the card in the viewx
 			if let movedCard = game.board[dest.location][dest.column].last {
-				for view in boardView.subviews
-					where (view as? PlayingCardView)?.cardDescription == movedCard.description {
-						view.removeFromSuperview()
+				if let view = boardView.subviews.first(where: { ($0 as? PlayingCardView)?.cardDescription == movedCard.description  }) {
+					view.removeFromSuperview()
 				}
 				let destRow = game.board[dest.location][dest.column].count - 1
 				let destPosition = Position(location: dest.location, column: dest.column, row: destRow)
