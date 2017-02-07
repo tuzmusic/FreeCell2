@@ -74,6 +74,29 @@ class FreeCellBrain {
 		return nil
 	}
 
+	func positionForCardWith(description: String) -> Position? {
+		for (locIndex, location) in board.enumerated() {
+			for (colIndex, column) in location.enumerated() {
+				for (rowIndex, row) in column.enumerated() {
+					if row.description == description {
+						return Position(location: locIndex, column: colIndex, row: rowIndex)
+					}
+				}
+			}
+		}
+		return nil
+	}
+	
+	func cardAt(position: Position) -> Card? {
+		if position.location < board.count
+		&& position.column < board[position.location].count
+		&& position.row < board[position.location][position.column].count {
+			return board[position.location][position.column][position.row]
+		}
+		return nil
+	}
+	
+	
 	// MARK: Game Rules
 
 	func canMove (_ stack: Column, toColumn column: Column) -> Bool {

@@ -19,13 +19,16 @@ class FreeCellViewController: UIViewController {
 	var startOfSelection: Position? {
 		didSet {
 			// this simply deals with selecting or de-selecting the views
+			
+			// If we're setting a new selection, we'll deal with the new selection, and select it.
+			// If we're setting the selection to nil, we'll deal with the old selection, and deselect it.
 			let newSelection = startOfSelection
 			let selection = newSelection == nil ? oldValue : newSelection
 			
-			if let selection = selection {
-				let start = selection
-				for view in boardView.subviews
-					where view is PlayingCardView && (view as! PlayingCardView).position.location == start.location
+			if let start = selection {
+				// Yes this is actually a loop, because we're selecting or deselecting multiple cards.
+				for view in boardView.subviews where view is PlayingCardView
+						&& (view as! PlayingCardView).position.location == start.location
 						&& (view as! PlayingCardView).position.column == start.column
 						&& (view as! PlayingCardView).position.row >= start.row {
 							(view as? PlayingCardView)?.isSelected = (newSelection == nil ? false : true)
@@ -36,7 +39,8 @@ class FreeCellViewController: UIViewController {
 	
 	var selectedCard: FreeCellBrain.Card? {
 		if let selection = startOfSelection {
-			return game.board[selection.location][selection.column][selection.row]
+			return game.cardAt(position: selection)
+			//return game.board[selection.location][selection.column][selection.row]
 		}
 		return nil
 	}
