@@ -30,8 +30,6 @@ class FreeCellBrain {
 	
 	var suitStacks: ArraySlice<Column> {
 		let topShaved = board.prefix(numberOfCells + numberOfSuits)
-		let suits = topShaved.suffix(numberOfSuits)
-		suits.forEach{print($0.description)}
 		return topShaved.suffix(numberOfSuits)
 	}
 	
@@ -69,22 +67,31 @@ class FreeCellBrain {
 	// MARK: Game Functions
 	
 	func columnIs(in location: Int, column: Int) -> Bool {
-		var first = 0 // First index at this location
-		for i in 0..<location {
-			first += columnCounts[i]
-		}
-		var next = 0 // Index after the last index of this location ("endIndex")
-		for i in 0...location {
-			next += columnCounts[location - i]
-		}
-		return column >= first && column < next
+//		return locationForColumnIndex(column) == location
+		
+				var first = 0 // First index at this location
+				for i in 0..<location {
+					first += columnCounts[i]
+				}
+				var next = 0 // Index after the last index of this location ("endIndex")
+				for i in 0...location {
+					next += columnCounts[location - i]
+				}
+				return column >= first && column < next
 	}
 	
-	func locationFor(column: Int) -> Int? {
+	func locationForColumnIndex(_ column: Int) -> Int? {
 		if column < board.count {
 			for location in 0..<columnCounts.count {
 				if columnIs(in: location, column: column) { return location }
 			}
+		}
+		return nil
+	}
+	
+	func locationFor(column: Column) -> Int? {
+		for (index, col) in board.enumerated() {
+			if col == column { return index }
 		}
 		return nil
 	}
@@ -108,7 +115,7 @@ class FreeCellBrain {
 	}
 	
 	func cardToMoveToSuitStack() -> (cardOldPosition: NewPosition, destStackIndex: Int)? {
-		for (colIndex, sourceColumn) in board.enumerated() where locationFor(column: colIndex) != Location.suitStacks { // For every column
+		for (colIndex, sourceColumn) in board.enumerated() where locationForColumnIndex(colIndex) != Location.suitStacks { // For every column
 			if let cardToMove = sourceColumn.last { // If there's a card in the column
 				for (suitIndex, suit) in suitStacks.enumerated() { // Check every suit stack
 					if shouldMove(cardToMove, to: suit) { // And if the last card in the column should be moved

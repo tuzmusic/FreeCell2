@@ -59,11 +59,11 @@
             condition = "shouldMove(cardToMove, to: suit)"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellBrain.swift"
-            timestampString = "508241948.554128"
+            timestampString = "508242894.023659"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
             landmarkName = "cardToMoveToSuitStack()"
             landmarkType = "7">
          </BreakpointContent>
