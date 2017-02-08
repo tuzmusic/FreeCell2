@@ -21,9 +21,9 @@ class FreeCellBrain {
 	let numberOfColumns = 8
 	
 	var board = [Column]()
-
+	
 	var columnCounts: [Int] { return [numberOfCells, numberOfSuits, numberOfColumns] }
-
+	
 	var freeCells: ArraySlice<Column> {
 		return board.prefix(numberOfCells)
 	}
@@ -39,12 +39,12 @@ class FreeCellBrain {
 	
 	var blackSuits = [0, 0]
 	var redSuits = [0, 0]
-
+	
 	let firstIndex: Dictionary = [
 		Location.freeCells : 0, // columnCounts[location] - columnCounts[location] = 0
 		Location.suitStacks : 4, // columnCounts[location - 1] + columnCounts[location] - columnCounts[location] = columnCounts(location - 1)
 		Location.cardColumns : 8 ] // columnCounts[location - 1] + columnCounts[location - 2]
-
+	
 	func createBoard () {
 		board = [Column]()
 		for _ in 0 ..< columnCounts.reduce(0, +) {
@@ -67,20 +67,18 @@ class FreeCellBrain {
 	// MARK: Game Functions
 	
 	func columnIs(in location: Int, column: Int) -> Bool {
-//		return locationForColumnIndex(column) == location
-		
-				var first = 0 // First index at this location
-				for i in 0..<location {
-					first += columnCounts[i]
-				}
-				var next = 0 // Index after the last index of this location ("endIndex")
-				for i in 0...location {
-					next += columnCounts[location - i]
-				}
-				return column >= first && column < next
+		var first = 0 // First index at this location
+		for i in 0..<location {
+			first += columnCounts[i]
+		}
+		var next = 0 // Index after the last index of this location ("endIndex")
+		for i in 0...location {
+			next += columnCounts[location - i]
+		}
+		return column >= first && column < next
 	}
 	
-	func locationForColumnIndex(_ column: Int) -> Int? {
+	func locationFor(column: Int) -> Int? {
 		if column < board.count {
 			for location in 0..<columnCounts.count {
 				if columnIs(in: location, column: column) { return location }
@@ -89,13 +87,13 @@ class FreeCellBrain {
 		return nil
 	}
 	
-	func locationFor(column: Column) -> Int? {
-		for (index, col) in board.enumerated() {
-			if col == column { return index }
+	func indexOf(column: Column) -> Int? {
+		for (index, _) in board.enumerated() {
+			if column == board[index] { return index }
 		}
 		return nil
 	}
-
+	
 	func moveCard(from source: NewPosition, to dest: NewPosition) {
 		let card = board[source.column].remove(at: source.row)
 		board[dest.column].append(card)
@@ -115,7 +113,7 @@ class FreeCellBrain {
 	}
 	
 	func cardToMoveToSuitStack() -> (cardOldPosition: NewPosition, destStackIndex: Int)? {
-		for (colIndex, sourceColumn) in board.enumerated() where locationForColumnIndex(colIndex) != Location.suitStacks { // For every column
+		for sourceColumn in board { // For every column that's not in a suitStack
 			if let cardToMove = sourceColumn.last { // If there's a card in the column
 				for (suitIndex, suit) in suitStacks.enumerated() { // Check every suit stack
 					if shouldMove(cardToMove, to: suit) { // And if the last card in the column should be moved
@@ -130,10 +128,10 @@ class FreeCellBrain {
 	}
 	
 	func positionForCardWith(description: String) -> NewPosition? {
-		for (colIndex, column) in board.enumerated() {
+		for column in board {
 			for (rowIndex, cardInRow) in column.enumerated() {
 				if cardInRow.description == description {
-					return NewPosition(column: colIndex, row: rowIndex)
+					return NewPosition(column: indexOf(column: column)!, row: rowIndex)
 				}
 			}
 		}
@@ -160,7 +158,7 @@ class FreeCellBrain {
 	
 	
 	// MARK: Game Rules
-
+	
 	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
 		
 		var emptyCells = 0
@@ -173,7 +171,7 @@ class FreeCellBrain {
 		}
 		if column.isEmpty { freeColumns -= 1 }
 		let numberOfCardsThatCanBeMoved = (emptyCells + 1) * (1 + freeColumns)
-	
+		
 		if stack.count <= numberOfCardsThatCanBeMoved {
 			if column.isEmpty {
 				return true
@@ -201,9 +199,12 @@ class FreeCellBrain {
 	
 	func shouldMove (_ card: Card, to suitStack: Column) -> Bool {
 		if canMove(card, to: suitStack) {
-			if (card.color == .Red && card.rank.rawValue <= blackSuits.min()! + 2) ||
-				(card.color == .Black && card.rank.rawValue <= redSuits.min()! + 2) {
-				return true
+			if let column = positionFor(card)?.column {
+				if !columnIs(in: Location.suitStacks, column: column) &&
+					((card.color == .Red && card.rank.rawValue <= blackSuits.min()! + 2) ||
+						(card.color == .Black && card.rank.rawValue <= redSuits.min()! + 2)) {
+					return true
+				}
 			}
 		}
 		return false
@@ -222,9 +223,9 @@ class FreeCellBrain {
 				// Can any cards be moved to another column?
 				for (colIndex, destColumn) in board.enumerated() where columnIs(in: Location.cardColumns, column: colIndex) {
 					if canMove([bottomCard], toColumn: destColumn) {
-//						if let destCard = destColumn.last {
-//							if destCard == lastSourceTried && bottomCard == lastDestTried { return true }
-//						}
+						//						if let destCard = destColumn.last {
+						//							if destCard == lastSourceTried && bottomCard == lastDestTried { return true }
+						//						}
 						return false
 					}
 				}
@@ -240,8 +241,8 @@ class FreeCellBrain {
 		return true
 	}
 	
-
 	func gameIsWon () -> Bool {
+				
 		for (colIndex, suit) in board.enumerated() where columnIs(in: Location.suitStacks, column: colIndex) {
 			if suit.count < 13 {
 				return false

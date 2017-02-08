@@ -48,7 +48,7 @@ class FreeCellViewController: UIViewController {
 	
 	func stackLength (for selection: NewPosition?) -> Int? {
 		if let selection = selection {
-			if game.locationForColumnIndex(selection.column) == Location.cardColumns {
+			if game.locationFor(column: selection.column) == Location.cardColumns {
 				let length = game.board[selection.column].count - selection.row
 				print("length = \(length)")
 				return length
@@ -249,13 +249,14 @@ class FreeCellViewController: UIViewController {
 		let newCardView = PlayingCardView()
 		
 		var columnOffset = 0
-		switch game.locationForColumnIndex(boardPosition.column)! {
+//		switch game.locationFor(column: boardPosition.column)! {
+		switch game.locationFor(column: boardPosition.column)! {
 		case 1: columnOffset = 4; case 2: columnOffset = 8; default: break
 		}
 		
-		newCardView.frame.origin.x = boardView.xValueForCardIn(location: game.locationForColumnIndex(boardPosition.column)!,
+		newCardView.frame.origin.x = boardView.xValueForCardIn(location: game.locationFor(column: boardPosition.column)!,
 		                                                       column: boardPosition.column - columnOffset)
-		newCardView.frame.origin.y = boardView.yCoordinateForCardIn(game.locationForColumnIndex(boardPosition.column)!,
+		newCardView.frame.origin.y = boardView.yCoordinateForCardIn(game.locationFor(column: boardPosition.column)!,
 		                                                            row: boardPosition.row)
 		newCardView.frame.size = boardView.cardSize
 		
@@ -274,7 +275,7 @@ class FreeCellViewController: UIViewController {
 		boardView.addSubview(newCardView)
 		newCardView.cardDescription = card.description
 	}
-	
+		
 	func updateBoardUI () {
 		startOfSelection = nil
 		
@@ -294,7 +295,7 @@ class FreeCellViewController: UIViewController {
 		for view in boardView.subviews {
 			if !(view is PlayingCardView) {
 				if let cardView = view as? CardView {
-					switch game.locationForColumnIndex(cardView.position.column)! {
+					switch game.locationFor(column: cardView.position.column)! {
 					case Location.freeCells:
 						cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cellClicked(_:))))
 					case Location.suitStacks:
