@@ -53,8 +53,8 @@ class FreeCellBoardView: UIView {
 		return cardTypes[location].xMargin + (cardWidth + spaceBetweenColumns) * CGFloat(column)
 	}
 	
-	func yCoordinateForCardIn(_ cardType: Int, row: Int) -> CGFloat {
-		return cardTypes[cardType].yMargin + spaceBetweenCards * (cardType == Location.suitStacks ? 0 : CGFloat(row))
+	func yCoordinateForCardIn(_ location: Int, row: Int) -> CGFloat {
+		return cardTypes[location].yMargin + spaceBetweenCards * (location == Location.suitStacks ? 0 : CGFloat(row))
 	}
 		
 	func createEmptyCellsIn(location: Int) {
@@ -66,7 +66,7 @@ class FreeCellBoardView: UIView {
 			let newCell = CardView(frame: CGRect(origin: origin, size: size))
 			newCell.backgroundColor = UIColor.clear
 			addSubview(newCell)
-			newCell.position = Position(location: location, column: cell, row: 0)
+			newCell.position = NewPosition(column: cell, row: 0)
 		}
 	}
 	

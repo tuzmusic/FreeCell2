@@ -50,9 +50,13 @@ class DeckBuilder {
 		case Ace = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King
 	}
 	
-	struct Card {
+	struct Card: Equatable {
 		var rank: Rank
 		var suit: Suit
+		
+		static func == (lhs: Card, rhs: Card) -> Bool {
+			return lhs.description == rhs.description
+		}
 		
 		var number: String {
 			var number = ""

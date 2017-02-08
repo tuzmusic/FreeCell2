@@ -14,6 +14,10 @@ struct Location {
 	static let cardColumns = 2
 }
 
-struct Position {
+struct OldPosition {
 	var location, column, row: Int
+}
+
+struct NewPosition {
+	var column, row: Int
 }

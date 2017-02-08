@@ -9,7 +9,7 @@
 import UIKit
 class CardView: UIView {
 
-	var position: Position!
+	var position: NewPosition!
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
