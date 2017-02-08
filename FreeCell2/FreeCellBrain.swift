@@ -73,7 +73,14 @@ class FreeCellBrain {
 		}
 		return nil
 	}
-
+	
+	func cardWith(description: String) -> Card? {
+		if let position = positionForCardWith(description: description) {
+			return board[position.location][position.column][position.row]
+		}
+		return nil
+	}
+	
 	func positionForCardWith(description: String) -> Position? {
 		for (locIndex, location) in board.enumerated() {
 			for (colIndex, column) in location.enumerated() {
