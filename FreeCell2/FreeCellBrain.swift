@@ -94,7 +94,7 @@ class FreeCellBrain {
 		return nil
 	}
 	
-	func moveCard(from source: NewPosition, to dest: NewPosition) {
+	func moveCard(from source: Position, to dest: Position) {
 		let card = board[source.column].remove(at: source.row)
 		board[dest.column].append(card)
 		if columnIs(in: Location.suitStacks, column: dest.column) {
@@ -112,7 +112,7 @@ class FreeCellBrain {
 		}
 	}
 	
-	func cardToMoveToSuitStack() -> (cardOldPosition: NewPosition, destStackIndex: Int)? {
+	func cardToMoveToSuitStack() -> (cardOldPosition: Position, destStackIndex: Int)? {
 		for sourceColumn in board { // For every column that's not in a suitStack
 			if let cardToMove = sourceColumn.last { // If there's a card in the column
 				for (suitIndex, suit) in suitStacks.enumerated() { // Check every suit stack
@@ -127,18 +127,18 @@ class FreeCellBrain {
 		return nil
 	}
 	
-	func positionForCardWith(description: String) -> NewPosition? {
+	func positionForCardWith(description: String) -> Position? {
 		for column in board {
 			for (rowIndex, cardInRow) in column.enumerated() {
 				if cardInRow.description == description {
-					return NewPosition(column: indexOf(column: column)!, row: rowIndex)
+					return Position(column: indexOf(column: column)!, row: rowIndex)
 				}
 			}
 		}
 		return nil
 	}
 	
-	func positionFor(_ card: Card) -> NewPosition? {
+	func positionFor(_ card: Card) -> Position? {
 		return positionForCardWith(description: card.description) ?? nil
 	}
 	
@@ -149,7 +149,7 @@ class FreeCellBrain {
 		return nil
 	}
 	
-	func cardAt(position: NewPosition) -> Card? {
+	func cardAt(position: Position) -> Card? {
 		if position.column < board.count && position.row < board[position.column].count {
 			return board[position.column][position.row]
 		}
@@ -260,10 +260,10 @@ extension MutableCollection where Indices.Iterator.Element == Index {
 		guard c > 1 else { return }
 		
 		for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
-			let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+			let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
 			guard d != 0 else { continue }
 			let i = index(firstUnshuffled, offsetBy: d)
-			swap(&self[firstUnshuffled], &self[i])
+			self.swapAt(firstUnshuffled, i)
 		}
 	}
 }

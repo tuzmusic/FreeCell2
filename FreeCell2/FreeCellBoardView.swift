@@ -58,17 +58,27 @@ class FreeCellBoardView: UIView {
 	}
 		
 	func createEmptyCellsIn(location: Int) {
-		for cell in 0 ..< cardTypes[location].count {
-			
+		for cell in 0 ..< cardTypes[location].count {			
 			
 			let origin = CGPoint(x: xValueForCardIn(location: location, column: cell), y: cardTypes[location].yMargin)
 			let size = CGSize(width: cardWidth, height: cardHeight)
 			let newCell = CardView(frame: CGRect(origin: origin, size: size))
 			newCell.backgroundColor = UIColor.clear
 			addSubview(newCell)
-			newCell.position = NewPosition(column: cell, row: 0)
+			newCell.position = Position(column: cell, row: 0)
 		}
 	}
+
+	let gravity = UIGravityBehavior()
+
+	func gravityFalls () {
+		let animator = UIDynamicAnimator(referenceView: self)
+		for view in subviews where view is PlayingCardView {
+			gravity.addItem(view)
+		}
+		animator.addBehavior(gravity)
+	}
+
 	
 	override func draw(_ rect: CGRect) {
 		createEmptyCellsIn(location: Location.freeCells)

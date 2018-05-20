@@ -63,7 +63,7 @@ class DeckBuilder {
 			if rank.rawValue > 1 && rank.rawValue < 11 {
 				number = String(rank.rawValue)
 			} else {
-				number = String(describing: String(describing:rank).characters.first!)
+				number = String(describing: String(describing:rank).first!)
 			}
 			return number
 		}

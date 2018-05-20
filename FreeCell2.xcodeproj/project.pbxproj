@@ -13,7 +13,6 @@
 		765273411E33608A00D595AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7652733F1E33608A00D595AA /* Main.storyboard */; };
 		765273431E33608A00D595AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 765273421E33608A00D595AA /* Assets.xcassets */; };
 		765273461E33608B00D595AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765273441E33608B00D595AA /* LaunchScreen.storyboard */; };
-		765273511E33608B00D595AA /* FreeCell2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765273501E33608B00D595AA /* FreeCell2Tests.swift */; };
 		7652735F1E3360CC00D595AA /* DeckBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7652735C1E3360CC00D595AA /* DeckBuilder.swift */; };
 		765273601E3360CC00D595AA /* FreeCellBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7652735D1E3360CC00D595AA /* FreeCellBrain.swift */; };
 		765273611E3360CC00D595AA /* PlayingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7652735E1E3360CC00D595AA /* PlayingCardView.swift */; };
@@ -41,8 +40,6 @@
 		765273451E33608B00D595AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		765273471E33608B00D595AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7652734C1E33608B00D595AA /* FreeCell2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FreeCell2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		765273501E33608B00D595AA /* FreeCell2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeCell2Tests.swift; sourceTree = "<group>"; };
-		765273521E33608B00D595AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7652735C1E3360CC00D595AA /* DeckBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeckBuilder.swift; sourceTree = "<group>"; };
 		7652735D1E3360CC00D595AA /* FreeCellBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreeCellBrain.swift; sourceTree = "<group>"; };
 		7652735E1E3360CC00D595AA /* PlayingCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayingCardView.swift; sourceTree = "<group>"; };
@@ -98,19 +95,9 @@
 			path = FreeCell2;
 			sourceTree = "<group>";
 		};
-		7652734F1E33608B00D595AA /* FreeCell2Tests */ = {
-			isa = PBXGroup;
-			children = (
-				765273501E33608B00D595AA /* FreeCell2Tests.swift */,
-				765273521E33608B00D595AA /* Info.plist */,
-			);
-			path = FreeCell2Tests;
-			sourceTree = SOURCE_ROOT;
-		};
 		7652735B1E3360A300D595AA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				7652734F1E33608B00D595AA /* FreeCell2Tests */,
 				765273391E33608A00D595AA /* Products */,
 				7652733B1E33608A00D595AA /* AppDelegate.swift */,
 				765273421E33608A00D595AA /* Assets.xcassets */,
@@ -260,7 +247,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				765273511E33608B00D595AA /* FreeCell2Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
