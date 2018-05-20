@@ -15,18 +15,12 @@ class FreeCellViewController: UIViewController {
 	
 	var startOfSelection: Position? {
 		
-		didSet {
-			// this simply deals with selecting or de-selecting the views
-			
-			// If we're setting a new selection, we'll deal with the new selection, and select it.
-			// If we're clearing the selection, we'll deal with the old selection, and deselect it.
-			let newSelection = startOfSelection
-			
-			if let start = newSelection == nil ? oldValue : newSelection {
+		didSet {		// Select or deselect PlayingCardViews
+			if let start = startOfSelection ?? oldValue {
 				for view in boardView.subviews where view is PlayingCardView {
 					let cardView = view as! PlayingCardView
 					if cardView.position.column == start.column && cardView.position.row >= start.row {
-						cardView.isSelected = (newSelection != nil ? true : false)
+						cardView.isSelected = (startOfSelection != nil ? true : false)
 					}
 				}
 			}
