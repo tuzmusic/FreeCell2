@@ -68,16 +68,16 @@ class FreeCellBoardView: UIView {
 			newCell.position = Position(column: cell, row: 0)
 		}
 	}
-
-	let gravity = UIGravityBehavior()
-
-	func gravityFalls () {
-		let animator = UIDynamicAnimator(referenceView: self)
-		for view in subviews where view is PlayingCardView {
-			gravity.addItem(view)
-		}
-		animator.addBehavior(gravity)
-	}
+//
+//	let gravity = UIGravityBehavior()
+//
+//	func gravityFalls () {
+//		let animator = UIDynamicAnimator(referenceView: self)
+//		for view in subviews where view is PlayingCardView {
+//			gravity.addItem(view)
+//		}
+//		animator.addBehavior(gravity)
+//	}
 
 	
 	override func draw(_ rect: CGRect) {

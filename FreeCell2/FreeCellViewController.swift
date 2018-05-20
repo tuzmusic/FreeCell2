@@ -29,7 +29,7 @@ class FreeCellViewController: UIViewController {
 	
 	var selectedCard: FreeCellBrain.Card? {
 		if let selection = startOfSelection {
-			return game.cardAt(position: selection)
+			return game.cardAt(selection)
 		}
 		return nil
 	}
@@ -68,7 +68,7 @@ class FreeCellViewController: UIViewController {
 	
 	@IBOutlet var boardView: FreeCellBoardView!
 	@IBAction func restartGame(_ sender: UIButton) {
-		boardView.gravityFalls()
+		//boardView.gravityFalls()
 		startGame()
 	}
 	@IBOutlet weak var restartButton: UIButton!
@@ -246,7 +246,7 @@ class FreeCellViewController: UIViewController {
 		let doubleClick = UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.doubleClick(_:)))
 		doubleClick.numberOfTapsRequired = 2
 		newCardView.addGestureRecognizer(doubleClick)
-		boardView.gravity.addItem(newCardView)
+//		boardView.gravity.addItem(newCardView)
 		boardView.addSubview(newCardView)
 		newCardView.cardDescription = card.description
 	}

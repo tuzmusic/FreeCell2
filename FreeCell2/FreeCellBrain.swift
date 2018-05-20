@@ -149,7 +149,8 @@ class FreeCellBrain {
 		return nil
 	}
 	
-	func cardAt(position: Position) -> Card? {
+	func cardAt(_ position: Position) -> Card? {
+		
 		if position.column < board.count && position.row < board[position.column].count {
 			return board[position.column][position.row]
 		}
