@@ -235,7 +235,16 @@ class FreeCellViewController: UIViewController {
 		startOfSelection = nil
 		
 		// Remove cards from freeCells and suitStacks (and cardColumns, for good measure)
-		boardView.subviews.forEach { if $0 is PlayingCardView { $0.removeFromSuperview() } }
+//		for cardView in boardView.subviews {
+//			if cardView is PlayingCardView {
+//				cardView.removeFromSuperview()
+//			}
+//		}
+		boardView.subviews.forEach {
+			if $0 is PlayingCardView {
+				$0.removeFromSuperview()
+			}
+		}
 		
 		for (colIndex, column) in game.board.enumerated() {
 			for (rowIndex, card) in column.enumerated() {
@@ -266,6 +275,7 @@ class FreeCellViewController: UIViewController {
 	
 	func startGame () {
 		startOfSelection = nil
+		game.emptyBoard()
 		game.dealCards()
 		updateBoardUI()
 		postMoveCleanUp()
