@@ -205,7 +205,7 @@ class FreeCellViewController: UIViewController {
 		
 		let newCardView = PlayingCardView()
 		let area = game.locationFor(column: boardPosition.column)!
-		let columnOffset = area * 4	
+		let columnOffset = area * 4
 
 		// Place (and color) cardview
 		newCardView.frame.origin.x = boardView.xValueForCardIn(location: area, column: boardPosition.column - columnOffset)
@@ -266,7 +266,6 @@ class FreeCellViewController: UIViewController {
 	
 	func startGame () {
 		startOfSelection = nil
-		game.createBoard()
 		game.dealCards()
 		updateBoardUI()
 		postMoveCleanUp()

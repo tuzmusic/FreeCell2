@@ -21,8 +21,7 @@ class FreeCellBrain {
 	static let numberOfColumns = 8
 	static var columnCounts = [numberOfCells, numberOfSuits, numberOfColumns]
 	
-
-	var board = [Column]()
+	var board = [Column](repeating: Column(), count: FreeCellBrain.columnCounts.reduce(0, +))
 	
 	var freeCells: ArraySlice<Column> {
 		return board.prefix(FreeCellBrain.numberOfCells)
@@ -44,13 +43,6 @@ class FreeCellBrain {
 		Area.freeCells : 0, // columnCounts[location] - columnCounts[location] = 0
 		Area.suitStacks : 4, // columnCounts[location - 1] + columnCounts[location] - columnCounts[location] = columnCounts(location - 1)
 		Area.cardColumns : 8 ] // columnCounts[location - 1] + columnCounts[location - 2]
-	
-	func createBoard () {
-		board = [Column]()
-		for _ in 0 ..< FreeCellBrain.columnCounts.reduce(0, +) {
-			board.append(Column())
-		}
-	}
 	
 	// Deal cards - remove them from the top of deck and add them to the board
 	func dealCards () {
