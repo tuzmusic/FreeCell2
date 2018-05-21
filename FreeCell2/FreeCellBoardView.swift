@@ -54,7 +54,7 @@ class FreeCellBoardView: UIView {
 	}
 	
 	func yCoordinateForCardIn(_ location: Int, row: Int) -> CGFloat {
-		return cardTypes[location].yMargin + spaceBetweenCards * (location == Location.suitStacks ? 0 : CGFloat(row))
+		return cardTypes[location].yMargin + spaceBetweenCards * (location == Area.suitStacks ? 0 : CGFloat(row))
 	}
 		
 	func createEmptyCellsIn(location: Int) {
@@ -81,8 +81,8 @@ class FreeCellBoardView: UIView {
 
 	
 	override func draw(_ rect: CGRect) {
-		createEmptyCellsIn(location: Location.freeCells)
-		createEmptyCellsIn(location: Location.suitStacks)
-		createEmptyCellsIn(location: Location.cardColumns)
+		createEmptyCellsIn(location: Area.freeCells)
+		createEmptyCellsIn(location: Area.suitStacks)
+		createEmptyCellsIn(location: Area.cardColumns)
 	}
 }

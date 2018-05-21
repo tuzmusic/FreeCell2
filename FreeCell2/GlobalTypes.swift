@@ -1,5 +1,5 @@
 //
-//  BoardLocationswift
+//  BoardAreaswift
 //  FreeCell2
 //
 //  Created by Jonathan Tuzman on 1/26/17.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Location {
+struct Area {
 	static let freeCells = 0
 	static let suitStacks = 1
 	static let cardColumns = 2
