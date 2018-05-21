@@ -204,6 +204,11 @@ class FreeCellViewController: UIViewController {
 	func draw (card: FreeCellBrain.Card, at boardPosition: Position) {
 		
 		let newCardView = PlayingCardView()
+		// Model-related attributes
+		newCardView.cardColor = card.color == DeckBuilder.Color.Red ? UIColor.red : UIColor.black
+		newCardView.cardDescription = card.description
+		newCardView.position = boardPosition
+
 		let location = game.locationFor(column: boardPosition.column)!
 		let columnOffset = location * 4
 		/*var columnOffset = 0
@@ -214,10 +219,7 @@ class FreeCellViewController: UIViewController {
 		newCardView.frame.origin.x = boardView.xValueForCardIn(location: location, column: boardPosition.column - columnOffset)
 		newCardView.frame.origin.y = boardView.yCoordinateForCardIn(location, row: boardPosition.row)
 		newCardView.frame.size = boardView.cardSize
-		
 		newCardView.backgroundColor = UIColor.white
-		newCardView.cardColor = card.color == DeckBuilder.Color.Red ? UIColor.red : UIColor.black
-		newCardView.position = boardPosition
 		
 		let cardClicked = UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cardClicked(_:)))
 		cardClicked.numberOfTapsRequired = 1
@@ -226,8 +228,8 @@ class FreeCellViewController: UIViewController {
 		let doubleClick = UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.doubleClick(_:)))
 		doubleClick.numberOfTapsRequired = 2
 		newCardView.addGestureRecognizer(doubleClick)
+		
 		boardView.addSubview(newCardView)
-		newCardView.cardDescription = card.description
 	}
 	
 	func updateBoardUI () {

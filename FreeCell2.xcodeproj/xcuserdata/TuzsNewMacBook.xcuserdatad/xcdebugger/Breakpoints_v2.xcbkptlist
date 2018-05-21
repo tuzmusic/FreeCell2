@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548554938.065484"
+            timestampString = "548605696.360586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "195"
-            endingLineNumber = "195"
-            landmarkName = "doubleClick(_:)"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "suitClicked(_:)"
             landmarkType = "7">
             <Actions>
                <BreakpointActionProxy
@@ -35,13 +35,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548554938.0680161"
+            timestampString = "548605696.361463"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
-            landmarkName = "FreeCellViewController"
-            landmarkType = "3">
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "emptyCardColumnClicked(_:)"
+            landmarkType = "7">
             <Actions>
                <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
@@ -60,12 +60,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548554938.070322"
+            timestampString = "548605696.364426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
-            landmarkName = "doubleClick(_:)"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
+            landmarkName = "cellClicked(_:)"
             landmarkType = "7">
             <Actions>
                <BreakpointActionProxy
