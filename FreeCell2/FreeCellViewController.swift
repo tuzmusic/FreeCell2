@@ -204,23 +204,16 @@ class FreeCellViewController: UIViewController {
 	func draw (card: FreeCellBrain.Card, at boardPosition: Position) {
 		
 		let newCardView = PlayingCardView()
-		// Model-related attributes
-		newCardView.cardColor = card.color == DeckBuilder.Color.Red ? UIColor.red : UIColor.black
-		newCardView.cardDescription = card.description
-		newCardView.position = boardPosition
+		let area = game.locationFor(column: boardPosition.column)!
+		let columnOffset = area * 4	
 
-		let location = game.locationFor(column: boardPosition.column)!
-		let columnOffset = location * 4
-		/*var columnOffset = 0
-		switch game.locationFor(column: boardPosition.column)! {
-		case 1: columnOffset = 4; case 2: columnOffset = 8; default: break
-		}*/
-		
-		newCardView.frame.origin.x = boardView.xValueForCardIn(location: location, column: boardPosition.column - columnOffset)
-		newCardView.frame.origin.y = boardView.yCoordinateForCardIn(location, row: boardPosition.row)
+		// Place (and color) cardview
+		newCardView.frame.origin.x = boardView.xValueForCardIn(location: area, column: boardPosition.column - columnOffset)
+		newCardView.frame.origin.y = boardView.yCoordinateForCardIn(area, row: boardPosition.row)
 		newCardView.frame.size = boardView.cardSize
 		newCardView.backgroundColor = UIColor.white
 		
+		// Add gesture recognizers
 		let cardClicked = UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cardClicked(_:)))
 		cardClicked.numberOfTapsRequired = 1
 		newCardView.addGestureRecognizer(cardClicked)
@@ -230,6 +223,12 @@ class FreeCellViewController: UIViewController {
 		newCardView.addGestureRecognizer(doubleClick)
 		
 		boardView.addSubview(newCardView)
+		
+		// Model-related attributes
+		newCardView.cardDescription = card.description
+		newCardView.cardColor = card.color == .Red ? .red : .black
+		newCardView.position = boardPosition
+
 	}
 	
 	func updateBoardUI () {
