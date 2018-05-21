@@ -15,9 +15,15 @@ class FreeCellViewController: UIViewController {
 	
 	// MARK: View
 	@IBOutlet var boardView: FreeCellBoardView!
-	@IBAction func restartGame(_ sender: UIButton) {
-		startGame()
+	
+	@IBAction func startGame () {
+		startOfSelection = nil
+		game.emptyBoard()
+		game.dealCards()
+		resetGameUI()
+		postMoveCleanUp()
 	}
+	
 	@IBOutlet weak var restartButton: UIButton!
 	
 	// MARK: Selection and Board Interaction
@@ -202,7 +208,6 @@ class FreeCellViewController: UIViewController {
 	// MARK: Setup functions
 	
 	func draw (card: FreeCellBrain.Card, at boardPosition: Position) {
-		
 		let newCardView = PlayingCardView()
 		let area = game.locationFor(column: boardPosition.column)!
 		let columnOffset = area * 4
@@ -228,22 +233,13 @@ class FreeCellViewController: UIViewController {
 		newCardView.cardDescription = card.description
 		newCardView.cardColor = card.color == .Red ? .red : .black
 		newCardView.position = boardPosition
-
 	}
 	
-	func updateBoardUI () {
+	func resetGameUI () {
 		startOfSelection = nil
 		
-		// Remove cards from freeCells and suitStacks (and cardColumns, for good measure)
-//		for cardView in boardView.subviews {
-//			if cardView is PlayingCardView {
-//				cardView.removeFromSuperview()
-//			}
-//		}
-		boardView.subviews.forEach {
-			if $0 is PlayingCardView {
-				$0.removeFromSuperview()
-			}
+		for view in boardView.subviews {
+			(view as? PlayingCardView)?.removeFromSuperview()
 		}
 		
 		for (colIndex, column) in game.board.enumerated() {
@@ -272,15 +268,7 @@ class FreeCellViewController: UIViewController {
 			}
 		}
 	}
-	
-	func startGame () {
-		startOfSelection = nil
-		game.emptyBoard()
-		game.dealCards()
-		updateBoardUI()
-		postMoveCleanUp()
-	}
-	
+
 	override func viewDidAppear(_ animated: Bool) {
 		startGame()
 	}

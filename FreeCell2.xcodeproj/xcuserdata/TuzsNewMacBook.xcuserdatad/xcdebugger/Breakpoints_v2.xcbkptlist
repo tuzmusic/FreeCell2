@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548608146.033414"
+            timestampString = "548608432.7477371"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "suitClicked(_:)"
             landmarkType = "7">
             <Actions>
@@ -35,11 +35,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548608146.03495"
+            timestampString = "548608432.750036"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "emptyCardColumnClicked(_:)"
             landmarkType = "7">
             <Actions>
@@ -60,11 +60,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548608146.035717"
+            timestampString = "548608432.751357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "cellClicked(_:)"
             landmarkType = "7">
             <Actions>
@@ -72,31 +72,6 @@
                   ActionExtensionID = "Xcode.BreakpointAction.Log">
                   <ActionContent
                      message = "%B"
-                     conveyanceType = "0">
-                  </ActionContent>
-               </BreakpointActionProxy>
-            </Actions>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "Yes"
-            filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548608146.036248"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
-            landmarkName = "updateBoardUI()"
-            landmarkType = "7">
-            <Actions>
-               <BreakpointActionProxy
-                  ActionExtensionID = "Xcode.BreakpointAction.Log">
-                  <ActionContent
-                     message = "%H cards found in foreach"
                      conveyanceType = "0">
                   </ActionContent>
                </BreakpointActionProxy>

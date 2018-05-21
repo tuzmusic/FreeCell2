@@ -32,7 +32,7 @@
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="restartGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9rC-hi-es7"/>
+                                            <action selector="startGame" destination="BYZ-38-t0r" eventType="touchUpInside" id="qXz-xa-6fy"/>
                                         </connections>
                                     </button>
                                 </subviews>
