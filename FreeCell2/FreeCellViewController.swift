@@ -252,23 +252,22 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	func addGestureRecognizersForEmptyCells () {
-		for view in boardView.subviews {
-			if !(view is PlayingCardView) {
-				if let cardView = view as? CardView {
-					switch game.locationFor(column: cardView.position.column)! {
-					case Area.freeCells:
-						cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cellClicked(_:))))
-					case Area.suitStacks:
-						cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.suitClicked(_:))))
-					case Area.cardColumns:
-						cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.emptyCardColumnClicked(_:))))
-					default: break
-					}
+		for view in boardView.subviews where !(view is PlayingCardView) {
+			if let cardView = view as? CardView {
+				let area = game.locationFor(column: cardView.position.column)!
+				switch area {
+				case Area.freeCells:
+					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cellClicked(_:))))
+				case Area.suitStacks:
+					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.suitClicked(_:))))
+				case Area.cardColumns:
+					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.emptyCardColumnClicked(_:))))
+				default: break
 				}
 			}
 		}
 	}
-
+	
 	override func viewDidAppear(_ animated: Bool) {
 		startGame()
 	}
