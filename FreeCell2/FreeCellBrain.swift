@@ -16,25 +16,25 @@ class FreeCellBrain {
 	typealias Column = [Card]
 	typealias CardStack = [Card]
 	
-	let numberOfCells = 4
-	let numberOfSuits = 4
-	let numberOfColumns = 8
+	static let numberOfCells = 4
+	static let numberOfSuits = 4
+	static let numberOfColumns = 8
+	static var columnCounts = [numberOfCells, numberOfSuits, numberOfColumns]
 	
+
 	var board = [Column]()
 	
-	var columnCounts: [Int] { return [numberOfCells, numberOfSuits, numberOfColumns] }
-	
 	var freeCells: ArraySlice<Column> {
-		return board.prefix(numberOfCells)
+		return board.prefix(FreeCellBrain.numberOfCells)
 	}
 	
 	var suitStacks: ArraySlice<Column> {
-		let topShaved = board.prefix(numberOfCells + numberOfSuits)
-		return topShaved.suffix(numberOfSuits)
+		let topShaved = board.prefix(FreeCellBrain.numberOfCells + FreeCellBrain.numberOfSuits)
+		return topShaved.suffix(FreeCellBrain.numberOfSuits)
 	}
 	
 	var cardColumns: ArraySlice<Column> {
-		return board.suffix(numberOfColumns)
+		return board.suffix(FreeCellBrain.numberOfColumns)
 	}
 	
 	var blackSuits = [0, 0]
@@ -47,7 +47,7 @@ class FreeCellBrain {
 	
 	func createBoard () {
 		board = [Column]()
-		for _ in 0 ..< columnCounts.reduce(0, +) {
+		for _ in 0 ..< FreeCellBrain.columnCounts.reduce(0, +) {
 			board.append(Column())
 		}
 	}
@@ -69,18 +69,18 @@ class FreeCellBrain {
 	func columnIs(in location: Int, column: Int) -> Bool {
 		var first = 0 // First index at this location
 		for i in 0..<location {
-			first += columnCounts[i]
+			first += FreeCellBrain.columnCounts[i]
 		}
 		var next = 0 // Index after the last index of this location ("endIndex")
 		for i in 0...location {
-			next += columnCounts[location - i]
+			next += FreeCellBrain.columnCounts[location - i]
 		}
 		return column >= first && column < next
 	}
 	
 	func locationFor(column: Int) -> Int? {
 		if column < board.count {
-			for location in 0..<columnCounts.count {
+			for location in 0 ..< FreeCellBrain.columnCounts.count {
 				if columnIs(in: location, column: column) {
 					return location
 				}
