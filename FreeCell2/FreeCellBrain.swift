@@ -40,11 +40,6 @@ class FreeCellBrain {
 	var blackSuits = [0, 0]
 	var redSuits = [0, 0]
 	
-	let firstIndex: Dictionary = [
-		Area.freeCells : 0, // columnCounts[location] - columnCounts[location] = 0
-		Area.suitStacks : 4, // columnCounts[location - 1] + columnCounts[location] - columnCounts[location] = columnCounts(location - 1)
-		Area.cardColumns : 8 ] // columnCounts[location - 1] + columnCounts[location - 2]
-	
 	func emptyBoard () {
 		board = [Column](repeating: Column(), count: Brain.columnCounts.reduce(0, +))
 	}
