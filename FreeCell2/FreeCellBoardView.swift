@@ -57,7 +57,7 @@ class FreeCellBoardView: UIView {
 		return boardAreas[area].yMargin + spaceBetweenCards * (area == Area.suitStacks ? 0 : CGFloat(row))
 	}
 	
-	func areaBoundaries(for areaIndex: Int) -> (min: Int, max: Int) {
+/*	func areaBoundaries(for areaIndex: Int) -> (min: Int, max: Int) {
 		var first = 0 // First index at this location
 		for i in 0..<areaIndex {
 			first += boardAreas[i].count
@@ -65,6 +65,7 @@ class FreeCellBoardView: UIView {
 		let next = first + boardAreas[areaIndex].count - 1
 		return (first, next)
 	}
+	*/
 	
 	func firstColumn(in area: Int) -> Int {
 		var first = 0 // First index at this location

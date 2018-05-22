@@ -58,17 +58,11 @@ class FreeCellViewController: UIViewController {
 		}
 		return nil
 	}
-	
-	var lastClickedCard: FreeCellBrain.Card? {
-		if let pos = lastClickedPosition {
-			return game.card(at: pos)
-		}
-		return nil
-	}
-	
+
 	var lastClickedPosition: Position!
 	
 	var clickedColumn: FreeCellBrain.Column? {
+		//TO-DO: I don't think the full column is needed, only the card at the bottom, right?
 			return game.board[lastClickedPosition.column]
 	}
 	
@@ -79,9 +73,10 @@ class FreeCellViewController: UIViewController {
 		// we don't need the iterator number because the row is always the same
 		// since each time a card is removed, the cards after it bump up their index
 		for _ in 1 ... stackLength(for: source)! {
-			game.moveCard(from: source, to: dest)	// Move the card in the model
+			game.moveCard(from: source, to: dest)	// Move the card in the MODEL
 			
-			if let movedCard = game.board[dest.column].last {	// Remove and re-place the card in the view
+			if let movedCard = game.board[dest.column].last {	// Remove and re-place the card in the VIEW
+				// TO-DO: This really should find the card in the position instead of searching by name.
 				if let view = boardView.subviews.first(where: { ($0 as? PlayingCardView)?.cardDescription == movedCard.description  }) {
 					view.removeFromSuperview()
 				}
