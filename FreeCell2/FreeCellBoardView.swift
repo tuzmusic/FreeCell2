@@ -21,45 +21,45 @@ class FreeCellBoardView: UIView {
 	var spaceBetweenColumns: CGFloat { return cardWidth / 3 }
 	var spaceBetweenCards: CGFloat { return cardHeight / 5 }
 	
-	struct CardType {
+	struct BoardArea {
 		var count: Int
 		var xMargin: CGFloat
 		var yMargin: CGFloat
 	}
 	
-	var cardTypes: [CardType] { return [freeCell, suitStack, cardColumn] }
+	var boardAreas: [BoardArea] { return [freeCell, suitStack, cardColumn] }
 	
-	var freeCell: CardType {
-		return CardType(count: numberOfCells,
+	var freeCell: BoardArea {
+		return BoardArea(count: numberOfCells,
 		                xMargin: cardWidth / 3,
 		                yMargin: cardHeight / 3)
 	}
 	
-	var suitStack: CardType {
+	var suitStack: BoardArea {
 		let totalCardsSpace = cardWidth * CGFloat(numberOfCells)
 		let totalColumnSpace = spaceBetweenColumns * CGFloat(numberOfCells - 1)
-		return CardType(count: numberOfSuits,
+		return BoardArea(count: numberOfSuits,
 		                xMargin: bounds.maxX - freeCell.xMargin - (totalCardsSpace + totalColumnSpace),
 		                yMargin: freeCell.yMargin)
 	}
 	
-	var cardColumn: CardType {
-		return CardType(count: numberOfColumns,
+	var cardColumn: BoardArea {
+		return BoardArea(count: numberOfColumns,
 		                xMargin: (bounds.maxX - (columnWidth * CGFloat(numberOfColumns) - spaceBetweenColumns)) / 2,
 		                yMargin: freeCell.yMargin + cardHeight * 1.3)
 	}
 	
-	func xValueForCardIn(location: Int, column: Int) -> CGFloat {
-		return cardTypes[location].xMargin + (cardWidth + spaceBetweenColumns) * CGFloat(column)
+	func xValueForCard(in area: Int, column: Int) -> CGFloat {
+		return boardAreas[area].xMargin + (cardWidth + spaceBetweenColumns) * CGFloat(column)
 	}
 	
-	func yCoordinateForCardIn(_ location: Int, row: Int) -> CGFloat {
-		return cardTypes[location].yMargin + spaceBetweenCards * (location == Area.suitStacks ? 0 : CGFloat(row))
+	func yCoordinateForCard(in area: Int, row: Int) -> CGFloat {
+		return boardAreas[area].yMargin + spaceBetweenCards * (area == Area.suitStacks ? 0 : CGFloat(row))
 	}
 		
-	func createEmptyCellsIn(location: Int) {
-		for cell in 0 ..< cardTypes[location].count {
-			let origin = CGPoint(x: xValueForCardIn(location: location, column: cell), y: cardTypes[location].yMargin)
+	func createEmptyCells(in area: Int) {
+		for cell in 0 ..< boardAreas[area].count {
+			let origin = CGPoint(x: xValueForCard(in: area, column: cell), y: boardAreas[area].yMargin)
 			let size = CGSize(width: cardWidth, height: cardHeight)
 			let newCell = CardView(frame: CGRect(origin: origin, size: size))
 			newCell.backgroundColor = UIColor.clear
@@ -69,8 +69,8 @@ class FreeCellBoardView: UIView {
 	}
 	
 	override func draw(_ rect: CGRect) {
-		createEmptyCellsIn(location: Area.freeCells)
-		createEmptyCellsIn(location: Area.suitStacks)
-		createEmptyCellsIn(location: Area.cardColumns)
+		createEmptyCells(in: Area.freeCells)
+		createEmptyCells(in: Area.suitStacks)
+		createEmptyCells(in: Area.cardColumns)
 	}
 }
