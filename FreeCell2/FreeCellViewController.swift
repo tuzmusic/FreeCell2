@@ -43,7 +43,7 @@ class FreeCellViewController: UIViewController {
 	
 	var selectedCard: FreeCellBrain.Card? {
 		if let selection = startOfSelection {
-			return game.cardAt(selection)
+			return game.card(at: selection)
 		}
 		return nil
 	}
@@ -61,20 +61,17 @@ class FreeCellViewController: UIViewController {
 	
 	var lastClickedView: UIView?
 	var lastClickedCard: FreeCellBrain.Card? {
+		if let pos = lastClickedPosition {
+			return game.card(at: pos)
+		}
+		return nil
 		if let description = (lastClickedView as? PlayingCardView)?.cardDescription {
 			return game.cardWith(description: description)
 		}
 		return nil
 	}
-	var lastClickedPosition: Position? {
-		didSet { print(lastClickedPosition) }
-	}
-//	{
-//		if let description = (lastClickedView as? PlayingCardView)?.cardDescription {
-//			return game.positionForCardWith(description: description)
-//		}
-//		return nil
-//	}
+	
+	var lastClickedPosition: Position?
 	
 	var clickedColumn: FreeCellBrain.Column? {
 		if let position = lastClickedPosition {
