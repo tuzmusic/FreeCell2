@@ -8,6 +8,8 @@
 
 import Foundation
 
+// 5/22/18 - almost done. just can't figure out how to get rid of "position(for:)" although I swear I had before!!!
+
 typealias Brain = FreeCellBrain
 class FreeCellBrain {
 	
@@ -102,6 +104,7 @@ class FreeCellBrain {
 	}
 	
 	func position(for card: Card) -> Position? {
+		// called only from shoudMove(card:to:). Can't figure out how to remove it yet!
 		let desc = card.description
 		for (colIndex, column) in board.enumerated() {
 			for (rowIndex, cardInRow) in column.enumerated() {
@@ -116,7 +119,6 @@ class FreeCellBrain {
 	// MARK: Game Rules
 	
 	func canMove (_ stack: Column, toColumn column: Column) -> Bool {
-		
 		var emptyCells = 0
 		for column in freeCells where column.isEmpty {
 			emptyCells += 1
@@ -154,10 +156,12 @@ class FreeCellBrain {
 	}
 	
 	func shouldMove (_ card: Card, to suitStack: Column) -> Bool {
+		// called only from cardToMoveToSuitStack(), but it's worth having separate
 		if canMove(card, to: suitStack) {
 			if let column = position(for: card)?.column {
+				// I thought I could eliminate checking that it's not in suitstacks, and hence eliminate the need for the column and hence delete position(for:) but that doesn't seem to work. I'm pretty sure I was able to get rid of position(for:) last time, but I can't figure it out here yet!!!
 				if area(for: column) != Area.suitStacks &&
-					((card.color == .Red && card.rank.rawValue <= blackSuits.min()! + 2) ||
+						((card.color == .Red && card.rank.rawValue <= blackSuits.min()! + 2) ||
 						(card.color == .Black && card.rank.rawValue <= redSuits.min()! + 2)) {
 					return true
 				}
@@ -174,14 +178,11 @@ class FreeCellBrain {
 			if cell.isEmpty { return false }
 		}
 		// Can any cards, in any location, be moved somewhere?
-		for (colIndex, sourceColumn) in board.enumerated() where area(for: colIndex) != Area.suitStacks {
-			if let bottomCard = sourceColumn.last {
+		for (colIndex, sourceCol) in board.enumerated() where area(for: colIndex) != Area.suitStacks {
+			if let bottomCard = sourceCol.last {
 				// Can any cards be moved to another column?
-				for (colIndex, destColumn) in board.enumerated() where area(for: colIndex) == Area.cardColumns {
-					if canMove([bottomCard], toColumn: destColumn) {
-						//						if let destCard = destColumn.last {
-						//							if destCard == lastSourceTried && bottomCard == lastDestTried { return true }
-						//						}
+				for (colIndex, destCol) in board.enumerated() where area(for: colIndex) == Area.cardColumns {
+					if canMove([bottomCard], toColumn: destCol) {
 						return false
 					}
 				}
