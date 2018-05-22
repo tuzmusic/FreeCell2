@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548693832.922449"
+            timestampString = "548694038.31859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "suitClicked(_:)"
             landmarkType = "7">
             <Actions>
@@ -35,11 +35,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548693832.924917"
+            timestampString = "548694038.320886"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
             landmarkName = "emptyCardColumnClicked(_:)"
             landmarkType = "7">
             <Actions>
@@ -67,11 +67,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548693832.926314"
+            timestampString = "548694038.321872"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
             landmarkName = "cellClicked(_:)"
             landmarkType = "7">
             <Actions>
@@ -99,7 +99,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellBrain.swift"
-            timestampString = "548693832.9275399"
+            timestampString = "548694038.322821"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "78"
@@ -115,29 +115,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FreeCell2/FreeCellBrain.swift"
-            timestampString = "548693832.9288909"
+            timestampString = "548694038.323878"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
             endingLineNumber = "67"
             landmarkName = "columnIs(in:column:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FreeCell2/FreeCellViewController.swift"
-            timestampString = "548693832.929405"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "clickedColumn"
-            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

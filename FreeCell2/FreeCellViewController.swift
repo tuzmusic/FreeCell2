@@ -59,14 +59,9 @@ class FreeCellViewController: UIViewController {
 		return nil
 	}
 	
-	var lastClickedView: UIView?
 	var lastClickedCard: FreeCellBrain.Card? {
 		if let pos = lastClickedPosition {
 			return game.card(at: pos)
-		}
-		return nil
-		if let description = (lastClickedView as? PlayingCardView)?.cardDescription {
-			return game.cardWith(description: description)
 		}
 		return nil
 	}
@@ -122,19 +117,13 @@ class FreeCellViewController: UIViewController {
 	// MARK: Gameplay action functions
 	
 	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
-		
-		
-		
-		
 		// TO-DO: What does this comment mean?!?!?
 		// This should be ready to test but it wasn't a good time to test it yet.
-		if let clickedCardView = clickedCard.view as? PlayingCardView,
-			let description = clickedCardView.cardDescription {
+		if let clickedCardView = clickedCard.view as? PlayingCardView {
 		
-			lastClickedView = clickedCardView
 			lastClickedPosition = clickedCardView.position
 			
-			if let position = game.positionForCardWith(description: description) {
+			if let position = lastClickedPosition {
 				
 				// If there was no selection, or the selection was in the same column, get the new selection.
 				if startOfSelection == nil
@@ -163,7 +152,6 @@ class FreeCellViewController: UIViewController {
 	
 	func emptyCardColumnClicked (_ cell: UITapGestureRecognizer) {
 		if let clickedCell = cell.view as? CardView {
-			lastClickedView = clickedCell
 			lastClickedPosition = clickedCell.position
 			if let selection = startOfSelection {
 				// Create the stack to check if it can be moved
@@ -179,7 +167,6 @@ class FreeCellViewController: UIViewController {
 	
 	func cellClicked (_ cell: UITapGestureRecognizer) {
 		if let cellView = cell.view as? CardView {
-			lastClickedView = cellView
 			lastClickedPosition = cellView.position
 			if stackLength(for: startOfSelection) == 1 {
 				move(from: startOfSelection!, to: cellView.position)
@@ -189,7 +176,6 @@ class FreeCellViewController: UIViewController {
 	
 	func suitClicked (_ suit: UITapGestureRecognizer) {
 		if let suitView = suit.view as? CardView {
-			lastClickedView = suitView
 			lastClickedPosition = suitView.position
 			if stackLength(for: startOfSelection) == 1 && game.canMove(selectedCard!, to: clickedColumn!) {
 				move(from: startOfSelection!, to: suitView.position)
