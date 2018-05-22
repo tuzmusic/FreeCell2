@@ -43,7 +43,7 @@ class FreeCellViewController: UIViewController {
 	
 	var selectedCard: FreeCellBrain.Card? {
 		if let selection = startOfSelection {
-			return game.card(at: selection)
+			return game.board[selection.column][selection.row]
 		}
 		return nil
 	}

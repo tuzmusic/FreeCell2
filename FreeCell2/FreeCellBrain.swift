@@ -88,13 +88,12 @@ class FreeCellBrain {
 	}
 	
 	func cardToMoveToSuitStack() -> (cardOldPosition: Position, destStackIndex: Int)? {
-		for sourceColumn in board { // For every column that's not in a suitStack
-			if let cardToMove = sourceColumn.last { // If there's a card in the column
+		for (col, sourceCol) in board.enumerated() { // For every column that's not in a suitStack
+			if let cardToMove = sourceCol.last { // If there's a card in the column
 				for (suitIndex, suit) in suitStacks.enumerated() { // Check every suit stack
 					if shouldMove(cardToMove, to: suit) { // And if the last card in the column should be moved
-						if let position = positionFor(cardToMove) {
-							return (position, suitIndex + 4) // Return its position
-						}
+						let position = Position(column: col, row: sourceCol.count-1)
+						return (position, suitIndex + 4) // Return its position
 					}
 				}
 			}
@@ -102,35 +101,17 @@ class FreeCellBrain {
 		return nil
 	}
 	
-	func positionForCardWith(description: String) -> Position? {
+	func position(for card: Card) -> Position? {
+		let desc = card.description
 		for (colIndex, column) in board.enumerated() {
 			for (rowIndex, cardInRow) in column.enumerated() {
-				if cardInRow.description == description {
+				if cardInRow.description == desc {
 					return Position(column: colIndex, row: rowIndex)
 				}
 			}
 		}
 		return nil
 	}
-	
-	func positionFor(_ card: Card) -> Position? {
-		return positionForCardWith(description: card.description) ?? nil
-	}
-	
-	func cardWith(description: String) -> Card? {
-		if let position = positionForCardWith(description: description) {
-			return board[position.column][position.row]
-		}
-		return nil
-	}
-	
-	func card(at position: Position) -> Card? {
-		if position.column < board.count && position.row < board[position.column].count {
-			return board[position.column][position.row]
-		}
-		return nil
-	}
-	
 	
 	// MARK: Game Rules
 	
@@ -174,7 +155,7 @@ class FreeCellBrain {
 	
 	func shouldMove (_ card: Card, to suitStack: Column) -> Bool {
 		if canMove(card, to: suitStack) {
-			if let column = positionFor(card)?.column {
+			if let column = position(for: card)?.column {
 				if area(for: column) != Area.suitStacks &&
 					((card.color == .Red && card.rank.rawValue <= blackSuits.min()! + 2) ||
 						(card.color == .Black && card.rank.rawValue <= redSuits.min()! + 2)) {
