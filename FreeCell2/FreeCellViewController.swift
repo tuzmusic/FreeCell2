@@ -50,7 +50,7 @@ class FreeCellViewController: UIViewController {
 	
 	func stackLength (for selection: Position?) -> Int? {
 		if let selection = selection {
-			if game.locationFor(column: selection.column) == Area.cardColumns {
+			if game.location(for: selection.column) == Area.cardColumns {
 				let length = game.board[selection.column].count - selection.row
 				return length
 			}
@@ -209,7 +209,7 @@ class FreeCellViewController: UIViewController {
 	
 	func draw (card: FreeCellBrain.Card, at boardPosition: Position) {
 		let newCardView = PlayingCardView()
-		let area = game.locationFor(column: boardPosition.column)!
+		let area = game.location(for: boardPosition.column)!
 		let columnOffset = area * 4
 
 		// Place (and color) cardview
@@ -254,7 +254,7 @@ class FreeCellViewController: UIViewController {
 	func addGestureRecognizersForEmptyCells () {
 		for view in boardView.subviews where !(view is PlayingCardView) {
 			if let cardView = view as? CardView {
-				let area = game.locationFor(column: cardView.position.column)!
+				let area = game.location(for: cardView.position.column)!
 				switch area {
 				case Area.freeCells:
 					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cellClicked(_:))))

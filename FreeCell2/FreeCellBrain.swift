@@ -74,7 +74,7 @@ class FreeCellBrain {
 		return column >= first && column < next
 	}
 	
-	func locationFor(column: Int) -> Int? {
+	func location(for column: Int) -> Int? {
 		if column < board.count {
 			for location in 0 ..< FreeCellBrain.columnCounts.count {
 				if columnIs(in: location, column: column) {
@@ -85,7 +85,7 @@ class FreeCellBrain {
 		return nil
 	}
 	
-	func indexOf(column: Column) -> Int? {
+	func index(of column: Column) -> Int? {
 		for (index, _) in board.enumerated() {
 			if column == board[index] { return index }
 		}
@@ -129,7 +129,7 @@ class FreeCellBrain {
 		for column in board {
 			for (rowIndex, cardInRow) in column.enumerated() {
 				if cardInRow.description == description {
-					return Position(column: indexOf(column: column)!, row: rowIndex)
+					return Position(column: index(of: column)!, row: rowIndex)
 				}
 			}
 		}

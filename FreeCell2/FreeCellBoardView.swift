@@ -27,7 +27,7 @@ class FreeCellBoardView: UIView {
 		var yMargin: CGFloat
 	}
 	
-	var cardTypes: [CardType] { return [ freeCell, suitStack, cardColumn] }
+	var cardTypes: [CardType] { return [freeCell, suitStack, cardColumn] }
 	
 	var freeCell: CardType {
 		return CardType(count: numberOfCells,
