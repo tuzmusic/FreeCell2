@@ -18,6 +18,7 @@
 		765273611E3360CC00D595AA /* PlayingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7652735E1E3360CC00D595AA /* PlayingCardView.swift */; };
 		765273661E3361AB00D595AA /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765273651E3361AB00D595AA /* CardView.swift */; };
 		7652736B1E33748500D595AA /* FreeCellBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7652736A1E33748500D595AA /* FreeCellBoardView.swift */; };
+		76B5017020B45BFA008AB3E3 /* FreeCellUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5016F20B45BFA008AB3E3 /* FreeCellUnitTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,8 @@
 		7652735E1E3360CC00D595AA /* PlayingCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayingCardView.swift; sourceTree = "<group>"; };
 		765273651E3361AB00D595AA /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		7652736A1E33748500D595AA /* FreeCellBoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreeCellBoardView.swift; sourceTree = "<group>"; };
+		76B5016E20B45BFA008AB3E3 /* FreeCell2Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FreeCell2Tests-Bridging-Header.h"; sourceTree = "<group>"; };
+		76B5016F20B45BFA008AB3E3 /* FreeCellUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeCellUnitTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +71,10 @@
 		7652732F1E33608A00D595AA = {
 			isa = PBXGroup;
 			children = (
+				76B5016F20B45BFA008AB3E3 /* FreeCellUnitTests.swift */,
 				7652733A1E33608A00D595AA /* FreeCell2 */,
 				7652735B1E3360A300D595AA /* Supporting Files */,
+				76B5016E20B45BFA008AB3E3 /* FreeCell2Tests-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -183,6 +188,7 @@
 					7652734B1E33608B00D595AA = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = MS76ZC84AE;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 765273371E33608A00D595AA;
 					};
@@ -247,6 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76B5017020B45BFA008AB3E3 /* FreeCellUnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,11 +411,14 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = MS76ZC84AE;
 				INFOPLIST_FILE = FreeCell2Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TuzMusic.FreeCell2Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FreeCell2Tests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FreeCell2.app/FreeCell2";
 			};
@@ -419,11 +429,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = MS76ZC84AE;
 				INFOPLIST_FILE = FreeCell2Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TuzMusic.FreeCell2Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FreeCell2Tests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FreeCell2.app/FreeCell2";
 			};

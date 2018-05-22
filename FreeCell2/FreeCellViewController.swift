@@ -213,7 +213,7 @@ class FreeCellViewController: UIViewController {
 		let columnOffset = area * 4
 
 		// Place (and color) cardview
-		newCardView.frame.origin.x = boardView.xValueForCard(in area:: area, column: boardPosition.column - columnOffset)
+		newCardView.frame.origin.x = boardView.xValueForCard(in: area, column: boardPosition.column - columnOffset)
 		newCardView.frame.origin.y = boardView.yCoordinateForCard(in: area, row: boardPosition.row)
 		newCardView.frame.size = boardView.cardSize
 		newCardView.backgroundColor = UIColor.white
