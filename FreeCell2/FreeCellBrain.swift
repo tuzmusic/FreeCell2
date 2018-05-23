@@ -74,7 +74,7 @@ class FreeCellBrain {
 	func moveCard(from source: Position, to dest: Position) {
 		let card = board[source.column].remove(at: source.row)
 		board[dest.column].append(card)
-		if area(for: dest.column) == Area.suitStacks {
+		if area(for: dest.column) == .suitStacks {
 			updateSuits(for: board[dest.column].last!)
 		}
 	}
@@ -160,7 +160,7 @@ class FreeCellBrain {
 		if canMove(card, to: suitStack) {
 			if let column = position(for: card)?.column {
 				// I thought I could eliminate checking that it's not in suitstacks, and hence eliminate the need for the column and hence delete position(for:) but that doesn't seem to work. I'm pretty sure I was able to get rid of position(for:) last time, but I can't figure it out here yet!!!
-				if area(for: column) != Area.suitStacks &&
+				if area(for: column) != .suitStacks &&
 						((card.color == .Red && card.rank.rawValue <= blackSuits.min()! + 2) ||
 						(card.color == .Black && card.rank.rawValue <= redSuits.min()! + 2)) {
 					return true
@@ -174,20 +174,18 @@ class FreeCellBrain {
 	
 	func noMovesLeft () -> Bool {
 		// Are there any cells free?
-		for (colIndex, cell) in board.enumerated() where area(for: colIndex) == Area.freeCells {
+		for (col, cell) in board.enumerated() where area(for: col) == .freeCells {
 			if cell.isEmpty { return false }
 		}
 		// Can any cards, in any location, be moved somewhere?
-		for (colIndex, sourceCol) in board.enumerated() where area(for: colIndex) != Area.suitStacks {
+		for (col, sourceCol) in board.enumerated() where area(for: col) != .suitStacks {
 			if let bottomCard = sourceCol.last {
 				// Can any cards be moved to another column?
-				for (colIndex, destCol) in board.enumerated() where area(for: colIndex) == Area.cardColumns {
-					if canMove([bottomCard], toColumn: destCol) {
-						return false
-					}
+				for (col, destCol) in board.enumerated() where area(for: col) == .cardColumns {
+					if canMove([bottomCard], toColumn: destCol) { return false }
 				}
 				//Can any cards be moved to a suit stack?
-				for (colIndex, suitStack) in board.enumerated() where area(for: colIndex) == Area.suitStacks {
+				for (col, suitStack) in board.enumerated() where area(for: col) == .suitStacks {
 					if canMove(bottomCard, to: suitStack) {
 						return false
 					}
@@ -200,7 +198,7 @@ class FreeCellBrain {
 	
 	func gameIsWon () -> Bool {
 				
-		for (colIndex, suit) in board.enumerated() where area(for: colIndex) == Area.suitStacks {
+		for (col, suit) in board.enumerated() where area(for: col) == .suitStacks {
 			if suit.count < 13 {
 				return false
 			}

@@ -248,7 +248,6 @@ class FreeCellViewController: UIViewController {
 					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.suitClicked(_:))))
 				case .cardColumns:
 					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.emptyCardColumnClicked(_:))))
-				default: break
 				}
 			}
 		}
