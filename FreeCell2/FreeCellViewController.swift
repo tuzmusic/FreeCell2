@@ -148,8 +148,6 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		gameBoard[0][0].append(FreeCellBrain.Card(rank: .Two, suit: .Spades))
-		gameBoard[1][0].append(FreeCellBrain.Card(rank: .Ace, suit: .Spades))
 		updateBoardUI ()
 	}
 }
