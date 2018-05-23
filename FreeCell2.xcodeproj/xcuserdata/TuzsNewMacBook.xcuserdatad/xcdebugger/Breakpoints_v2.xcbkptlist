@@ -38,6 +38,7 @@
             timestampString = "548723467.430649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< Area_As_Enum
             startingLineNumber = "144"
             endingLineNumber = "144"
             landmarkName = "emptyCardColumnClicked(_:)"
