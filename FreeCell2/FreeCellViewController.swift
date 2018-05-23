@@ -138,55 +138,47 @@ class FreeCellViewController: UIViewController {
 	}
 	
 	func emptyCardColumnClicked (_ cell: UITapGestureRecognizer) {
-		if let clickedCell = cell.view as? CardView {
-			lastClickedPosition = clickedCell.position
-			if let selection = startOfSelection {
-				// Create the stack to check if it can be moved
-				let movingStack = Array(game.board[selection.column].suffix(from: selection.row))
-				
-				// See if the stack can be moved, and move it.
-				if game.canMove(movingStack, toColumn: clickedColumn!) {
-					move(from: selection, to: clickedCell.position!)
-				}
-			}
+		guard let clickedCell = cell.view as? CardView,
+			let selection = startOfSelection else { return }
+		lastClickedPosition = clickedCell.position
+		let movingStack = Array(game.board[selection.column].suffix(from: selection.row))
+		if game.canMove(movingStack, toColumn: clickedColumn!) {
+			move(from: selection, to: clickedCell.position!)
 		}
 	}
 	
 	func cellClicked (_ cell: UITapGestureRecognizer) {
-		if let cellView = cell.view as? CardView {
-			lastClickedPosition = cellView.position
-			if stackLength(for: startOfSelection) == 1 {
-				move(from: startOfSelection!, to: cellView.position)
-			}
+		guard let cellView = cell.view as? CardView else { return }
+		lastClickedPosition = cellView.position
+		if stackLength(for: startOfSelection) == 1 {
+			move(from: startOfSelection!, to: cellView.position)
 		}
 	}
 	
 	func suitClicked (_ suit: UITapGestureRecognizer) {
-		if let suitView = suit.view as? CardView {
-			lastClickedPosition = suitView.position
-			if stackLength(for: startOfSelection) == 1 && game.canMove(selectedCard!, to: clickedColumn!) {
-				move(from: startOfSelection!, to: suitView.position)
-			}
+		guard let suitView = suit.view as? CardView else { return }
+		lastClickedPosition = suitView.position
+		if stackLength(for: startOfSelection) == 1 && game.canMove(selectedCard!, to: clickedColumn!) {
+			move(from: startOfSelection!, to: suitView.position)
 		}
 	}
 	
 	func doubleClick (_ clickedCard: UITapGestureRecognizer) {
-		if let clickedCardView = clickedCard.view as? PlayingCardView {
-			if stackLength(for: startOfSelection) == 1 {
-				for (index, suit) in game.board.enumerated() where game.area(for: index) == Area.suitStacks {
-					if game.canMove(selectedCard!, to: suit) {
-						let destPosition = Position(column: index, row: 0)
-						move(from: clickedCardView.position, to: destPosition)
-						return
-					}
-				}
-				for (index, cell) in game.board.enumerated() where game.area(for: index) == Area.freeCells {
-					if cell.isEmpty {
-						let destPosition = Position(column: index, row: 0)
-						move(from: clickedCardView.position, to: destPosition)
-						return
-					}
-				}
+		guard let clickedCardView = clickedCard.view as? PlayingCardView else { return }
+		guard stackLength(for: startOfSelection) == 1 else { return }
+		
+		for (index, suit) in game.board.enumerated() where game.area(for: index) == .suitStacks {
+			if game.canMove(selectedCard!, to: suit) {
+				let destPosition = Position(column: index, row: 0)
+				move(from: clickedCardView.position, to: destPosition)
+				return
+			}
+		}
+		for (index, cell) in game.board.enumerated() where game.area(for: index) == .freeCells {
+			if cell.isEmpty {
+				let destPosition = Position(column: index, row: 0)
+				move(from: clickedCardView.position, to: destPosition)
+				return
 			}
 		}
 	}
@@ -228,9 +220,9 @@ class FreeCellViewController: UIViewController {
 			(view as? PlayingCardView)?.removeFromSuperview()
 		}
 		
-		for (colIndex, column) in game.board.enumerated() {
-			for (rowIndex, card) in column.enumerated() {
-				let newCardPosition = Position(column: colIndex, row: rowIndex)
+		for (col, column) in game.board.enumerated() {
+			for (row, card) in column.enumerated() {
+				let newCardPosition = Position(column: col, row: row)
 				draw(card: card, at: newCardPosition)
 			}
 		}

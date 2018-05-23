@@ -23,12 +23,12 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mkC-KN-Ryy">
-                                <rect key="frame" x="20" y="719" width="154" height="41"/>
+                                <rect key="frame" x="20" y="719" width="122" height="41"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJu-Vy-ZCP">
-                                        <rect key="frame" x="0.0" y="0.0" width="154" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="122" height="41"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                        <state key="normal" title="Restart Game">
+                                        <state key="normal" title="New Game">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
