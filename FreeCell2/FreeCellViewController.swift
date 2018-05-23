@@ -106,34 +106,40 @@ class FreeCellViewController: UIViewController {
 		print("No moves left!")
 	}
 	
+	
+	// MARK: Gameplay helper functions
+	
+	func getNewSelection(at position: Position) {
+		let oldSelection = startOfSelection
+		startOfSelection = nil // Clear the old selection. NOTE: This belongs here and not in an else clause below, otherwise you can't select, say, one card in a row that currently has more than one card selected, without a few add'l deselecting clicks
+		if position.row != oldSelection?.row {
+			startOfSelection = position // Unless the click was on the same card (to clear selection), get new selection.
+		}
+	}
+	
+	func tryToMove(_ selection: Position, to position: Position) {
+		let movingStack = Array(game.board[selection.column].suffix(from: selection.row))
+		// TO-DO: Move all this "can we move it?" checking to the Brain!!!
+		// See if the stack can be moved, and move it.
+		if (game.area(for: position.column) == Area.cardColumns
+			&& game.canMove(movingStack, toColumn: clickedColumn!))
+			|| (game.area(for: position.column) == Area.suitStacks
+				&& movingStack.count == 1
+				&& game.canMove(selectedCard!, to: clickedColumn!)) {
+			move(from: selection, to: position)
+		}
+	}
+	
 	// MARK: Gameplay action functions
 	
 	func cardClicked (_ clickedCard: UITapGestureRecognizer) {
-		// TO-DO: What does this comment mean?!?!?
-		// This should be ready to test but it wasn't a good time to test it yet.
-		if let clickedCardView = clickedCard.view as? PlayingCardView {
-			lastClickedPosition = clickedCardView.position
-			let position = lastClickedPosition!
-			
-			// If there was no selection, or the selection was in the same column, get the new selection.
-			if startOfSelection == nil || position.column == startOfSelection?.column {
-				let oldSelection = startOfSelection
-				startOfSelection = nil // Clear the old selection
-				if position.row != oldSelection?.row {
-					startOfSelection = position // Unless the click was on the same card (to clear selection), get new selection.
-				}
-			} else if let selection = startOfSelection {
-				let movingStack = Array(game.board[selection.column].suffix(from: selection.row))
-				// TO-DO: Move all this "can we move it?" checking to the Brain!!!
-				// See if the stack can be moved, and move it.
-				if (game.area(for: position.column) == Area.cardColumns
-					&& game.canMove(movingStack, toColumn: clickedColumn!))
-					|| (game.area(for: position.column) == Area.suitStacks
-						&& movingStack.count == 1
-						&& game.canMove(selectedCard!, to: clickedColumn!)) {
-					move(from: selection, to: position)
-				}
-			}
+		guard let clickedCardView = clickedCard.view as? PlayingCardView else { return }
+		lastClickedPosition = clickedCardView.position
+		
+		if startOfSelection == nil || lastClickedPosition.column == startOfSelection?.column {
+			getNewSelection(at: lastClickedPosition!)
+		} else if let selection = startOfSelection {
+			tryToMove(selection, to: lastClickedPosition!)
 		}
 	}
 	
