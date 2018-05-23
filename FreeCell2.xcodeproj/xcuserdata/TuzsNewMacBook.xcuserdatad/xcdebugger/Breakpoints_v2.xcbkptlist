@@ -58,6 +58,44 @@
                   </ActionContent>
                </BreakpointActionProxy>
             </Actions>
+=======
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "startOfSelection"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FreeCell2.FreeCellViewController.startOfSelection.didset : Swift.Optional&lt;FreeCell2.CardView.FreeCellPosition&gt;"
+                  moduleName = "FreeCell2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
+                  timestampString = "507292750.750484"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "154">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FreeCell2.FreeCellViewController.startOfSelection.didset : Swift.Optional&lt;FreeCell2.CardView.FreeCellPosition&gt;"
+                  moduleName = "FreeCell2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/TuzsNewMacBook/Library/Mobile%20Documents/com~apple~CloudDocs/Misc%20Stuff%20-%20iCloud%20drive/Programming/My%20Apps/FreeCell2/FreeCell2/FreeCellViewController.swift"
+                  timestampString = "507292750.752204"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "671">
+               </Location>
+            </Locations>
+>>>>>>> local
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
