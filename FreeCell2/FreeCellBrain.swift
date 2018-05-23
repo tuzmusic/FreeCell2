@@ -143,7 +143,7 @@ class FreeCellBrain {
 		return false
 	}
 	
-	func canMove (_ card: Card, to suitStack: Column) -> Bool {
+	func canMove (_ card: Card, toStack suitStack: Column) -> Bool {
 		if suitStack.isEmpty && card.rank == .Ace {
 			return true
 		} else if let topSuitCard = suitStack.last {
@@ -157,7 +157,7 @@ class FreeCellBrain {
 	
 	func shouldMove (_ card: Card, to suitStack: Column) -> Bool {
 		// called only from cardToMoveToSuitStack(), but it's worth having separate
-		if canMove(card, to: suitStack) {
+		if canMove(card, toStack: suitStack) {
 			if let column = position(for: card)?.column {
 				// I thought I could eliminate checking that it's not in suitstacks, and hence eliminate the need for the column and hence delete position(for:) but that doesn't seem to work. I'm pretty sure I was able to get rid of position(for:) last time, but I can't figure it out here yet!!!
 				if area(for: column) != .suitStacks &&
@@ -186,7 +186,7 @@ class FreeCellBrain {
 				}
 				//Can any cards be moved to a suit stack?
 				for (col, suitStack) in board.enumerated() where area(for: col) == .suitStacks {
-					if canMove(bottomCard, to: suitStack) {
+					if canMove(bottomCard, toStack: suitStack) {
 						return false
 					}
 				}

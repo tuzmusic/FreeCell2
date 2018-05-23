@@ -117,16 +117,21 @@ class FreeCellViewController: UIViewController {
 		}
 	}
 	
-	func tryToMove(_ selection: Position, to position: Position) {
+	func tryToMoveSelection(at selection: Position, to position: Position) {
+		guard let area = game.area(for: position.column) else { return }
 		let movingStack = Array(game.board[selection.column].suffix(from: selection.row))
 		// TO-DO: Move all this "can we move it?" checking to the Brain!!!
 		// See if the stack can be moved, and move it.
-		if (game.area(for: position.column) == Area.cardColumns
-			&& game.canMove(movingStack, toColumn: clickedColumn!))
-			|| (game.area(for: position.column) == Area.suitStacks
-				&& movingStack.count == 1
-				&& game.canMove(selectedCard!, to: clickedColumn!)) {
-			move(from: selection, to: position)
+		switch area {
+		case .cardColumns:
+			if game.canMove(movingStack, toColumn: clickedColumn!) {
+				move(from: selection, to: position)
+			}
+		case .suitStacks:
+			if movingStack.count == 1 && game.canMove(selectedCard!, toStack: clickedColumn!) {
+				move(from: selection, to: position)
+			}
+		default: break
 		}
 	}
 	
@@ -139,7 +144,7 @@ class FreeCellViewController: UIViewController {
 		if startOfSelection == nil || lastClickedPosition.column == startOfSelection?.column {
 			getNewSelection(at: lastClickedPosition!)
 		} else if let selection = startOfSelection {
-			tryToMove(selection, to: lastClickedPosition!)
+			tryToMoveSelection(at: selection, to: lastClickedPosition!)
 		}
 	}
 	
@@ -164,7 +169,7 @@ class FreeCellViewController: UIViewController {
 	func suitClicked (_ suit: UITapGestureRecognizer) {
 		guard let suitView = suit.view as? CardView else { return }
 		lastClickedPosition = suitView.position
-		if stackLength(for: startOfSelection) == 1 && game.canMove(selectedCard!, to: clickedColumn!) {
+		if stackLength(for: startOfSelection) == 1 && game.canMove(selectedCard!, toStack: clickedColumn!) {
 			move(from: startOfSelection!, to: suitView.position)
 		}
 	}
@@ -174,7 +179,7 @@ class FreeCellViewController: UIViewController {
 		guard stackLength(for: startOfSelection) == 1 else { return }
 		
 		for (index, suit) in game.board.enumerated() where game.area(for: index) == .suitStacks {
-			if game.canMove(selectedCard!, to: suit) {
+			if game.canMove(selectedCard!, toStack: suit) {
 				let destPosition = Position(column: index, row: 0)
 				move(from: clickedCardView.position, to: destPosition)
 				return
