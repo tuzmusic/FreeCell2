@@ -8,15 +8,15 @@
 
 import Foundation
 
-//enum Area: Int {
-//	case freeCells = 0, suitStacks, cardColumns
-//}
-
-struct Area {
-	static let freeCells = 0
-	static let suitStacks = 1
-	static let cardColumns = 2
+enum Area: Int {
+	case freeCells = 0, suitStacks, cardColumns
 }
+
+//struct Area {
+//	static let freeCells = 0
+//	static let suitStacks = 1
+//	static let cardColumns = 2
+//}
 
 struct Position {
 	var column, row: Int

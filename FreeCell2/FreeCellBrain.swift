@@ -60,12 +60,12 @@ class FreeCellBrain {
 	
 	// MARK: Game Functions
 	
-	func area(for column: Int) -> Int? {
+	func area(for column: Int) -> Area? {
 		var highCol = 0
 		for (area, lastCol) in Brain.columnCounts.enumerated() {
 			highCol += lastCol
 			if column < highCol{
-				return area
+				return Area(rawValue: area)
 			}
 		}
 		return nil

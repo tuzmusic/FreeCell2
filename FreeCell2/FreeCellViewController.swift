@@ -196,7 +196,7 @@ class FreeCellViewController: UIViewController {
 	func draw (card: FreeCellBrain.Card, at boardPosition: Position) {
 		let newCardView = PlayingCardView()
 		let area = game.area(for: boardPosition.column)!
-		let columnOffset = area * 4
+		let columnOffset = area.rawValue * 4
 
 		// Place (and color) cardview
 		newCardView.frame.origin.x = boardView.xValueForCard(in: area, column: boardPosition.column - columnOffset)
@@ -242,11 +242,11 @@ class FreeCellViewController: UIViewController {
 			if let cardView = view as? CardView {
 				let area = game.area(for: cardView.position.column)!
 				switch area {
-				case Area.freeCells:
+				case .freeCells:
 					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.cellClicked(_:))))
-				case Area.suitStacks:
+				case .suitStacks:
 					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.suitClicked(_:))))
-				case Area.cardColumns:
+				case .cardColumns:
 					cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FreeCellViewController.emptyCardColumnClicked(_:))))
 				default: break
 				}
