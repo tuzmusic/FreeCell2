@@ -256,7 +256,9 @@ class FreeCellViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		startGame()
+		// just a comment. nothing to see here.
 	}
 }
+
 
 
